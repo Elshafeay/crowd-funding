@@ -6,8 +6,7 @@
 <br>
 
 ## Prerequisites 
-* python (>= 3.4 required)  
-
+* python (>= 3.4 required) 
 
 <br>
 
@@ -24,7 +23,14 @@
 * Start replacing the environment variables in the config.ini  file with yours.  
   **PS:** You can generate secret key to the project from [here](https://djecrety.ir/).  
   
-* ```python manage.py migrate```  
+* ```python manage.py migrate```
 * ```python manage.py runserver```  
   
 #### And by now you should have the application running.
+
+<br>
+
+## External Resources
+* [To create the custom user model](https://testdriven.io/blog/django-custom-user-model/)
+
+
