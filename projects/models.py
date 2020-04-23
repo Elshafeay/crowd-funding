@@ -160,7 +160,18 @@ class Reply(models.Model):
 
 	class Meta:
 		verbose_name_plural = "Replies"
-		unique_together = ('user', 'review')
 
 	def __str__(self):
 		return self.reply
+
+
+# ReviewReports Model
+class ReviewReports(models.Model):
+	review = models.ForeignKey(Review, on_delete=models.CASCADE)
+	user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+	reported = models.BooleanField(default=True)
+
+	class Meta:
+		unique_together = ('user', 'review')
+		verbose_name = "Review Report"
+		verbose_name_plural = "Review Reports"
