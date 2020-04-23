@@ -1,0 +1,141 @@
+{% extends 'projects/layouts/base.html' %}
+{% load static %}
+
+{% block title %} {{ project.title }} {% endblock title %}
+{% block styles %}
+    <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css'/>
+
+{% endblock %}
+{% block content %}
+    <div class="single-page-agile-main">
+        <div class="container">
+
+            <div class="agileits-single-top">
+                <ol class="breadcrumb">
+                    <li><a href="#">Home</a></li>
+                    <li class="active">{{ project.title }}</li>
+                </ol>
+            </div>
+
+            <div class="single-page-agile-info">
+
+                <div class="show-top-grids-w3lagile">
+                    <div class="col-sm-8 single-left">
+                        <div class="more">
+                            <button id="more-btn" class="more-btn">
+                                <span class="more-dot"></span>
+                                <span class="more-dot"></span>
+                                <span class="more-dot"></span>
+                            </button>
+                            <div class="more-menu">
+                                <div class="more-menu-caret">
+                                    <div class="more-menu-caret-outer"></div>
+                                    <div class="more-menu-caret-inner"></div>
+                                </div>
+                                <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn"
+                                    aria-hidden="true">
+                                    <li class="more-menu-item" role="presentation">
+                                        <button type="button" class="more-menu-btn" role="menuitem">Save</button>
+                                    </li>
+                                    <li class="more-menu-item" role="presentation">
+                                        <button type="button" class="more-menu-btn" role="menuitem">Report</button>
+                                    </li>
+                                    <li class="more-menu-item" role="presentation">
+                                        <button type="button" class="more-menu-btn" role="menuitem">Cancel</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="song">
+                            <div class="song-info">
+                                <i class="fa fa-clock-o"></i> {{ project.start_date }}
+                                <i class="fa fa-hourglass-end"></i> {{ project.end_date }}
+                            </div>
+                            <div class="video-grid-single-page-agileits">
+                                <div data-video="dLmKio67pVQ" id="video">
+                                    <img src="{{ project.cover.url }}" alt="{{ project.title }}"
+                                         class="img-responsive"/>
+                                </div>
+                            </div>
+                            <div class="song-grid-right">
+                                <div class="share">
+                                    <h5>{{ project.title }}</h5>
+                                    <p>
+                                        {{ project.details }}
+                                    </p>
+                                    <div class="single-agile-shar-buttons">
+                                        {% for tag in project.tags %}
+                                            <span class="tag"> {{ tag.name }} </span>
+                                        {% endfor %}
+
+                                        <span class="tag"> <a href="#">tag</a> </span>
+                                        <span class="tag"> <a href="#">tag</a> </span>
+                                        <span class="tag"> <a href="#">tag</a> </span>
+                                        <span class="tag"> <a href="#">tag</a> </span>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w3_agile_banner_bottom_grid">
+                                <div id="owl-demo" class="owl-carousel owl-theme">
+                                    <div class="item ml-3">
+                                        <img src={{ project.cover.url }} class="img-responsive"/>
+                                    </div>
+
+                                    <div class="item ml-3">
+                                        <img src={{ project.cover.url }} class="img-responsive"/>
+                                    </div>
+                                    <div class="item ml-3">
+                                        <img src={{ project.cover.url }} class="img-responsive"/>
+                                    </div>
+                                    <div class="item ml-3">
+                                        <img src={{ project.cover.url }} class="img-responsive"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="donate-form">
+                            <h3>Donate Now</h3>
+                            <form class="w3ls_footer_grid_left1_pos" method="post" action="{% url 'donate_project' project.id %}">
+                                <div class="input-group w3_w3layouts">
+                                    <span class="input-group-addon">$</span>
+                                    {{ donate_form.donation }}
+                                    <span class="input-group-addon">.00</span>
+                                </div>
+                                {{ donate_form.donation.errors }}
+                                {{ donate_form.user_id}}
+                                {% csrf_token %}
+                                <input type="submit" value=" MAKE A DONATION" name="donate_from">
+                            </form>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4 single-right">
+                        <h3>Up Next</h3>
+                        <div class="single-grid-right">
+                            <div class="single-right-grids">
+                                <div class="col-md-4 single-right-grid-left">
+                                    <a href="single.html"><img src="images/m1.jpg" alt=""/></a>
+                                </div>
+                                <div class="col-md-8 single-right-grid-right">
+                                    <a href="single.html" class="title"> Nullam interdum metus</a>
+                                    <p class="author"><a href="#" class="author">John Maniya</a></p>
+                                    <p class="views">2,114,200 views</p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
