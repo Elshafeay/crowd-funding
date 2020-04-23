@@ -9,8 +9,10 @@ from projects.models import Category
 
 def welcome(request):
 	categories = Category.objects.all()
-	firstCategory = categories[0]
-	categories = categories.exclude(id=firstCategory.id)
-	print(categories)
-
-	return render(request, "projects/home_page.html",{"firstCategory":firstCategory,"categories":categories})
+	if len(categories) > 1:
+		firstCategory = categories[0]
+		categories = categories.exclude(id=firstCategory.id)
+		return render(request, "projects/home_page.html", {"firstCategory": firstCategory, "categories": categories})
+	else:
+		return render(request, "projects/home_page.html", {})
+	# print(categories)
