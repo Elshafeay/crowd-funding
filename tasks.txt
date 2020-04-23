@@ -1,0 +1,35 @@
+1- login / registeration / profile ===> [ismail]
+
+
+2- activation / forget-password(bouns) / facebook-login(bouns)
+
+
+3- my-projects / my-donations / saved-projects ===> [Nahla]
+
+
+4- home-page ===> [Reham]
+
+
+5- projects-page / create-project ===> [omar]
+
+
+####project-page
+6- project-page(upper) => (project-data + images + tags + donation + report-project + <if the owner show cancel button> + save-project) ===> [islam]
+7- project-page(lower) => (reviews[rate-comment-saved] + replies(bouns) + donate + report-review + similar-projects) ===> [elshafeay]
+
+
+
+[status-codes]
+    -1 => canceled
+    0 => running
+    1 => finished
+
+
+
+8- create-project + models + settings + config.ini
+
+DATABASENAME = ""
+DATABASENAME = ""
+DATABASENAME = ""
+DATABASENAME = ""
+DATABASENAME = ""
