@@ -19,4 +19,6 @@ coverage.svg
 *.DS_Store
 .env
 venv
-uploads/*
+uploads/users/avatars
+uploads/projects/covers
+uploads/projects/images
