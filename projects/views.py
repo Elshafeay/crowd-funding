@@ -27,3 +27,11 @@ def donate(request, project_id):
             return render(request, 'projects/show.html', context)
         else:
             return render(request, 'projects/show.html', context)
+
+
+def projects_list(request):
+    projects = Project.objects.all()
+    context = {"projects": projects}
+    return render(request, 'projects/project_list.html', context)
+
+
