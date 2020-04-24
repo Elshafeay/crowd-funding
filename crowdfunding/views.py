@@ -7,6 +7,7 @@ from projects.models import Category
 # - A list of the categories. User can open each category to view its projects
 # - Search bar that enables users to search projects by title or tag
 
+
 def welcome(request):
 	gcategories = getCategoriesAndProjects()
 	firstCategory =gcategories['firstCategory']

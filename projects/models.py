@@ -45,17 +45,21 @@ class Project(models.Model):
 		return self.title
 
 	def __repr__(self):
-		return f'''project(" \
-			title={self.title}, \
-			target={self.target}, \
-			rate={self.rate}, \
-			owner={self.owner.get_full_name()} \
-			)'''
+		return  \
+			f"project("\
+			f"title={self.title}, " \
+			f"target={self.target}, " \
+			f"rate={self.rate}, " \
+			f"owner={self.owner.get_full_name()})"
 
 
 # Featured Project Model
 class FeaturedProject(models.Model):
-	project = models.OneToOneField(Project, on_delete=models.CASCADE)
+	project = models.OneToOneField(
+		Project,
+		on_delete=models.CASCADE,
+		unique=True
+	)
 	featured_at = models.DateTimeField(auto_now_add=True)
 
 	class Meta:
@@ -126,11 +130,10 @@ class Donation(models.Model):
 	donated_at = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
-		return f'''
-					{self.user.get_full_name()} \
-					donated {self.donation} \
-					to {self.project.title}
-				'''
+		return \
+			f"{self.user.get_full_name()} " \
+			f"=donated=> {self.donation} " \
+			f"=to=> {self.project.title}"
 
 
 # Review Model

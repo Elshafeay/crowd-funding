@@ -24,6 +24,7 @@
   **PS:** You can generate secret key to the project from [here](https://djecrety.ir/).  
   
 * ```python manage.py migrate```
+* ```python manage.py seed projects --number=5 2> /dev/null``` # if you wanted to seed data to your database #
 * ```python manage.py runserver```  
   
 #### And by now you should have the application running.
