@@ -342,18 +342,18 @@
 				<ul id="myTab" class="nav nav-tabs" role="tablist">
 
 					{% if firstCategory %}
-					<li role="presentation" class="active"><a href="#{{firstCategory.id}}" id="{{firstCategory.name}}-{{firstCategory.id}}-tab" role="tab" data-toggle="tab" aria-controls="{{firstCategory.name}}" aria-expanded="true">{{firstCategory.name}}</a></li>
+					<li role="presentation" class="active"><a href="#cat-{{firstCategory.id}}" id="cat-{{firstCategory.id}}-tab" role="tab" data-toggle="tab" aria-controls="cat-{{firstCategory.id}}" aria-expanded="true">{{firstCategory.name}}</a></li>
 					{% endif %}
 
 					{% for cat in categories %}
-					<li role="presentation"><a href="#first" role="tab" id="first-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">{{cat.name}}</a></li>
+					<li role="presentation"><a href="#cat-{{cat.id}}" role="tab" id="cat-{{cat.id}}-tab" data-toggle="tab" aria-controls="cat-{{cat.id}}" aria-expanded="false">{{cat.name}}</a></li>
 					{% endfor %}
 
 <!--					<li role="presentation"><a href="#rating" id="rating-tab" role="tab" data-toggle="tab" aria-controls="rating" aria-expanded="true">Top Rating</a></li>-->
 <!--					<li role="presentation"><a href="#imdb" role="tab" id="imdb-tab" data-toggle="tab" aria-controls="imdb" aria-expanded="false">Recently Added</a></li>-->
 				</ul>
 				<div id="myTabContent" class="tab-content">
-					<div role="tabpanel" class="tab-pane fade active in" id="first" aria-labelledby="first-tab">
+					<div role="tabpanel" class="tab-pane fade active in" id="cat-{{firstCategory.id}}" aria-labelledby="cat-{{firstCategory.id}}-tab">
 						<div class="w3_agile_featured_movies">
 							{% for proj in firstCategoryProjects %}
 							<div class="col-md-2 w3l-movie-gride-agile">
@@ -384,14 +384,18 @@
 						</div>
 					</div>
 
-					<div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
-						<div class="col-md-2 w3l-movie-gride-agile">
+
+					{% for cat in categories %}
+
+					<div role="tabpanel" class="tab-pane fade" id="cat-{{cat.id}}" aria-labelledby="cat-{{cat.id}}-tab">
+						  {% for proj in cat.project_set.all %}
+						     <div class="col-md-2 w3l-movie-gride-agile">
 							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="{% static 'projects/assets/images/m22.jpg' %}" title="album-name" class="img-responsive" alt=" " />
 								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
 							</a>
 							<div class="mid-1 agileits_w3layouts_mid_1_home">
 								<div class="w3l-movie-text">
-									<h6><a href="single.html">Assassin's Creed 3</a></h6>
+									<h6><a href="single.html">{{proj.title}}</a></h6>
 								</div>
 								<div class="mid-2 agile_mid_2_home">
 									<p>2016</p>
@@ -411,60 +415,12 @@
 								<p>NEW</p>
 							</div>
 						</div>
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="{% static 'projects/assets/images/m2.jpg' %}" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">Bad Moms</a></h6>
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
-						</div>
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="{% static 'projects/assets/images/m9.jpg' %}" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">Central Intelligence</a></h6>
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
-						</div>
+						  {% endfor %}
+
 						<div class="clearfix"> </div>
 					</div>
+
+					{% endfor %}
 
 
 				</div>
