@@ -20,20 +20,27 @@
     <div class="donate-form">
         <h3>Create New Project</h3>
     </br>
-        <form class="w3ls_footer_grid_left1_pos" method="post" action="">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+        <form class="w3ls_footer_grid_left1_pos" method="post" action="{% url 'create_project' %}">
             <div class="input-group input-group-lg w3_w3layouts">
 				<span class="input-group-addon" id="sizing-addon1">@</span>
-				<input type="text" class="form-control" placeholder="Title" aria-describedby="sizing-addon1">
+				{{ create_form.title }}
             </div>
             
             <div class="input-group input-group-lg w3_w3layouts">
 				<span class="input-group-addon" id="sizing-addon1">@</span>
-				<input type="text" class="form-control" placeholder="Details" aria-describedby="sizing-addon1">
+				{{ create_form.details }}
             </div>
             
             <div class="input-group input-group-lg w3_w3layouts">
 				<span class="input-group-addon" id="sizing-addon1">@</span>
-				<input type="text" class="form-control" placeholder="target" aria-describedby="sizing-addon1">
+				{{ create_form.target }}
             </div>
             
             <div class="input-group input-group-lg w3_w3layouts">
@@ -41,16 +48,24 @@
 				<input type="text" class="form-control" placeholder="Cover" aria-describedby="sizing-addon1">
             </div>
             
-            <div class="input-group input-group-lg w3_w3layouts">
-				<span class="input-group-addon" id="sizing-addon1">@</span>
-				<input type="text" class="form-control" placeholder="Start Date" aria-describedby="sizing-addon1">
+            <div class="input-group date">
+				<label for="birthday">Start Date : </label>
+                {{ create_form.start_date }}
+                <!-- <input type="date" id="startDate" name="startDate"> -->
+                    <!-- <span class="glyphicon glyphicon-th" ></span> -->
             </div>
             
-            <div class="input-group input-group-lg w3_w3layouts">
-				<span class="input-group-addon" id="sizing-addon1">@</span>
-				<input type="text" class="form-control" placeholder="End Date" aria-describedby="sizing-addon1">
+            <div class="input-group date" >
+                <label for="birthday">End Date : </label>
+                <!-- <input type="date" id="endDate" name="endDate"> -->
+                {{ create_form.end_date }}
+                <!-- <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th" ></span>
+                </div> -->
             </div>
-          
+            {{ create_form.start_date.errors }}
+            {{ create_form.end_date.errors }}
+            {% csrf_token %}
             <input type="submit" value=" Create" name="donate_from">
         </form>
     </div>
