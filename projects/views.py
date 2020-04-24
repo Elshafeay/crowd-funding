@@ -24,6 +24,5 @@ def donate(request, project_id):
                                 user_id=donation_form.cleaned_data['user_id'], project_id=project_id)
             donation.save()
             # project.donations.add(donation)
-            return render(request, 'projects/show.html', context)
-        else:
-            return render(request, 'projects/show.html', context)
+
+        return render(request, 'projects/show.html', context)
