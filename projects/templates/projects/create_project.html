@@ -1,0 +1,63 @@
+{% extends 'projects/layouts/base.html' %}
+{% load static %}
+
+{% block title %} Create New {% endblock title %}
+{% block styles %}
+    <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css'/>
+
+{% endblock %}
+{% block content %}
+<div class="single-page-agile-main">
+    <div class="container">
+
+    <div class="agileits-single-top">
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li class="active">Create Project</li>
+        </ol>
+    </div>
+
+    <div class="donate-form">
+        <h3>Create New Project</h3>
+    </br>
+        <form class="w3ls_footer_grid_left1_pos" method="post" action="">
+            <div class="input-group input-group-lg w3_w3layouts">
+				<span class="input-group-addon" id="sizing-addon1">@</span>
+				<input type="text" class="form-control" placeholder="Title" aria-describedby="sizing-addon1">
+            </div>
+            
+            <div class="input-group input-group-lg w3_w3layouts">
+				<span class="input-group-addon" id="sizing-addon1">@</span>
+				<input type="text" class="form-control" placeholder="Details" aria-describedby="sizing-addon1">
+            </div>
+            
+            <div class="input-group input-group-lg w3_w3layouts">
+				<span class="input-group-addon" id="sizing-addon1">@</span>
+				<input type="text" class="form-control" placeholder="target" aria-describedby="sizing-addon1">
+            </div>
+            
+            <div class="input-group input-group-lg w3_w3layouts">
+				<span class="input-group-addon" id="sizing-addon1">@</span>
+				<input type="text" class="form-control" placeholder="Cover" aria-describedby="sizing-addon1">
+            </div>
+            
+            <div class="input-group input-group-lg w3_w3layouts">
+				<span class="input-group-addon" id="sizing-addon1">@</span>
+				<input type="text" class="form-control" placeholder="Start Date" aria-describedby="sizing-addon1">
+            </div>
+            
+            <div class="input-group input-group-lg w3_w3layouts">
+				<span class="input-group-addon" id="sizing-addon1">@</span>
+				<input type="text" class="form-control" placeholder="End Date" aria-describedby="sizing-addon1">
+            </div>
+          
+            <input type="submit" value=" Create" name="donate_from">
+        </form>
+    </div>
+
+</div>
+</div>
+  
+{% endblock content %}
+
+
