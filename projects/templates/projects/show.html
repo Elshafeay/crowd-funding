@@ -11,11 +11,24 @@
         <div class="container">
 
             <div class="agileits-single-top">
+                {% if request.user == 'AnonymousUser'%}
+                    {{ request.user }}
+                    no logged
+                {% endif %}
+
                 <ol class="breadcrumb">
                     <li><a href="#">Home</a></li>
                     <li class="active">{{ project.title }}</li>
                 </ol>
             </div>
+
+            {% if messages %}
+                <ul class="alert alert-success">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
 
             <div class="single-page-agile-info">
 
@@ -101,23 +114,18 @@
 
                         <div class="donate-form">
                             <h3>Donate Now</h3>
-                            <form class="w3ls_footer_grid_left1_pos" method="post" action="{% url 'donate_project' project.id %}">
+
+                            <form class="w3ls_footer_grid_left1_pos" method="post">
+
+
                                 <div class="input-group w3_w3layouts">
                                     <span class="input-group-addon">$</span>
-                                    {{ donate_form.donation }}
+                                    {{ form.donation }}
                                     <span class="input-group-addon">.00</span>
                                 </div>
+                                {{ form.donation.errors }}
 
-                                {% if donate_form.errors %}
-                                   <ul class="alert alert-danger">
-                                        {% for error in donate_form.errors %}
-                                        <li >{{ error }}</li>
-                                        {% endfor %}
-
-                                   </ul>
-
-                                {% endif %}
-                                {{ donate_form.user_id}}
+                                {{ form.user_id }}
                                 {% csrf_token %}
                                 <input type="submit" value=" MAKE A DONATION" name="donate_from">
                             </form>
