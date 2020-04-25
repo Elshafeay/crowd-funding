@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user
 from django.shortcuts import render
 from .models import Project, Donation
 from .forms import DonateForm
@@ -34,8 +35,15 @@ def create_project(request):
     return render(request, 'projects/create_project.html')
 
 def projects_list(request):
-    projects = Project.objects.all()
+    owner = get_user(request)
+    projects = owner.project_set.all()
     context = {"projects": projects}
     return render(request, 'projects/project_list.html', context)
+
+def donate_list(request):
+    owner = get_user(request)
+    donations = owner.donation_set.all()
+    context = {"donations": donations}
+    return render(request, 'projects/donation_list.html', context)
 
 
