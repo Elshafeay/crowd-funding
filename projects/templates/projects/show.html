@@ -1,10 +1,12 @@
 {% extends 'projects/layouts/base.html' %}
 {% load static %}
+{% load project_extras %}
 
 {% block title %} {{ project.title }} {% endblock title %}
 {% block styles %}
     <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css'/>
-
+    <link href="{% static 'projects/assets/css/comments.css' %}" rel='stylesheet' type='text/css'/>
+    <script defer src='https://use.fontawesome.com/releases/v5.5.0/js/all.js' integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
 {% endblock %}
 {% block content %}
     <div class="single-page-agile-main">
@@ -113,6 +115,61 @@
                                 <input type="submit" value=" MAKE A DONATION" name="donate_from">
                             </form>
                         </div>
+                        <div class="comment-area-wrap mt-5">
+                            <!-- Write a comment and post it -->
+                            <div class="comment-input-wrap mb-3">
+                                <img class="avatarSml" src='{{ request.user.avatar.url }}' alt="avatar" />
+                                <label for="comment-input"></label>
+                                <input type="text" class="comment-input textRegularLrg" id="comment-input" name="comment-input" placeholder="Write a comment" />
+                                <button
+                                        id='comment-btn'
+                                        class="btn comment-btn bgOrange"
+                                >Comment</button>
+                            </div>
+
+                            <div class="commWrapAll">
+                                {% for review in reviews %}
+                                <!-- Posted comment -->
+                                <div class="comment-wrap">
+                                    <img class="avatarMed" src='{{ review.user.avatar.url }}' alt="avatar" />
+                                    <div class="postInfo">
+                                        <span class="userName textOrange textSemiBold">
+                                            {{ review.user.get_full_name }}
+                                        </span>
+                                        <span class="timePosted textRegularSml">
+                                            {{ review.created_at|time_since }}
+                                        </span>
+                                        <p class="userComm textRegularLrg">{{ review.comment }}</p>
+                                        <!-- Posted comment actions -->
+                                        <div class="commActionWrap">
+                                            <div class="commAction commReply">
+                                                <i class="fas fa-reply"></i>
+                                                Reply
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% block replies %}
+                                        {% for reply in review.reply_set.all %}
+                                            <!-- Comment reply -->
+                                            <div class="commReplyWrap">
+                                                <img class="avatarMed" src='{{ reply.user.avatar.url }}' alt="" />
+                                                <div class="postInfo">
+                                                    <span class="userName textOrange textSemiBold">
+                                                        {{ reply.user.get_full_name }}</span>
+                                                    <span class="timePosted textRegularSml">
+                                                        {{ reply.created_at|time_since }}
+                                                    </span>
+                                                    <p class="userComm textRegularLrg">
+                                                        {{ reply.reply }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endblock %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
 
                     </div>
                     <div class="col-md-4 single-right">
@@ -120,10 +177,10 @@
                         <div class="single-grid-right">
                             <div class="single-right-grids">
                                 <div class="col-md-4 single-right-grid-left">
-                                    <a href="single.html"><img src="images/m1.jpg" alt=""/></a>
+                                    <a href="#"><img src="#" alt=""/></a>
                                 </div>
                                 <div class="col-md-8 single-right-grid-right">
-                                    <a href="single.html" class="title"> Nullam interdum metus</a>
+                                    <a href="#" class="title"> Nullam interdum metus</a>
                                     <p class="author"><a href="#" class="author">John Maniya</a></p>
                                     <p class="views">2,114,200 views</p>
                                 </div>
@@ -136,6 +193,43 @@
             </div>
         </div>
     </div>
+    <script>
+            //Event Listeners
+        document.querySelector('#comment-btn').addEventListener('click', buildComment);
+        document.querySelector('#comment-btn').addEventListener('keypress', function(event) {
+            if (event.keyCode === 13 || event.which === 13) {
+                buildComment();
+            }
+        });
+        function buildComment() {
+            let newComment, usersName, timePosted, postDraft, postFinal;
+
+            //1. Gather Data
+            newComment = document.querySelector('#comment-input').value;
+            usersName = {{ request.user.get_full_name }};
+            timePosted = 'Just now';
+
+            //2. Create template HTML
+            postDraft = '<div class="comment-wrap"><img class="avatarMed" ' +
+                "src='{{ request.user.avatar.url }}' alt='User account avatar' "+
+                '/><div class="postInfo"><span ' +
+                'class="userName textOrange textSemiBold">%namePlacehold%</' +
+                'span><span class="timePosted textRegularSml">%timePlacehold%' +
+                '</span><p class="userComm textRegularLrg">%commentPlacehold%</' +
+                'p><div class="commActionWrap"><div ' +
+                'class="commAction commReply"><i class="fas fa-reply">' +
+                '</i>Reply</div></div></div></div>';
+
+            //3. Update template HTML with poster's data
+            postFinal = postDraft.replace('%commentPlacehold%', newComment);
+            postFinal = postFinal.replace('%namePlacehold%', usersName);
+            postFinal = postFinal.replace('%timePlacehold%', timePosted);
+            console.log(postFinal)
+            //4. Update UI with new post
+            document.querySelector('.commWrapAll').insertAdjacentHTML('beforeend', postFinal);
+        }
+
+    </script>
 {% endblock content %}
 
 
