@@ -25,24 +25,7 @@
                                 <span class="more-dot"></span>
                                 <span class="more-dot"></span>
                             </button>
-                            <div class="more-menu">
-                                <div class="more-menu-caret">
-                                    <div class="more-menu-caret-outer"></div>
-                                    <div class="more-menu-caret-inner"></div>
-                                </div>
-                                <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn"
-                                    aria-hidden="true">
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Save</button>
-                                    </li>
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Report</button>
-                                    </li>
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Cancel</button>
-                                    </li>
-                                </ul>
-                            </div>
+
                         </div>
 
 
@@ -51,9 +34,14 @@
                         {% for saved_project in saved_projects %}
                             <div class="song-grid-right">
                                 <div class="share">
-                                       <h5>{{ saved_project.project.title }}</h5>
+
+                                    <h5><strong>Project Title: </strong>{{ saved_project.project.title }}</h5><br>
+                                     <div class="item md-3">
+                                        <img src={{ saved_project.project.cover.url }} class="img-responsive" width="400px" height="500px"/>
+                                    </div> <br>
+
                                      <span class="tag">
-                                          <a href="{% url 'show_project'  saved_project.id %}">
+                                          <a href="{% url 'show_project'  saved_project.project_id %}">
                                            Show Details
                                           </a>
                                         </span>
@@ -62,9 +50,6 @@
                                             <span class="tag"> {{ tag.name }} </span>
                                         {% endfor %}
 
-                                     <div class="item md-3">
-                                        <img src={{ saved_project.project.cover.url }} class="img-responsive" width="400px" height="500px"/>
-                                    </div>
 
                                     </div>
                                 </div>

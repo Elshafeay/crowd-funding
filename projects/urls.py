@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import show, projects_list, show_all, show_create_project, create, report, save, cancel, donate_list, \
-  delete_comment, add_comment, report_comment
+  delete_comment, add_comment, report_comment ,saved_projects
 
 urlpatterns = [
   path('<int:project_id>', show, name='show_project'),
