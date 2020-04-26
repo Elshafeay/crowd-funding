@@ -119,3 +119,8 @@ def donate_list(request):
     return render(request, 'projects/donation_list.html', context)
 
 
+def saved_projects(request):
+    owner = get_user(request)
+    saved_projects = owner.savedproject_set.all()
+    context = {"saved_projects": saved_projects}
+    return render(request, 'projects/saved_projects.html', context)
