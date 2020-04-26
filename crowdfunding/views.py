@@ -2,7 +2,7 @@ from django.shortcuts import render
 from projects.models import Category, FeaturedProject, Project
 from django.shortcuts import get_object_or_404
 from collections import OrderedDict
-
+from django.contrib.auth import logout
 # Homepage should contains the following:
 # - *A slider to show the highest five rated running projects to encourage users to donate
 # - *List of the latest 5 projects
@@ -56,3 +56,9 @@ def get_categories_have_highest_projects_number():
         return {"first_category": first_category, "categories": categories}
     else:
         return {}
+
+
+def logout_view(request):
+    logout(request)
+    return welcome(request)
+
