@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
@@ -9,6 +10,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 
+@login_required()
 def show(request, project_id):
     project = get_object_or_404(Project, id=project_id)
 
@@ -19,7 +21,7 @@ def show(request, project_id):
 
     comments = project.comment_set.all().order_by('-created_at')
     reported_comments = [
-        report.comment for report in get_user(request).commentreports_set.all()
+        _.comment for _ in get_user(request).commentreports_set.all()
     ]
 
     is_user_reported = project.review_set.filter(user_id=request.user.id)
@@ -30,13 +32,22 @@ def show(request, project_id):
     if request.method == 'POST':
         donation_form = DonateForm(request.POST or None)
         if donation_form.is_valid():
-            project.donation_set.create(user_id=request.user.id, donation=donation_form.cleaned_data['donation'])
+            project.donation_set.create(
+                user=request.user,
+                donation=donation_form.cleaned_data['donation']
+            )
             messages.success(request, "Donation Added Successfully")
             return redirect('show_project', project_id)
 
-    context = {'project': project, 'donation_form': donation_form, "is_user_reported": is_user_reported,
-               "is_project_saved": is_project_saved, 'is_project_canceled': is_project_canceled, "comments": comments,
-               "reported_comments": reported_comments}
+    context = {
+        'project': project,
+        'donation_form': donation_form,
+        's_user_reported': is_user_reported,
+        'is_project_saved': is_project_saved,
+        'is_project_canceled': is_project_canceled,
+        'comments': comments,
+        'reported_comments': reported_comments
+    }
     return render(request, 'projects/show.html', context)
 
 
@@ -68,20 +79,25 @@ def report_comment(request):
     return redirect('show_project', comment.project.id)
 
 
+@require_http_methods("POST")
 def report(request, project_id):
-    project = get_object_or_404(Project, user_id=request.user.id)
+    project = get_object_or_404(Project, pk=project_id)
 
-    project.review_set.get_or_create(comment=False, liked=False, reported=True,
-                                     user_id=request.user.id)
+    project.review_set.get_or_create(
+        comment=False,
+        liked=False,
+        reported=True,
+        user=request.user
+    )
     messages.success(request, "Report Added Successfully")
     return redirect('show_project', project_id)
 
 
+@require_http_methods("POST")
 def save(request, project_id):
     project = get_object_or_404(Project, id=project_id)
     if project.savedproject_set.get_or_create(user_id=request.user.id)[1]:
         messages.success(request, "Project Saved Successfully")
-
     else:
         project.savedproject_set.get(user_id=request.user.id).delete()
         messages.success(request, "Project Removed From Your Saved Successfully")
@@ -89,6 +105,7 @@ def save(request, project_id):
     return redirect('show_project', project_id)
 
 
+@require_http_methods("POST")
 def cancel(request, project_id):
     try:
         Project.objects.filter(id=project_id).update(status=-1)
