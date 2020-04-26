@@ -42,16 +42,26 @@ def get_categories_have_highest_projects_number():
     for cat in categories:
         category_projects[cat.id] = len(cat.project_set.all())
 
-    category_projects = OrderedDict(sorted(category_projects.items(), key=lambda x: x[1]))
+    category_projects = OrderedDict(sorted(category_projects.items(), key=lambda x: x[1],reverse=True))
 
     if len(category_projects) > 1:
-        new_categories_list_id = []
-        for cat2 in categories:
-            for cat1 in category_projects:
-                if cat1 == cat2.id:
-                    new_categories_list_id.append(cat1)
-        new_categories_list_id = new_categories_list_id[0:5]
-        new_categories_list = Category.objects.filter(pk__in=new_categories_list_id[0:5])
+        # new_categories_list_id = []
+        # for cat2 in categories:
+        #     for cat1 in category_projects:
+        #         if cat1 == cat2.id:
+        #             new_categories_list_id.append(cat1)
+        # new_categories_list_id = new_categories_list_id[0:5]
+        # print("new_categories_list_id",new_categories_list_id)
+        # new_categories_list = Category.objects.filter(pk__in=new_categories_list_id[0:5])
+
+        new_categories_list = []
+        temp=0
+        for cat in category_projects:
+            print("cat",cat)
+            new_categories_list.append(Category.objects.get(pk=cat))
+            temp = temp+1
+            if temp == 5:
+                break
         first_category = new_categories_list[0]
         categories = new_categories_list[1:]
         return {"first_category": first_category, "categories": categories}
@@ -60,7 +70,7 @@ def get_categories_have_highest_projects_number():
 
 
 def logout_view(request):
-    print("hi1")
+    # print("hi1")
     logout(request)
-    print("hi2")
-    return HttpResponseRedirect('/login/')
+    # print("hi2")
+    return HttpResponseRedirect('/logout/')
