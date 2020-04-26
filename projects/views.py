@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
 
@@ -9,18 +10,33 @@ from django.shortcuts import redirect
 
 
 def show(request, project_id):
-    project = Project.objects.get(id=project_id)
-    donate_form = DonateForm({'user_id': 1})
+    project = get_object_or_404(Project, id=project_id)
+
+    is_project_canceled = project.status == -1 or False
+
+    if is_project_canceled and project.owner_id != request.user.id:
+        raise Http404("project was canceled")
+
     comments = project.comment_set.all().order_by('-created_at')
     reported_comments = [
         report.comment for report in get_user(request).commentreports_set.all()
     ]
-    context = {
-        'project': project,
-        'donate_form': donate_form,
-        'comments': comments,
-        'reported_comments': reported_comments
-    }
+
+    is_user_reported = project.review_set.filter(user_id=request.user.id)
+    is_project_saved = project.savedproject_set.filter(user_id=request.user.id)
+
+    donation_form = DonateForm()
+
+    if request.method == 'POST':
+        donation_form = DonateForm(request.POST or None)
+        if donation_form.is_valid():
+            project.donation_set.create(user_id=request.user.id, donation=donation_form.cleaned_data['donation'])
+            messages.success(request, "Donation Added Successfully")
+            return redirect('show_project', project_id)
+
+    context = {'project': project, 'donation_form': donation_form, "is_user_reported": is_user_reported,
+               "is_project_saved": is_project_saved, 'is_project_canceled': is_project_canceled, "comments": comments,
+               "reported_comments": reported_comments}
     return render(request, 'projects/show.html', context)
 
 
@@ -52,27 +68,41 @@ def report_comment(request):
     return redirect('show_project', comment.project.id)
 
 
-def donate(request, project_id):
-    if request.method == 'POST':
-        donation_form = DonateForm(request.POST)
-        project = Project.objects.get(id=project_id)
-        context = {'project': project, 'donate_form': donation_form}
-        if donation_form.is_valid():
-            donation = Donation(
-                donation=donation_form.cleaned_data['donation'],
-                user_id=donation_form.cleaned_data['user_id'],
-                project_id=project_id
-            )
-            donation.save()
-            # project.donations.add(donation)
-            return render(request, 'projects/show.html', context)
-        else:
-            return render(request, 'projects/show.html', context)
+def report(request, project_id):
+    project = get_object_or_404(Project, user_id=request.user.id)
+
+    project.review_set.get_or_create(comment=False, liked=False, reported=True,
+                                     user_id=request.user.id)
+    messages.success(request, "Report Added Successfully")
+    return redirect('show_project', project_id)
+
+
+def save(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    if project.savedproject_set.get_or_create(user_id=request.user.id)[1]:
+        messages.success(request, "Project Saved Successfully")
+
+    else:
+        project.savedproject_set.get(user_id=request.user.id).delete()
+        messages.success(request, "Project Removed From Your Saved Successfully")
+
+    return redirect('show_project', project_id)
+
+
+def cancel(request, project_id):
+    try:
+        Project.objects.filter(id=project_id).update(status=-1)
+
+    except Project.DoesNotExist:
+        raise Http404("project not found")
+
+    return redirect('show_project', project_id)
+
 
 def show_all(request):
     all_projects = Project.objects.all()
     categories = Category.objects.all()
-    context = {"categories": categories , "all_projects": all_projects}
+    context = {"categories": categories, "all_projects": all_projects}
     return render(request, "projects/all_projects.html", context)
 
 

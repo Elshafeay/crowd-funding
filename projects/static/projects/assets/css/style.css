@@ -22,7 +22,7 @@ ul,label{
 body a:hover{
 	text-decoration:none;
 }
-input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_register ul li a,.w3ls_footer_grid1_right ul li a,.w3_customer_email_right a,ul.dropdown-menu.multi-column ul li a{
+input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_register a,.w3ls_footer_grid1_right ul li a,.w3_customer_email_right a,ul.dropdown-menu.multi-column ul li a{
 	transition:.5s ease-in;
 	-webkit-transition:.5s ease-in;
 	-moz-transition:.5s ease-in;
@@ -96,7 +96,7 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
     margin-top:1em;
     width: 25%;
 }
-.w3l_sign_in_register ul li a{
+.w3l_sign_in_register a{
 	color: #fff;
     display: inline-block;
     text-transform: uppercase;
@@ -106,10 +106,10 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
     padding: 6px 30px;
     font-weight: bold;
 }
-.w3l_sign_in_register ul li a:focus{
+.w3l_sign_in_register a:focus{
 	outline:none;
 }
-.w3l_sign_in_register ul li a:hover{
+.w3l_sign_in_register a:hover{
 	background:#212121;
 }
 .w3l_sign_in_register ul li{
@@ -657,7 +657,7 @@ li.list-group-item1 {
 .label {
 	font-weight: 300 !important;
 	border-radius:4px;
-}  
+}
 .grid_5{
 	background:none;
 	padding:2em 0;
@@ -877,7 +877,7 @@ h2.typoh2{
     -ms-transition: 0.5s all;
     -moz-transition: 0.5s all;
     cursor: pointer;
-} 
+}
 .icon-box:hover {
     background: #000;
 	transition:0.5s all;
@@ -896,11 +896,11 @@ h2.typoh2{
     float: left;
     width: 12.5%;
     height: 115px;
-    padding: 10px; 
+    padding: 10px;
     line-height: 1.4;
-    text-align: center;  
+    text-align: center;
     font-size: 12px;
-    list-style-type: none;	
+    list-style-type: none;
 }
 .codes .bs-glyphicons .glyphicon {
     margin-top: 5px;
@@ -918,7 +918,7 @@ h2.typoh2{
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 	color: #777;
-} 
+}
 .codes .bs-glyphicons .glyphicon-class {
     display: block;
     text-align: center;
@@ -971,7 +971,7 @@ h3.agileits-icons-title {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 	color: #777;
-} 
+}
 .icons .bs-glyphicons .glyphicon-class {
     display: block;
     text-align: center;
@@ -991,7 +991,7 @@ h3.head {
 	bottom: 20px;
 	right: 2%;
 	overflow: hidden;
-	z-index: 999; 
+	z-index: 999;
 	width: 32px;
 	height: 32px;
 	border: none;
@@ -1677,4 +1677,9 @@ h3.head {
 .tag a {
     color: #fff;
     text-decoration: none;
+}
+
+
+.login-now {
+    float: none;
 }

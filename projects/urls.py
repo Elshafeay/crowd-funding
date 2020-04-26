@@ -1,11 +1,12 @@
 from django.urls import path
-from .views import \
-    show, donate, projects_list, show_all, create, \
-    donate_list, show_create_project, add_comment, delete_comment, report_comment, saved_projects
+from .views import show, projects_list, show_all, show_create_project, create, report, save, cancel, donate_list, \
+  delete_comment, add_comment, report_comment
 
 urlpatterns = [
-    path('<int:project_id>/', show, name='show_project'),
-    path('<int:project_id>/donate', donate, name='donate_project'),
+  path('<int:project_id>', show, name='show_project'),
+    path('<int:project_id>/report', report, name='report_project'),
+    path('<int:project_id>/cancel', cancel, name='cancel_project'),
+    path('<int:project_id>/save', save, name='save_project'),
     path('', show_all, name='show_project'),
     path('donation/', donate_list),
     path('create/', show_create_project, name='show_create_project'),
