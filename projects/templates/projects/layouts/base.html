@@ -28,6 +28,7 @@
 
 <!-- header -->
 <div class="header">
+
     <div class="container">
         <div class="w3layouts_logo">
             <a href="#"><h1>Crowd<span>Funding</span></h1></a>
@@ -39,14 +40,25 @@
                 <input type="submit" value="Go">
             </form>
             {% endif%}
+            <div class="col-md-8">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+        
+            </div>
         </div>
         <div class="w3l_sign_in_register">
+            
             <ul>
                 {% if request.user.is_authenticated %}
-                <li><a href="/logout" >Logout</a></li>
+                     <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
-                <li><a href="/login" >Login</a></li>
-                <li><a href="/register" >Sign Up</a></li>
+                    <li><a href="/login" >Login</a></li>
+                    <li><a href="/register" >Sign Up</a></li>
 
                 {% endif%}
             </ul>
