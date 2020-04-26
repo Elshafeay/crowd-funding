@@ -48,7 +48,7 @@ input::-moz-placeholder { color: #999999; }
 .comment-area-wrap {
     max-width: 793px;
     margin: 50px auto 0 auto;
-    background-color: -comments#ffffff;
+    background-color: #ffffff;
 }
 .comment-input-wrap {
     display: flex;
@@ -77,6 +77,7 @@ input::-moz-placeholder { color: #999999; }
 .comment-wrap {
     border-top: 1px solid #E7EAEF;
     padding: 20px 15px;
+    width: 793px;
 }
 .commReplyWrap {
     margin-left: 55px;
@@ -125,4 +126,33 @@ input::-moz-placeholder { color: #999999; }
     text-align: center;
     background-color: #FAFAFA;
     border-top: 1px solid #E7EAEF;
+}
+
+.comment-options{
+    position: absolute;
+    right: 20px;
+}
+
+.comment-options-btn{
+    background-color: rgba(255,255,255,0);
+    border: None;
+}
+.fa-flag , .fa-trash-alt{
+    color:orange
+}
+
+.comment-options-btn:hover > .fa-trash-alt{
+    transform: scale(1.5);
+    transition: .15s ease-in-out;
+    color: red;
+}
+
+.comment-options-btn:hover > .fa-flag{
+    transform: scale(1.5);
+    transition: .15s ease-in-out;
+    color: red;
+}
+
+.red-text{
+    color: red;
 }

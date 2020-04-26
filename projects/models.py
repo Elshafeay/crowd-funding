@@ -53,23 +53,6 @@ class Project(models.Model):
 			f"owner={self.owner.get_full_name()})"
 
 
-# Featured Project Model
-class FeaturedProject(models.Model):
-	project = models.OneToOneField(
-		Project,
-		on_delete=models.CASCADE,
-		unique=True
-	)
-	featured_at = models.DateTimeField(auto_now_add=True)
-
-	class Meta:
-		ordering = ['-featured_at']
-		verbose_name = "Featured Project"
-		verbose_name_plural = "Featured Projects"
-
-	def __str__(self):
-		return self.project.title
-
 
 # Tag Model
 class Tag(models.Model):
@@ -141,7 +124,6 @@ class Review(models.Model):
 	project = models.ForeignKey(Project, on_delete=models.CASCADE)
 	user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
 	rate = models.IntegerField(null=True, blank=True)
-	comment = models.TextField(null=True, blank=True)
 	liked = models.BooleanField(default=False)
 	reported = models.BooleanField(default=False)
 	created_at = models.DateTimeField(auto_now_add=True)
@@ -153,9 +135,20 @@ class Review(models.Model):
 		return f"{self.user.get_full_name()} => {self.project.title}"
 
 
+# Comment Model
+class Comment(models.Model):
+	project = models.ForeignKey(Project, on_delete=models.CASCADE)
+	user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+	comment = models.TextField()
+	created_at = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return f"{self.user.get_full_name()} => {self.project.title}"
+
+
 # Replies Model
 class Reply(models.Model):
-	review = models.ForeignKey(Review, on_delete=models.CASCADE)
+	comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
 	user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
 	reply = models.TextField(null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)
@@ -167,13 +160,31 @@ class Reply(models.Model):
 		return self.reply
 
 
-# ReviewReports Model
-class ReviewReports(models.Model):
-	review = models.ForeignKey(Review, on_delete=models.CASCADE)
+# CommentReports Model
+class CommentReports(models.Model):
+	comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
 	user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-	reported = models.BooleanField(default=True)
 
 	class Meta:
-		unique_together = ('user', 'review')
-		verbose_name = "Review Report"
-		verbose_name_plural = "Review Reports"
+		unique_together = ('user', 'comment')
+		verbose_name = "Comment Report"
+		verbose_name_plural = "Comment Reports"
+
+
+# Featured Project Model
+class FeaturedProject(models.Model):
+	project = models.OneToOneField(
+		Project,
+		on_delete=models.CASCADE,
+		unique=True
+	)
+	featured_at = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		ordering = ['-featured_at']
+		verbose_name = "Featured Project"
+		verbose_name_plural = "Featured Projects"
+
+	def __str__(self):
+		return self.project.title
+
