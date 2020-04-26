@@ -1,10 +1,14 @@
 {% extends 'projects/layouts/base.html' %}
 {% load static %}
+{% load project_extras %}
 
 {% block title %} {{ project.title }} {% endblock title %}
 {% block styles %}
     <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css'/>
-
+    <link href="{% static 'projects/assets/css/comments.css' %}" rel='stylesheet' type='text/css'/>
+    <script defer src='https://use.fontawesome.com/releases/v5.5.0/js/all.js'
+            integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
+            crossorigin="anonymous"></script>
 {% endblock %}
 {% block content %}
     <div class="single-page-agile-main">
@@ -126,19 +130,12 @@
 
                             <div class="w3_agile_banner_bottom_grid">
                                 <div id="owl-demo" class="owl-carousel owl-theme">
-                                    <div class="item ml-3">
-                                        <img src={{ project.cover.url }} class="img-responsive"/>
-                                    </div>
+                                    {% for image in project.projectimages_set.all %}
+                                        <div class="item ml-3">
+                                            <img src={{ image.image.url }} class="img-responsive"/>
+                                        </div>
+                                    {% endfor %}
 
-                                    <div class="item ml-3">
-                                        <img src={{ project.cover.url }} class="img-responsive"/>
-                                    </div>
-                                    <div class="item ml-3">
-                                        <img src={{ project.cover.url }} class="img-responsive"/>
-                                    </div>
-                                    <div class="item ml-3">
-                                        <img src={{ project.cover.url }} class="img-responsive"/>
-                                    </div>
                                 </div>
                             </div>
 
@@ -172,6 +169,92 @@
                                 </div>
                             {% endif %}
                         </div>
+                        <div class="comment-area-wrap mt-5">
+                            <!-- Write a comment and post it -->
+                            <form method='POST' action='{% url 'add_comment' project.id %}'>
+                                <div class="comment-input-wrap mb-3">
+                                    <img class="avatarSml" src='{{ request.user.avatar.url }}' alt="avatar"/>
+                                    {% csrf_token %}
+                                    <label for="comment-input"></label>
+                                    <input
+                                            type="text"
+                                            class="comment-input textRegularLrg"
+                                            id="comment-input"
+                                            name="comment"
+                                            placeholder="Write a comment"
+                                            required
+                                    />
+                                    <button
+                                            id='comment-btn'
+                                            class="btn comment-btn bgOrange"
+                                    >Comment
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div class="commWrapAll">
+                                {% for comment in comments %}
+                                    <!-- Posted comment -->
+                                    <div class="comment-wrap">
+                                        <div class="comment-options">
+                                            {% if comment.user == request.user %}
+                                                <form method='POST' action='{% url 'delete_comment' %}'>
+                                                <button class="comment-options-btn" title='delete'>
+                                                    <i class="fas fa-trash-alt" aria-hidden='true'></i>
+                                                </button>
+                                            {% else %}
+                                                <form method='POST' action='{% url 'report_comment' %}'>
+                                                {% if comment in reported_comments %}
+                                                    <p class="red-text">Already reported...</p>
+                                                {% else %}
+                                                    <button class="comment-options-btn" title='report'>
+                                                        <i class="fas fa-flag" aria-hidden='true'></i>
+                                                    </button>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% csrf_token %}
+                                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                            </form>
+                                        </div>
+                                        <img class="avatarMed" src='{{ comment.user.avatar.url }}' alt="avatar"/>
+                                        <div class="postInfo">
+                                        <span class="userName textOrange textSemiBold">
+                                            {{ comment.user.get_full_name }}
+                                        </span>
+                                            <span class="timePosted textRegularSml">
+                                            {{ comment.created_at|time_since }}
+                                        </span>
+                                            <p class="userComm textRegularLrg">{{ comment.comment }}</p>
+                                            <!-- Posted comment actions -->
+                                            <div class="commActionWrap">
+                                                <div class="commAction commReply">
+                                                    <i class="fas fa-reply"></i>
+                                                    Reply
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% block replies %}
+                                            {% for reply in comment.reply_set.all %}
+                                                <!-- Comment reply -->
+                                                <div class="commReplyWrap">
+                                                    <img class="avatarMed" src='{{ reply.user.avatar.url }}' alt=""/>
+                                                    <div class="postInfo">
+                                                    <span class="userName textOrange textSemiBold">
+                                                        {{ reply.user.get_full_name }}</span>
+                                                        <span class="timePosted textRegularSml">
+                                                        {{ reply.created_at|time_since }}
+                                                    </span>
+                                                        <p class="userComm textRegularLrg">
+                                                            {{ reply.reply }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endblock %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
 
                     </div>
                     <div class="col-md-4 single-right">
@@ -179,10 +262,10 @@
                         <div class="single-grid-right">
                             <div class="single-right-grids">
                                 <div class="col-md-4 single-right-grid-left">
-                                    <a href="single.html"><img src="images/m1.jpg" alt=""/></a>
+                                    <a href="#"><img src="#" alt=""/></a>
                                 </div>
                                 <div class="col-md-8 single-right-grid-right">
-                                    <a href="single.html" class="title"> Nullam interdum metus</a>
+                                    <a href="#" class="title"> Nullam interdum metus</a>
                                     <p class="author"><a href="#" class="author">John Maniya</a></p>
                                     <p class="views">2,114,200 views</p>
                                 </div>
