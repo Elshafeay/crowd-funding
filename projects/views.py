@@ -35,9 +35,11 @@ def donate(request, project_id):
         else:
             return render(request, 'projects/show.html', context)
 
-
 def show_all(request):
-    return render(request, 'projects/all_projects.html')
+    all_projects = Project.objects.all()
+    categories = Category.objects.all()
+    context = {"categories": categories , "all_projects": all_projects}
+    return render(request, "projects/all_projects.html", context)
 
 
 def show_create_project(request):
