@@ -10,23 +10,25 @@
     <div class="single-page-agile-main">
         <div class="container">
 
-            <div class="agileits-single-top">
-                {% if request.user == 'AnonymousUser'%}
-                    {{ request.user }}
-                    no logged
-                {% endif %}
 
+            <div class="agileits-single-top">
                 <ol class="breadcrumb">
                     <li><a href="#">Home</a></li>
                     <li class="active">{{ project.title }}</li>
                 </ol>
             </div>
 
+
+            {% if is_project_canceled %}
+                <div class="alert alert-danger">
+                    <p>This project has been canceled</p>
+                </div>
+            {% endif %}
             {% if messages %}
                 <ul class="alert alert-success">
                     {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
                 </ul>
             {% endif %}
 
@@ -34,31 +36,61 @@
 
                 <div class="show-top-grids-w3lagile">
                     <div class="col-sm-8 single-left">
-                        <div class="more">
-                            <button id="more-btn" class="more-btn">
-                                <span class="more-dot"></span>
-                                <span class="more-dot"></span>
-                                <span class="more-dot"></span>
-                            </button>
-                            <div class="more-menu">
-                                <div class="more-menu-caret">
-                                    <div class="more-menu-caret-outer"></div>
-                                    <div class="more-menu-caret-inner"></div>
+                        {% if request.user.is_authenticated %}
+
+                            <div class="more">
+                                <button id="more-btn" class="more-btn">
+                                    <span class="more-dot"></span>
+                                    <span class="more-dot"></span>
+                                    <span class="more-dot"></span>
+                                </button>
+                                <div class="more-menu">
+
+
+                                    <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn"
+                                        aria-hidden="true">
+
+                                        <li class="more-menu-item" role="presentation">
+                                            <form action="{% url 'save_project' project.id %}" method="post">
+                                                {% if is_project_saved %}
+                                                    <input type="submit" class="more-menu-btn"
+                                                           role="menuitem" value="Remove">
+                                                {% else %}
+                                                    <input type="submit" class="more-menu-btn"
+                                                           role="menuitem" value="Save">
+                                                {% endif %}
+                                                {% csrf_token %}
+
+                                            </form>
+                                        </li>
+                                        <li class="more-menu-item" role="presentation">
+                                            {% if not is_user_reported %}
+                                                <form action="{% url 'report_project' project.id %}" method="post">
+                                                    <input type="submit" class="more-menu-btn"
+                                                           role="menuitem" value="Report">
+                                                    {% csrf_token %}
+
+                                                </form>
+                                            {% endif %}
+
+
+                                        </li>
+                                        {% if project.owner.id == request.user.id %}
+                                            <li class="more-menu-item" role="presentation">
+                                                {% if not is_project_canceled %}
+                                                    <form action="{% url 'cancel_project' project.id %}" method="post">
+                                                        <input type="submit" class="more-menu-btn"
+                                                               role="menuitem" value="Cancel">
+                                                        {% csrf_token %}
+                                                    </form>
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+                                    </ul>
                                 </div>
-                                <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn"
-                                    aria-hidden="true">
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Save</button>
-                                    </li>
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Report</button>
-                                    </li>
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Cancel</button>
-                                    </li>
-                                </ul>
+
                             </div>
-                        </div>
+                        {% endif %}
 
 
                         <div class="song">
@@ -112,23 +144,33 @@
 
                         </div>
 
+                        {% for donation in project.donation_set.all %}
+                            {{ donation.project_set.all }}
+                        {% endfor %}
+
                         <div class="donate-form">
+
                             <h3>Donate Now</h3>
+                            {% if request.user.is_authenticated %}
+                                <form class="w3ls_footer_grid_left1_pos" method="post">
 
-                            <form class="w3ls_footer_grid_left1_pos" method="post">
 
+                                    <div class="input-group w3_w3layouts">
+                                        <span class="input-group-addon">$</span>
+                                        {{ donation_form.donation }}
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                    {{ donation_form.donation.errors }}
 
-                                <div class="input-group w3_w3layouts">
-                                    <span class="input-group-addon">$</span>
-                                    {{ form.donation }}
-                                    <span class="input-group-addon">.00</span>
+                                    {{ form.user_id }}
+                                    {% csrf_token %}
+                                    <input type="submit" value=" MAKE A DONATION" name="donate_from">
+                                </form>
+                            {% else %}
+                                <div class="w3l_sign_in_register login-now">
+                                    <a href="{% url 'login' %}">Login Now</a>
                                 </div>
-                                {{ form.donation.errors }}
-
-                                {{ form.user_id }}
-                                {% csrf_token %}
-                                <input type="submit" value=" MAKE A DONATION" name="donate_from">
-                            </form>
+                            {% endif %}
                         </div>
 
                     </div>
@@ -153,6 +195,35 @@
             </div>
         </div>
     </div>
-{% endblock content %}
 
+
+    {#    #}
+    {#    <div class="modal video-modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModal">#}
+    {#        <div class="modal-dialog" role="document">#}
+    {#            <div class="modal-content">#}
+    {#                <div class="modal-header">#}
+    {#                    Report This Project#}
+    {#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
+    {#                            aria-hidden="true">&times;</span>#}
+    {#                    </button>#}
+    {#                </div>#}
+    {#                <section>#}
+    {#                    <div class="modal-body">#}
+    {#                        <div class="w3_login_module">#}
+    {#                            <div class="form">#}
+    {#                                <form action="{% url 'report_project' project.id %}" method="post">#}
+    {#                                    <br>#}
+    {#                                    <input type="submit" class="btn btn-block" value="Report">#}
+    {#                                    {% csrf_token %}#}
+    {##}
+    {#                                </form>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </section>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    #}
+    {#    </div>#}
+{% endblock content %}
 
