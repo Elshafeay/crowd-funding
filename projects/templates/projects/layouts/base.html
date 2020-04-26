@@ -33,10 +33,12 @@
             <a href="#"><h1>Crowd<span>Funding</span></h1></a>
         </div>
         <div class="w3_search">
+            {% if request.user in globals %}
             <form action="#" method="post">
                 <input type="text" name="Search" placeholder="Search" required="">
                 <input type="submit" value="Go">
             </form>
+            {% endif%}
         </div>
         <div class="w3l_sign_in_register">
             <ul>
@@ -104,7 +106,8 @@
 </script>
 <!-- //bootstrap-pop-up -->
 <!-- nav -->
-<div class="movies_nav">
+{% if request.user in globals %}
+   <div class="movies_nav">
     <div class="container">
         <nav class="navbar navbar-default">
             <div class="navbar-header navbar-left">
@@ -202,6 +205,7 @@
         </nav>
     </div>
 </div>
+{% endif %}
 <!-- //nav -->
 
 <div class="container">
