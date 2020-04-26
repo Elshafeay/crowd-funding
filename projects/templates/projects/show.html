@@ -6,11 +6,14 @@
 {% block styles %}
     <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css'/>
     <link href="{% static 'projects/assets/css/comments.css' %}" rel='stylesheet' type='text/css'/>
-    <script defer src='https://use.fontawesome.com/releases/v5.5.0/js/all.js' integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
+    <script defer src='https://use.fontawesome.com/releases/v5.5.0/js/all.js'
+            integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
+            crossorigin="anonymous"></script>
 {% endblock %}
 {% block content %}
     <div class="single-page-agile-main">
         <div class="container">
+
 
             <div class="agileits-single-top">
                 <ol class="breadcrumb">
@@ -19,35 +22,79 @@
                 </ol>
             </div>
 
+
+            {% if is_project_canceled %}
+                <div class="alert alert-danger">
+                    <p>This project has been canceled</p>
+                </div>
+            {% endif %}
+            {% if messages %}
+                <ul class="alert alert-success">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
             <div class="single-page-agile-info">
 
                 <div class="show-top-grids-w3lagile">
                     <div class="col-sm-8 single-left">
-                        <div class="more">
-                            <button class="more-btn">
-                                <span class="more-dot"></span>
-                                <span class="more-dot"></span>
-                                <span class="more-dot"></span>
-                            </button>
-                            <div class="more-menu">
-                                <div class="more-menu-caret">
-                                    <div class="more-menu-caret-outer"></div>
-                                    <div class="more-menu-caret-inner"></div>
+                        {% if request.user.is_authenticated %}
+
+                            <div class="more">
+                                <button id="more-btn" class="more-btn">
+                                    <span class="more-dot"></span>
+                                    <span class="more-dot"></span>
+                                    <span class="more-dot"></span>
+                                </button>
+                                <div class="more-menu">
+
+
+                                    <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn"
+                                        aria-hidden="true">
+
+                                        <li class="more-menu-item" role="presentation">
+                                            <form action="{% url 'save_project' project.id %}" method="post">
+                                                {% if is_project_saved %}
+                                                    <input type="submit" class="more-menu-btn"
+                                                           role="menuitem" value="Remove">
+                                                {% else %}
+                                                    <input type="submit" class="more-menu-btn"
+                                                           role="menuitem" value="Save">
+                                                {% endif %}
+                                                {% csrf_token %}
+
+                                            </form>
+                                        </li>
+                                        <li class="more-menu-item" role="presentation">
+                                            {% if not is_user_reported %}
+                                                <form action="{% url 'report_project' project.id %}" method="post">
+                                                    <input type="submit" class="more-menu-btn"
+                                                           role="menuitem" value="Report">
+                                                    {% csrf_token %}
+
+                                                </form>
+                                            {% endif %}
+
+
+                                        </li>
+                                        {% if project.owner.id == request.user.id %}
+                                            <li class="more-menu-item" role="presentation">
+                                                {% if not is_project_canceled %}
+                                                    <form action="{% url 'cancel_project' project.id %}" method="post">
+                                                        <input type="submit" class="more-menu-btn"
+                                                               role="menuitem" value="Cancel">
+                                                        {% csrf_token %}
+                                                    </form>
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+                                    </ul>
                                 </div>
-                                <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn"
-                                    aria-hidden="true">
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Save</button>
-                                    </li>
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Report</button>
-                                    </li>
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Cancel</button>
-                                    </li>
-                                </ul>
+
                             </div>
-                        </div>
+                        {% endif %}
 
 
                         <div class="song">
@@ -83,72 +130,80 @@
 
                             <div class="w3_agile_banner_bottom_grid">
                                 <div id="owl-demo" class="owl-carousel owl-theme">
-                                    <div class="item ml-3">
-                                        <img src={{ project.cover.url }} class="img-responsive"/>
-                                    </div>
+                                    {% for image in project.projectimages_set.all %}
+                                        <div class="item ml-3">
+                                            <img src={{ image.image.url }} class="img-responsive"/>
+                                        </div>
+                                    {% endfor %}
 
-                                    <div class="item ml-3">
-                                        <img src={{ project.cover.url }} class="img-responsive"/>
-                                    </div>
-                                    <div class="item ml-3">
-                                        <img src={{ project.cover.url }} class="img-responsive"/>
-                                    </div>
-                                    <div class="item ml-3">
-                                        <img src={{ project.cover.url }} class="img-responsive"/>
-                                    </div>
                                 </div>
                             </div>
 
                         </div>
 
+                        {% for donation in project.donation_set.all %}
+                            {{ donation.project_set.all }}
+                        {% endfor %}
+
                         <div class="donate-form">
+
                             <h3>Donate Now</h3>
-                            <form class="w3ls_footer_grid_left1_pos" method="post" action="{% url 'donate_project' project.id %}">
-                                <div class="input-group w3_w3layouts">
-                                    <span class="input-group-addon">$</span>
-                                    {{ donate_form.donation }}
-                                    <span class="input-group-addon">.00</span>
+                            {% if request.user.is_authenticated %}
+                                <form class="w3ls_footer_grid_left1_pos" method="post">
+
+
+                                    <div class="input-group w3_w3layouts">
+                                        <span class="input-group-addon">$</span>
+                                        {{ donation_form.donation }}
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                    {{ donation_form.donation.errors }}
+
+                                    {{ form.user_id }}
+                                    {% csrf_token %}
+                                    <input type="submit" value=" MAKE A DONATION" name="donate_from">
+                                </form>
+                            {% else %}
+                                <div class="w3l_sign_in_register login-now">
+                                    <a href="{% url 'login' %}">Login Now</a>
                                 </div>
-                                {{ donate_form.donation.errors }}
-                                {{ donate_form.user_id}}
-                                {% csrf_token %}
-                                <input type="submit" value=" MAKE A DONATION" name="donate_from">
-                            </form>
+                            {% endif %}
                         </div>
                         <div class="comment-area-wrap mt-5">
                             <!-- Write a comment and post it -->
                             <form method='POST' action='{% url 'add_comment' project.id %}'>
                                 <div class="comment-input-wrap mb-3">
-                                    <img class="avatarSml" src='{{ request.user.avatar.url }}' alt="avatar" />
-                                        {% csrf_token %}
-                                        <label for="comment-input"></label>
-                                        <input
+                                    <img class="avatarSml" src='{{ request.user.avatar.url }}' alt="avatar"/>
+                                    {% csrf_token %}
+                                    <label for="comment-input"></label>
+                                    <input
                                             type="text"
                                             class="comment-input textRegularLrg"
                                             id="comment-input"
                                             name="comment"
                                             placeholder="Write a comment"
                                             required
-                                        />
-                                        <button
-                                                id='comment-btn'
-                                                class="btn comment-btn bgOrange"
-                                        >Comment</button>
+                                    />
+                                    <button
+                                            id='comment-btn'
+                                            class="btn comment-btn bgOrange"
+                                    >Comment
+                                    </button>
                                 </div>
                             </form>
 
                             <div class="commWrapAll">
                                 {% for comment in comments %}
-                                <!-- Posted comment -->
-                                <div class="comment-wrap">
-                                    <div class="comment-options">
-                                        {% if comment.user == request.user %}
-                                            <form method='POST' action='{% url 'delete_comment' %}'>
+                                    <!-- Posted comment -->
+                                    <div class="comment-wrap">
+                                        <div class="comment-options">
+                                            {% if comment.user == request.user %}
+                                                <form method='POST' action='{% url 'delete_comment' %}'>
                                                 <button class="comment-options-btn" title='delete'>
                                                     <i class="fas fa-trash-alt" aria-hidden='true'></i>
                                                 </button>
-                                        {% else %}
-                                            <form method='POST' action='{% url 'report_comment' %}'>
+                                            {% else %}
+                                                <form method='POST' action='{% url 'report_comment' %}'>
                                                 {% if comment in reported_comments %}
                                                     <p class="red-text">Already reported...</p>
                                                 {% else %}
@@ -156,47 +211,47 @@
                                                         <i class="fas fa-flag" aria-hidden='true'></i>
                                                     </button>
                                                 {% endif %}
-                                        {% endif %}
+                                            {% endif %}
                                             {% csrf_token %}
                                             <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                                        </form>
-                                    </div>
-                                    <img class="avatarMed" src='{{ comment.user.avatar.url }}' alt="avatar" />
-                                    <div class="postInfo">
+                                            </form>
+                                        </div>
+                                        <img class="avatarMed" src='{{ comment.user.avatar.url }}' alt="avatar"/>
+                                        <div class="postInfo">
                                         <span class="userName textOrange textSemiBold">
                                             {{ comment.user.get_full_name }}
                                         </span>
-                                        <span class="timePosted textRegularSml">
+                                            <span class="timePosted textRegularSml">
                                             {{ comment.created_at|time_since }}
                                         </span>
-                                        <p class="userComm textRegularLrg">{{ comment.comment }}</p>
-                                        <!-- Posted comment actions -->
-                                        <div class="commActionWrap">
-                                            <div class="commAction commReply">
-                                                <i class="fas fa-reply"></i>
-                                                Reply
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {% block replies %}
-                                        {% for reply in comment.reply_set.all %}
-                                            <!-- Comment reply -->
-                                            <div class="commReplyWrap">
-                                                <img class="avatarMed" src='{{ reply.user.avatar.url }}' alt="" />
-                                                <div class="postInfo">
-                                                    <span class="userName textOrange textSemiBold">
-                                                        {{ reply.user.get_full_name }}</span>
-                                                    <span class="timePosted textRegularSml">
-                                                        {{ reply.created_at|time_since }}
-                                                    </span>
-                                                    <p class="userComm textRegularLrg">
-                                                        {{ reply.reply }}
-                                                    </p>
+                                            <p class="userComm textRegularLrg">{{ comment.comment }}</p>
+                                            <!-- Posted comment actions -->
+                                            <div class="commActionWrap">
+                                                <div class="commAction commReply">
+                                                    <i class="fas fa-reply"></i>
+                                                    Reply
                                                 </div>
                                             </div>
-                                        {% endfor %}
-                                    {% endblock %}
-                                </div>
+                                        </div>
+                                        {% block replies %}
+                                            {% for reply in comment.reply_set.all %}
+                                                <!-- Comment reply -->
+                                                <div class="commReplyWrap">
+                                                    <img class="avatarMed" src='{{ reply.user.avatar.url }}' alt=""/>
+                                                    <div class="postInfo">
+                                                    <span class="userName textOrange textSemiBold">
+                                                        {{ reply.user.get_full_name }}</span>
+                                                        <span class="timePosted textRegularSml">
+                                                        {{ reply.created_at|time_since }}
+                                                    </span>
+                                                        <p class="userComm textRegularLrg">
+                                                            {{ reply.reply }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endblock %}
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -223,6 +278,35 @@
             </div>
         </div>
     </div>
-{% endblock content %}
 
+
+    {#    #}
+    {#    <div class="modal video-modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModal">#}
+    {#        <div class="modal-dialog" role="document">#}
+    {#            <div class="modal-content">#}
+    {#                <div class="modal-header">#}
+    {#                    Report This Project#}
+    {#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
+    {#                            aria-hidden="true">&times;</span>#}
+    {#                    </button>#}
+    {#                </div>#}
+    {#                <section>#}
+    {#                    <div class="modal-body">#}
+    {#                        <div class="w3_login_module">#}
+    {#                            <div class="form">#}
+    {#                                <form action="{% url 'report_project' project.id %}" method="post">#}
+    {#                                    <br>#}
+    {#                                    <input type="submit" class="btn btn-block" value="Report">#}
+    {#                                    {% csrf_token %}#}
+    {##}
+    {#                                </form>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </section>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    #}
+    {#    </div>#}
+{% endblock content %}
 
