@@ -12,7 +12,7 @@
 
            <div class="agileits-single-top">
                 <ol class="breadcrumb">
-                    <li><a href="#">your projects</a></li>
+                    <li><a href="#">your donations</a></li>
 
                 </ol>
             </div>
@@ -49,29 +49,27 @@
 
                         <div class="song">
 
-                        {% for project in projects %}
+                        {% for donation in donations %}
                             <div class="song-grid-right">
                                 <div class="share">
-                                    <h5>{{ project.title }}</h5>
+
+
+                                    <h3><strong>Project Title: </strong>{{donation.project.title}}</h3><br>
+                                    <ol>
+                                        <li>
+                                        <h5> <strong>Price: </strong>${{ donation.donation }}</h5><br>
+                                            </li>
+                                       <li><h5><strong>Date: </strong>{{ donation.donated_at}}</h5></li><br>
 
                                       <span class="tag">
 
-                                          <a href="{% url 'show_project'  project.id %}">
-                                            show more
+                                          <a href="{% url 'show_project'  donation.project_id %}">
+                                            show project details
                                           </a>
                                         </span>
-                                    <div class="single-agile-shar-buttons">
-                                        {% for tag in project.tags %}
-                                            <span class="tag"> {{ tag.name }} </span>
-                                        {% endfor %}
+</ol>
 
 
-
-                                     <div class="item md-3">
-                                        <img src={{ project.cover.url }} class="img-responsive" width="400px" height="500px"/>
-                                    </div>
-
-                                    </div>
                                 </div>
                             </div>
 
