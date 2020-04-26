@@ -5,6 +5,7 @@ from users.models import UserModel
 # Category Model
 class Category(models.Model):
 	name = models.CharField(max_length=50, unique=True)
+	image = models.ImageField(upload_to='categories', null=True)
 
 	class Meta:
 		verbose_name = "Category"
@@ -51,7 +52,6 @@ class Project(models.Model):
 			f"target={self.target}, " \
 			f"rate={self.rate}, " \
 			f"owner={self.owner.get_full_name()})"
-
 
 
 # Tag Model
