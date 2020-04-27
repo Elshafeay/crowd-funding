@@ -5,7 +5,7 @@ from crowdfunding import settings
 from .views import welcome, category_project, all_category, error
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
-from users.views import register, logout ,profile
+from users.views import register, logout, profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -19,7 +19,7 @@ urlpatterns = [
          name='login'),
     path('logout/', logout, name='logout'),
     path('projects/', include('projects.urls')),
-    url(r'^', error)
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+handler404 = 'crowdfunding.views.error'

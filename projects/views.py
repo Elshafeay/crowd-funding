@@ -6,11 +6,11 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
 
-from .models import Project, Donation, Category, Comment, CommentReports,ProjectImages
+from .models import \
+    Project, Donation, Category, Comment, CommentReports, ProjectImages
 from .forms import DonateForm, CreateForm
 from django.contrib import messages
 from django.shortcuts import redirect
-
 
 
 @login_required()
@@ -170,7 +170,10 @@ def save(request, project_id):
         messages.success(request, "Project Saved Successfully")
     else:
         project.savedproject_set.get(user_id=request.user.id).delete()
-        messages.success(request, "Project Removed From Your Saved Successfully")
+        messages.success(
+            request,
+            "Project Removed From Your Saved Successfully"
+        )
 
     return redirect('show_project', project_id)
 

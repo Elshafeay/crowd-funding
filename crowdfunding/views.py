@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from projects.models import Category, FeaturedProject, Project
 
 # Homepage should contains the following:
@@ -125,5 +125,7 @@ def search(request):
     return projects
 
 
-def error(request):
-    return render(request, 'projects/error.html')
+def error(request, exception):
+    response = render_to_response('projects/404.html')
+    response.status_code = 404
+    return response
