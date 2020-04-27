@@ -1,0 +1,13 @@
+{% extends "projects/layouts/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <div class="media-body">
+            <div class="account-heading">{{ user.first_name }}</div>
+            <div class="account-heading">{{ user.last_name }}</div>
+            <div class="account-heading">{{ user.phone }}</div>
+               
+          </div>
+       
+    </div>
+{% endblock content %}

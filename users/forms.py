@@ -20,6 +20,7 @@ class CustomUserChangeForm(UserChangeForm):
 
 class UserRegisterForm(CustomUserCreationForm):
     email = forms.EmailField()
+    phone = forms.RegexField(regex = "^(002)?01[0125]\d{8}$")
 
     class Meta:
         model = UserModel

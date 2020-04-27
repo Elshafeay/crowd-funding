@@ -5,13 +5,14 @@ from crowdfunding import settings
 from .views import welcome, category_project, all_category, error
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
-from users.views import register, logout
+from users.views import register, logout ,profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', welcome, name='home'),
     path('category/<int:cat_id>', category_project),
     path('categories/', all_category),
+    path('profile/', profile, name='profile'),
     path('register/', register, name='register'),
     path('login/',
          auth_views.LoginView.as_view(template_name='users/login.html'),
