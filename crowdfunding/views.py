@@ -1,9 +1,6 @@
 from django.shortcuts import render
 from projects.models import Category, FeaturedProject, Project
-from django.shortcuts import get_object_or_404
-from collections import OrderedDict
-from django.contrib.auth import logout
-from django.shortcuts import HttpResponseRedirect
+
 # Homepage should contains the following:
 # - *A slider to show the highest five rated running projects to encourage users to donate
 # - *List of the latest 5 projects
@@ -22,17 +19,28 @@ def welcome(request):
     print("first_category", first_category)
     print("categories", categories)
     if first_category:
-        return render(request, 'projects/home_page.html', {"highest_five_rated": highest_five_rated,
-                                                           "latest_five_projects": latest_five_projects,
-                                                           "featured_project": featured_project,
-                                                           "first_category": first_category,
-                                                           "categories": categories,
-                                                           })
+        context = {
+            "highest_five_rated": highest_five_rated,
+            "latest_five_projects": latest_five_projects,
+            "featured_project": featured_project,
+            "first_category": first_category,
+            "categories": categories,
+        }
+        return render(
+            request,
+            'projects/home_page.html',
+            context,
+        )
     else:
-        return render(request, "projects/home_page.html", {"highest_five_rated": highest_five_rated,
-                                                           "highest_five_rated": highest_five_rated,
-                                                           "featured_project": featured_project,
-                                                           })
+        return render(
+            request,
+            "projects/home_page.html",
+            {
+                "highest_five_rated": highest_five_rated,
+                "highest_five_rated": highest_five_rated,
+                "featured_project": featured_project,
+             }
+        )
 
 
 def get_categories_have_highest_projects_number():
@@ -40,9 +48,15 @@ def get_categories_have_highest_projects_number():
     categories = Category.objects.all()
 
     for cat in categories:
-        category_projects[cat.id] = len(cat.project_set.all())
+        category_projects[cat] = len(cat.project_set.all())
+    # category_projects = OrderedDict(sorted(category_projects.items(), key=lambda x: x[1],reverse=True))
 
-    category_projects = OrderedDict(sorted(category_projects.items(), key=lambda x: x[1],reverse=True))
+    category_projects = sorted(
+        category_projects.items(),
+        key=lambda x: x[1],
+        reverse=True
+    )[:5]
+    print("category_projects2", category_projects)
 
     if len(category_projects) > 1:
         # new_categories_list_id = []
@@ -53,24 +67,46 @@ def get_categories_have_highest_projects_number():
         # new_categories_list_id = new_categories_list_id[0:5]
         # print("new_categories_list_id",new_categories_list_id)
         # new_categories_list = Category.objects.filter(pk__in=new_categories_list_id[0:5])
-
-        new_categories_list = []
-        temp=0
-        for cat in category_projects:
-            print("cat",cat)
-            new_categories_list.append(Category.objects.get(pk=cat))
-            temp = temp+1
-            if temp == 5:
-                break
-        first_category = new_categories_list[0]
-        categories = new_categories_list[1:]
+        categories = [cat[0] for cat in category_projects]
+        first_category = categories[0]
         return {"first_category": first_category, "categories": categories}
     else:
         return {}
 
 
-def logout_view(request):
-    # print("hi1")
-    logout(request)
-    # print("hi2")
-    return HttpResponseRedirect('/logout/')
+def category_project(request, cat_id):
+    try:
+        get_category = Category.objects.get(pk=cat_id)
+        projects = get_category.project_set.all()
+        context = {
+            "projects": projects,
+            "title": "All Projects Related to " + get_category.name + " category",
+            "found": 1
+            }
+        return render(
+            request,
+            'projects/search_projects.html',
+            context,
+        )
+    except Category.DoesNotExist:
+        context = {
+            "projects": [],
+            "title": "Sorry",
+            "found": -1,
+        }
+        return render(
+            request,
+            'projects/search_projects.html',
+            context,
+        )
+
+
+def all_category(request):
+    categories = Category.objects.all()
+    return render(
+        request,
+        'projects/all_categories.html',
+        {
+            "categories": categories,
+        },
+    )
