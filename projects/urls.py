@@ -14,5 +14,8 @@ urlpatterns = [
     path('<int:project_id>/add-comment', add_comment, name='add_comment'),
     path('delete-comment/', delete_comment, name='delete_comment'),
     path('report-comment/', report_comment, name='report_comment'),
-    path('saved/', saved_projects)
+    path('add-reply/', add_reply, name='add_reply'),
+    path('add-rate/', add_rate, name='add_rate'),
+    path('saved/', saved_projects),
+    path('favourites/', change_favourites, name='change_favourites'),
 ]
