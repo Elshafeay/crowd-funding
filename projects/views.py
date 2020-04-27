@@ -4,10 +4,11 @@ from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
 
-from .models import Project, Donation, Category, Comment, CommentReports
+from .models import Project, Donation, Category, Comment, CommentReports,ProjectImages
 from .forms import DonateForm, CreateForm
 from django.contrib import messages
 from django.shortcuts import redirect
+
 
 
 @login_required()
@@ -133,6 +134,7 @@ def create(request):
     categories = Category.objects.all()
     if request.method == 'POST':
         create_form = CreateForm(request.POST, request.FILES)
+        project_images = request.FILES.getlist('images')
         context = {'create_form': create_form, 'categories': categories}
         if create_form.is_valid():
             project = Project(
@@ -146,6 +148,9 @@ def create(request):
                 owner_id=request.user.id
             )
             project.save()
+            for image in project_images:
+                photo = ProjectImages(project=project, image=image)
+                photo.save()
             messages.success(request, 'Project Created Successfully')
             return redirect('/projects/create')
         else:
