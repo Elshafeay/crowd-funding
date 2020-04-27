@@ -2,9 +2,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from crowdfunding import settings
-from .views import welcome, category_project, all_category
+from .views import welcome, category_project, all_category, error
+from django.conf.urls import url
 from django.contrib.auth import views as auth_views
-from users.views import register,logout
+from users.views import register, logout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,8 +13,12 @@ urlpatterns = [
     path('category/<int:cat_id>', category_project),
     path('categories/', all_category),
     path('register/', register, name='register'),
-    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('login/',
+         auth_views.LoginView.as_view(template_name='users/login.html'),
+         name='login'),
     path('logout/', logout, name='logout'),
-    path('projects/', include('projects.urls'))
+    path('projects/', include('projects.urls')),
+    url(r'^', error)
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

@@ -10,37 +10,51 @@ from projects.models import Category, FeaturedProject, Project
 
 
 def welcome(request):
-    highest_five_rated = Project.objects.filter(status=0).order_by('rate')[0:5]
-    latest_five_projects = Project.objects.all().order_by('created_at')[0:5]
-    featured_project = FeaturedProject.objects.all().order_by('-featured_at')[0:5]
-    categories_and_projects = get_categories_have_highest_projects_number()
-    first_category = categories_and_projects.get('first_category')
-    categories = categories_and_projects.get('categories')
-    print("first_category", first_category)
-    print("categories", categories)
-    if first_category:
+    if request.GET.get('Search'):
+        projects = search(request)
         context = {
-            "highest_five_rated": highest_five_rated,
-            "latest_five_projects": latest_five_projects,
-            "featured_project": featured_project,
-            "first_category": first_category,
-            "categories": categories,
+            "projects": projects,
+            "title": "Your Search Key Word is ' " + request.GET['Search'] + " ' ",
+            "found": 1
         }
         return render(
             request,
-            'projects/home_page.html',
+            'projects/search_projects.html',
             context,
         )
+
     else:
-        return render(
-            request,
-            "projects/home_page.html",
-            {
+        highest_five_rated = Project.objects.filter(status=0).order_by('rate')[0:5]
+        latest_five_projects = Project.objects.all().order_by('created_at')[0:5]
+        featured_project = FeaturedProject.objects.all().order_by('-featured_at')[0:5]
+        categories_and_projects = get_categories_have_highest_projects_number()
+        first_category = categories_and_projects.get('first_category')
+        categories = categories_and_projects.get('categories')
+        print("first_category", first_category)
+        print("categories", categories)
+        if first_category:
+            context = {
                 "highest_five_rated": highest_five_rated,
-                "highest_five_rated": highest_five_rated,
+                "latest_five_projects": latest_five_projects,
                 "featured_project": featured_project,
-             }
-        )
+                "first_category": first_category,
+                "categories": categories,
+            }
+            return render(
+                request,
+                'projects/home_page.html',
+                context,
+            )
+        else:
+            return render(
+                request,
+                "projects/home_page.html",
+                {
+                    "highest_five_rated": highest_five_rated,
+                    "highest_five_rated": highest_five_rated,
+                    "featured_project": featured_project,
+                 }
+            )
 
 
 def get_categories_have_highest_projects_number():
@@ -49,7 +63,9 @@ def get_categories_have_highest_projects_number():
 
     for cat in categories:
         category_projects[cat] = len(cat.project_set.all())
-    # category_projects = OrderedDict(sorted(category_projects.items(), key=lambda x: x[1],reverse=True))
+    # category_projects = OrderedDict(sorted(category_projects.items(),
+    # key=lambda x: x[1],
+    # reverse=True))
 
     category_projects = sorted(
         category_projects.items(),
@@ -59,14 +75,6 @@ def get_categories_have_highest_projects_number():
     print("category_projects2", category_projects)
 
     if len(category_projects) > 1:
-        # new_categories_list_id = []
-        # for cat2 in categories:
-        #     for cat1 in category_projects:
-        #         if cat1 == cat2.id:
-        #             new_categories_list_id.append(cat1)
-        # new_categories_list_id = new_categories_list_id[0:5]
-        # print("new_categories_list_id",new_categories_list_id)
-        # new_categories_list = Category.objects.filter(pk__in=new_categories_list_id[0:5])
         categories = [cat[0] for cat in category_projects]
         first_category = categories[0]
         return {"first_category": first_category, "categories": categories}
@@ -110,3 +118,13 @@ def all_category(request):
             "categories": categories,
         },
     )
+
+
+def search(request):
+    key_word = request.GET['Search']
+    projects = Project.objects.filter(title__icontains=key_word)
+    return projects
+
+
+def error(request):
+    return render(request, 'projects/error.html')
