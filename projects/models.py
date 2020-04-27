@@ -5,7 +5,10 @@ from users.models import UserModel
 # Category Model
 class Category(models.Model):
 	name = models.CharField(max_length=50, unique=True)
-	image = models.ImageField(upload_to='categories', null=True)
+	image = models.ImageField(
+		upload_to='categories/images',
+		default='categories/noimage.png'
+	)
 
 	class Meta:
 		verbose_name = "Category"
@@ -26,7 +29,10 @@ class Project(models.Model):
 	details = models.TextField()
 	target = models.IntegerField()
 	rate = models.FloatField(default=0)
-	cover = models.ImageField(upload_to='projects/covers')
+	cover = models.ImageField(
+		upload_to='projects/covers',
+		default='projects/nocover.jpg'
+	)
 	start_date = models.DateField()
 	end_date = models.DateField()
 	status = models.IntegerField(choices=STATUS_CODES, default=0)

@@ -24,9 +24,9 @@ def welcome(request):
         )
 
     else:
-        highest_five_rated = Project.objects.filter(status=0).order_by('rate')[0:5]
-        latest_five_projects = Project.objects.all().order_by('created_at')[0:5]
-        featured_project = FeaturedProject.objects.all().order_by('-featured_at')[0:5]
+        highest_five_rated = Project.objects.filter(status=0).order_by('-rate')[:5]
+        latest_five_projects = Project.objects.all().order_by('-created_at')[:5]
+        featured_project = FeaturedProject.objects.all().order_by('-featured_at')[:5]
         categories_and_projects = get_categories_have_highest_projects_number()
         first_category = categories_and_projects.get('first_category')
         categories = categories_and_projects.get('categories')
@@ -50,7 +50,6 @@ def welcome(request):
                 request,
                 "projects/home_page.html",
                 {
-                    "highest_five_rated": highest_five_rated,
                     "highest_five_rated": highest_five_rated,
                     "featured_project": featured_project,
                  }

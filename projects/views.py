@@ -1,6 +1,8 @@
+import json
+
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
 
@@ -23,9 +25,22 @@ def show(request, project_id):
     reported_comments = [
         _.comment for _ in get_user(request).commentreports_set.all()
     ]
-
+    related_projects = project.category.project_set.all()[:10]
+    liked = get_user(request).review_set.filter(liked=True)
+    favourites = [_.project for _ in liked]
     is_user_reported = project.review_set.filter(user_id=request.user.id)
     is_project_saved = project.savedproject_set.filter(user_id=request.user.id)
+    review = [get_user(request).review_set.filter(
+        project=get_object_or_404(Project, pk=project_id)
+    )][0]
+
+    if review:
+        try:
+            is_rated = int(review.rate) > 0
+        except:
+            is_rated = False
+    else:
+        is_rated = False
 
     donation_form = DonateForm()
 
@@ -41,12 +56,15 @@ def show(request, project_id):
 
     context = {
         'project': project,
+        'comments': comments,
+        'favourites': favourites,
         'donation_form': donation_form,
         's_user_reported': is_user_reported,
         'is_project_saved': is_project_saved,
+        'related_projects': related_projects,
+        'reported_comments': reported_comments,
         'is_project_canceled': is_project_canceled,
-        'comments': comments,
-        'reported_comments': reported_comments
+        'is_rated': is_rated,
     }
     return render(request, 'projects/show.html', context)
 
@@ -59,6 +77,18 @@ def add_comment(request, project_id):
         project=get_object_or_404(Project, pk=project_id),
         comment=new_comment)
     return redirect('show_project', project_id)
+
+
+@require_http_methods("POST")
+def add_reply(request):
+    comment = get_object_or_404(Comment, pk=request.POST.get('comment_id'))
+    reply = request.POST.get('reply')
+    current_user = get_user(request)
+    current_user.reply_set.create(
+        reply=reply,
+        comment=comment
+    )
+    return redirect('show_project', comment.project.id)
 
 
 @require_http_methods("POST")
@@ -80,12 +110,51 @@ def report_comment(request):
 
 
 @require_http_methods("POST")
+def change_favourites(request):
+    project_id = request.POST.get('project')
+    project = get_object_or_404(Project, pk=project_id)
+    review = get_user(request).review_set.filter(
+        project=project
+    )[0]
+
+    if review:
+        review.liked = not review.liked
+        review.save()
+    else:
+        review = get_user(request).review_set.create(
+            project=project,
+            liked=True
+        )
+
+    if review.liked:
+        message = "You have Successfully added" \
+                  " this project to your favourites"
+    else:
+        message = "You have Successfully deleted" \
+                  " this project from your favourites"
+
+    return HttpResponse(message)
+
+
+@require_http_methods("POST")
+def add_rate(request):
+    project_id = request.POST.get('project')
+    project = get_object_or_404(Project, pk=project_id)
+    review = get_user(request).review_set.filter(
+        project=project
+    ).get_or_create()
+
+    review.rate = int(request.POST.get('project'))
+    review.save()
+    message = "Your rate has been added successfully"
+    return HttpResponse(message)
+
+
+@require_http_methods("POST")
 def report(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
 
     project.review_set.get_or_create(
-        comment=False,
-        liked=False,
         reported=True,
         user=request.user
     )
