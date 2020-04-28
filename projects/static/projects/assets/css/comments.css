@@ -9,6 +9,7 @@
 }
 .avatarSml {
     width: 35px;
+    margin-left: .65rem;
 }
 .avatarMed {
     width: 45px;
@@ -72,16 +73,22 @@ input::-moz-placeholder { color: #999999; }
     text-align: center;
     border-radius: 20px;
 }
+.reply-btn {
+    text-align: center;
+    border-radius: 5px;
+    height: 32px;
+}
 
 /* Comments and Replies */
 .comment-wrap {
     border-top: 1px solid #E7EAEF;
-    padding: 20px 15px;
+    padding: 20px 15px 0 15px;
     width: 793px;
 }
 .commReplyWrap {
     margin-left: 55px;
-    padding-top: 20px;
+    padding-top: 10px;
+    width: 550px;
 }
 .postInfo {
     display: inline-block;
@@ -97,10 +104,13 @@ input::-moz-placeholder { color: #999999; }
 .commAction {
     color: #999999;
     font-size: 12px;
-    font-weight: 600;
     display: inline-block;
     cursor: pointer;
     padding: 5px;
+    border: none;
+    height: 30px;
+    background-color: rgba(0,0,0,0);
+    transition: .5s ease-in-out;
 }
 .commAction:hover {
     color: white;
@@ -155,4 +165,14 @@ input::-moz-placeholder { color: #999999; }
 
 .red-text{
     color: red;
+}
+
+.reply-input{
+    width: 400px;
+    background-color: #FAFAFA;
+    border: 1px solid #D5D5D5;
+    height: 32px;
+    padding: 0 5px;
+    border-radius: 5px;
+
 }

@@ -28,25 +28,38 @@
 
 <!-- header -->
 <div class="header">
+
     <div class="container">
         <div class="w3layouts_logo">
-            <a href="#"><h1>Crowd<span>Funding</span></h1></a>
+            <a href="/"><h1>Crowd<span>Funding</span></h1></a>
         </div>
         <div class="w3_search">
-            {% if request.user.is_authenticated %}
-            <form action="#" method="post">
+            
+            <form method="GET">
                 <input type="text" name="Search" placeholder="Search" required="">
                 <input type="submit" value="Go">
             </form>
-            {% endif%}
+
+            <div class="col-md-8">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+        
+            </div>
         </div>
         <div class="w3l_sign_in_register">
+            
             <ul>
                 {% if request.user.is_authenticated %}
-                <li><a href="/logout" >Logout</a></li>
+                    <li><a href="{% url 'profile' %}">profile</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
-                <li><a href="/login" >Login</a></li>
-                <li><a href="/register" >Sign Up</a></li>
+                    <li><a href="/login" >Login</a></li>
+                    <li><a href="/register" >Sign Up</a></li>
 
                 {% endif%}
             </ul>
@@ -55,64 +68,9 @@
     </div>
 </div>
 <!-- //header -->
-<!-- bootstrap-pop-up -->
-<div class="modal video-modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                Sign In & Sign Up
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <section>
-                <div class="modal-body">
-                    <div class="w3_login_module">
-                        <div class="module form-module">
-                            <div class="toggle"><i class="fa fa-times fa-pencil"></i>
-                                <div class="tooltip">Click Me</div>
-                            </div>
-                            <div class="form">
-                                <h3>Login to your account</h3>
-                                <form action="#" method="post">
-                                    <input type="text" name="Username" placeholder="Username" required="">
-                                    <input type="password" name="Password" placeholder="Password" required="">
-                                    <input type="submit" value="Login">
-                                </form>
-                            </div>
-                            <div class="form">
-                                <h3>Create an account</h3>
-                                <form action="#" method="post">
-                                    <input type="text" name="Username" placeholder="Username" required="">
-                                    <input type="password" name="Password" placeholder="Password" required="">
-                                    <input type="email" name="Email" placeholder="Email Address" required="">
-                                    <input type="text" name="Phone" placeholder="Phone Number" required="">
-                                    <input type="submit" value="Register">
-                                </form>
-                            </div>
-                            <div class="cta"><a href="#">Forgot your password?</a></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
-</div>
-<script>
-    $('.toggle').click(function () {
-        // Switches the Icon
-        $(this).children('i').toggleClass('fa-pencil');
-        // Switches the forms
-        $('.form').animate({
-            height: "toggle",
-            'padding-top': 'toggle',
-            'padding-bottom': 'toggle',
-            opacity: "toggle"
-        }, "slow");
-    });
-</script>
-<!-- //bootstrap-pop-up -->
+
 <!-- nav -->
-{% if request.user in globals %}
+{% if request.user.is_authenticated %}
    <div class="movies_nav">
     <div class="container">
         <nav class="navbar navbar-default">
@@ -131,6 +89,7 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="/">Home</a></li>
                         <li><a href="/projects/">All Projects</a></li>
+                        <li><a href="/categories/">All Categories</a></li>
                         <li><a href="/projects/self">My Projects</a></li>
                     </ul>
                 </nav>
@@ -151,7 +110,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-3 w3ls_footer_grid_right">
-                <a href="#"><h2>Crowd<span>Funding</span></h2></a>
+                <a href="/"><h2>Crowd<span>Funding</span></h2></a>
             </div>
 
             <div class="col-md-7 w3ls_footer_grid1_right">

@@ -34,58 +34,20 @@
 		<h4 class="latest-text w3_latest_text">Categories Have Highest Number of Projects</h4>
 		<div class="container">
 			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
-				<ul id="myTab" class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><a href="#cat-{{first_category.id}}" id="cat-{{first_category.id}}-tab" role="tab" data-toggle="tab" aria-controls="cat-{{first_category.id}}" aria-expanded="true">{{first_category.name}}</a></li>
-					{% for cat in categories %}
-					<li role="presentation"><a href="#cat-{{cat.id}}" role="tab" id="cat-{{cat.id}}-tab" data-toggle="tab" aria-controls="cat-{{cat.id}}" aria-expanded="cat-{{cat.id}}">{{cat.name}}</a></li>
-					{% endfor %}
-				</ul>
-				<div id="myTabContent" class="tab-content">
-					<div role="tabpanel" class="tab-pane fade active in" id="cat-{{first_category.id}}" aria-labelledby="cat-{first_category.id}}-tab">
+				<div  class="tab-content">
+					<div role="tabpanel" class="tab-pane fade active in" >
 						<div class="w3_agile_featured_movies">
-							{% for proj in first_category.project_set.all %}
+							{% for cat in categories %}
 							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="#" class="hvr-shutter-out-horizontal"><img src="{{ proj.cover.url }}" title="album-name" class="img-responsive" alt=" " />
+								<a href="/category/{{cat.id}}" class="hvr-shutter-out-horizontal"><img src="{{ cat.image.url }}" title="album-name" class="img-responsive" alt=" " />
 									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
 								</a>
 								<div class="mid-1 agileits_w3layouts_mid_1_home">
 									<div class="w3l-movie-text">
-										<h6><a href="#">{{ proj.title }}</a></h6>
+										<h6><a href="#">{{ cat.name }}</a></h6>
 									</div>
 									<div class="mid-2 agile_mid_2_home">
-										<p>{{ proj.created_at.year }}</p>
 										<div class="block-stars">
-											<ul class="w3l-ratings">
-												{% if proj.rate > 0 %}
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												 {% else %}
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												{% endif %}
-
-												{% if proj.rate > 1 %}
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												{% else %}
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												{% endif %}
-
-												{% if proj.rate > 2 %}
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												{% else %}
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												{% endif %}
-
-												{% if proj.rate > 3 %}
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												{% else %}
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												{% endif %}
-
-												{% if proj.rate > 4 %}
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												{% else %}
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												{% endif %}
-											</ul>
 										</div>
 										<div class="clearfix"></div>
 									</div>
@@ -97,70 +59,147 @@
 							<div class="clearfix"> </div>
 						</div>
 					</div>
-
-					{% for cat in categories%}
-					<div role="tabpanel" class="tab-pane fade" id="cat-{{cat.id}}" aria-labelledby="cat-{{cat.id}}-tab">
-
-						{% for proj in cat.project_set.all %}
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="#" class="hvr-shutter-out-horizontal"><img src="{{proj.cover.url}}" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">{{proj.title}}</a></h6>
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>{{ proj.created_at.year }}</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											{% if proj.rate > 0 %}
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											{% else %}
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											{% endif %}
-
-											{% if proj.rate > 1 %}
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											{% else %}
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											{% endif %}
-
-											{% if proj.rate > 2 %}
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											{% else %}
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											{% endif %}
-
-											{% if proj.rate > 3 %}
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											{% else %}
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											{% endif %}
-
-											{% if proj.rate > 4 %}
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											{% else %}
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											{% endif %}
-								    	</ul>
-
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-
-						</div>
-						{% endfor %}
-						<div class="clearfix"> </div>
-					</div>
-					{% endfor %}
-
 				</div>
 			</div>
 		</div>
 	</div>
 <!-- //general -->
+
+
+<!-- general -->
+<!--	<div class="general">-->
+<!--		<h4 class="latest-text w3_latest_text">Categories Have Highest Number of Projects</h4>-->
+<!--		<div class="container">-->
+<!--			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">-->
+<!--				<ul id="myTab" class="nav nav-tabs" role="tablist">-->
+<!--					<li role="presentation" class="active"><a href="#cat-{{first_category.id}}" id="cat-{{first_category.id}}-tab" role="tab" data-toggle="tab" aria-controls="cat-{{first_category.id}}" aria-expanded="true">{{first_category.name}}</a></li>-->
+<!--					{% for cat in categories %}-->
+<!--					<li role="presentation"><a href="#cat-{{cat.id}}" role="tab" id="cat-{{cat.id}}-tab" data-toggle="tab" aria-controls="cat-{{cat.id}}" aria-expanded="cat-{{cat.id}}">{{cat.name}}</a></li>-->
+<!--					{% endfor %}-->
+<!--				</ul>-->
+<!--				<div id="myTabContent" class="tab-content">-->
+<!--					<div role="tabpanel" class="tab-pane fade active in" id="cat-{{first_category.id}}" aria-labelledby="cat-{first_category.id}}-tab">-->
+<!--						<div class="w3_agile_featured_movies">-->
+<!--							{% for proj in first_category.project_set.all %}-->
+<!--							<div class="col-md-2 w3l-movie-gride-agile">-->
+<!--								<a href="#" class="hvr-shutter-out-horizontal"><img src="{{ proj.cover.url }}" title="album-name" class="img-responsive" alt=" " />-->
+<!--									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>-->
+<!--								</a>-->
+<!--								<div class="mid-1 agileits_w3layouts_mid_1_home">-->
+<!--									<div class="w3l-movie-text">-->
+<!--										<h6><a href="#">{{ proj.title }}</a></h6>-->
+<!--									</div>-->
+<!--									<div class="mid-2 agile_mid_2_home">-->
+<!--										<p>{{ proj.created_at.year }}</p>-->
+<!--										<div class="block-stars">-->
+<!--											<ul class="w3l-ratings">-->
+<!--												{% if proj.rate > 0 %}-->
+<!--												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>-->
+<!--												 {% else %}-->
+<!--												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>-->
+<!--												{% endif %}-->
+
+<!--												{% if proj.rate > 1 %}-->
+<!--												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>-->
+<!--												{% else %}-->
+<!--												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>-->
+<!--												{% endif %}-->
+
+<!--												{% if proj.rate > 2 %}-->
+<!--												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>-->
+<!--												{% else %}-->
+<!--												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>-->
+<!--												{% endif %}-->
+
+<!--												{% if proj.rate > 3 %}-->
+<!--												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>-->
+<!--												{% else %}-->
+<!--												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>-->
+<!--												{% endif %}-->
+
+<!--												{% if proj.rate > 4 %}-->
+<!--												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>-->
+<!--												{% else %}-->
+<!--												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>-->
+<!--												{% endif %}-->
+<!--											</ul>-->
+<!--										</div>-->
+<!--										<div class="clearfix"></div>-->
+<!--									</div>-->
+<!--								</div>-->
+
+<!--							</div>-->
+<!--							{% endfor %}-->
+
+<!--							<div class="clearfix"> </div>-->
+<!--						</div>-->
+<!--					</div>-->
+
+<!--					{% for cat in categories%}-->
+<!--					<div role="tabpanel" class="tab-pane fade" id="cat-{{cat.id}}" aria-labelledby="cat-{{cat.id}}-tab">-->
+
+<!--						{% for proj in cat.project_set.all %}-->
+<!--						<div class="col-md-2 w3l-movie-gride-agile">-->
+<!--							<a href="#" class="hvr-shutter-out-horizontal"><img src="{{proj.cover.url}}" title="album-name" class="img-responsive" alt=" " />-->
+<!--								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>-->
+<!--							</a>-->
+<!--							<div class="mid-1 agileits_w3layouts_mid_1_home">-->
+<!--								<div class="w3l-movie-text">-->
+<!--									<h6><a href="single.html">{{proj.title}}</a></h6>-->
+<!--								</div>-->
+<!--								<div class="mid-2 agile_mid_2_home">-->
+<!--									<p>{{ proj.created_at.year }}</p>-->
+<!--									<div class="block-stars">-->
+<!--										<ul class="w3l-ratings">-->
+<!--											{% if proj.rate > 0 %}-->
+<!--											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>-->
+<!--											{% else %}-->
+<!--											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>-->
+<!--											{% endif %}-->
+
+<!--											{% if proj.rate > 1 %}-->
+<!--											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>-->
+<!--											{% else %}-->
+<!--											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>-->
+<!--											{% endif %}-->
+
+<!--											{% if proj.rate > 2 %}-->
+<!--											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>-->
+<!--											{% else %}-->
+<!--											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>-->
+<!--											{% endif %}-->
+
+<!--											{% if proj.rate > 3 %}-->
+<!--											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>-->
+<!--											{% else %}-->
+<!--											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>-->
+<!--											{% endif %}-->
+
+<!--											{% if proj.rate > 4 %}-->
+<!--											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>-->
+<!--											{% else %}-->
+<!--											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>-->
+<!--											{% endif %}-->
+<!--								    	</ul>-->
+
+<!--									</div>-->
+<!--									<div class="clearfix"></div>-->
+<!--								</div>-->
+<!--							</div>-->
+
+<!--						</div>-->
+<!--						{% endfor %}-->
+<!--						<div class="clearfix"> </div>-->
+<!--					</div>-->
+<!--					{% endfor %}-->
+
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+<!-- //general -->
+
+
 
 
 <!-- general -->

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Donation,Project,Category
+from .models import Donation,Project,Category,ProjectImages
 
 
 class DonateForm(forms.Form):
@@ -19,8 +19,7 @@ class CreateForm(forms.Form):
     # category_id = forms.CharField(widget=forms.Select(choices=categories))
     start_date = forms.DateField( widget=forms.SelectDateWidget)
     end_date = forms.DateField( widget=forms.SelectDateWidget)
+    images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
     target = forms.CharField(widget=forms.NumberInput(
         attrs={'class': 'form-control', 'placeholder': 'Target '}))
 
-    # class Meta:
-    #     model = Donation

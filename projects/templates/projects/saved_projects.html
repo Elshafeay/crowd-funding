@@ -1,7 +1,6 @@
 {% extends 'projects/layouts/base.html' %}
 {% load static %}
 
-{% block title %} {{ project.title }} {% endblock title %}
 {% block styles %}
     <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css'/>
 
@@ -12,7 +11,7 @@
 
            <div class="agileits-single-top">
                 <ol class="breadcrumb">
-                    <li><a href="#">your donations</a></li>
+                    <li><a href="#"><big>your saved projects</big></a></li>
 
                 </ol>
             </div>
@@ -26,54 +25,33 @@
                                 <span class="more-dot"></span>
                                 <span class="more-dot"></span>
                             </button>
-                            <div class="more-menu">
-                                <div class="more-menu-caret">
-                                    <div class="more-menu-caret-outer"></div>
-                                    <div class="more-menu-caret-inner"></div>
-                                </div>
-                                <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn"
-                                    aria-hidden="true">
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Save</button>
-                                    </li>
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Report</button>
-                                    </li>
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Cancel</button>
-                                    </li>
-                                </ul>
-                            </div>
+
                         </div>
 
 
                         <div class="song">
 
-                        {% for donation in donations %}
+                        {% for saved_project in my_saved_projects %}
                             <div class="song-grid-right">
                                 <div class="share">
 
-
-                                    <h3><strong>Project Title: </strong>{{donation.project.title}}</h3><br>
-
-                                    <div class="item md-3">
-                                        <img src={{ donation.project.cover.url }} class="img-responsive" width="400px" height="500px"/>
+                                    <h5><strong>Project Title: </strong>{{ saved_project.project.title }}</h5><br>
+                                     <div class="item md-3">
+                                        <img src={{ saved_project.project.cover.url }} class="img-responsive" width="400px" height="500px"/>
                                     </div> <br>
-                                    <ol>
-                                        <li>
-                                        <h5> <strong>Price: </strong>${{ donation.donation }}</h5><br>
-                                            </li>
-                                       <li><h5><strong>Date: </strong>{{ donation.donated_at}}</h5></li><br>
 
-                                      <span class="tag">
-
-                                          <a href="{% url 'show_project'  donation.project_id %}">
-                                            show project details
+                                     <span class="tag">
+                                          <a href="{% url 'show_project'  saved_project.project_id %}">
+                                           Show Details
                                           </a>
                                         </span>
-                                    </ol>
+                                    <div class="single-agile-shar-buttons">
+                                        {% for tag in project.tags %}
+                                            <span class="tag"> {{ tag.name }} </span>
+                                        {% endfor %}
 
 
+                                    </div>
                                 </div>
                             </div>
 

@@ -1,9 +1,8 @@
 from django.urls import path
-from .views import show, projects_list, show_all, show_create_project, create, report, save, cancel, donate_list, \
-  delete_comment, add_comment, report_comment
+from .views import *
 
 urlpatterns = [
-  path('<int:project_id>', show, name='show_project'),
+    path('<int:project_id>/', show, name='show_project'),
     path('<int:project_id>/report', report, name='report_project'),
     path('<int:project_id>/cancel', cancel, name='cancel_project'),
     path('<int:project_id>/save', save, name='save_project'),
@@ -15,4 +14,8 @@ urlpatterns = [
     path('<int:project_id>/add-comment', add_comment, name='add_comment'),
     path('delete-comment/', delete_comment, name='delete_comment'),
     path('report-comment/', report_comment, name='report_comment'),
+    path('add-reply/', add_reply, name='add_reply'),
+    path('add-rate/', add_rate, name='add_rate'),
+    path('saved/', saved_projects),
+    path('favourites/', change_favourites, name='change_favourites'),
 ]

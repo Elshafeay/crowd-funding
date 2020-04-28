@@ -107,4 +107,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
 MEDIA_URL = '/uploads/'
-LOGIN_REDIRECT_URL='home'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = 'home'

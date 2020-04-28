@@ -1,21 +1,47 @@
 {% extends "projects/layouts/base.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+    Login
+{% endblock title %}
+
+{% block styles %}
+    <link href="{% static 'projects/assets/css/bootstrap.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'users/assets/css/register.css' %}" rel='stylesheet' type='text/css'/>
+{% endblock %}
+
+
 {% block content %}
+    <style>
+        .content-section{
+            width: 40%;
+        }
+    </style>
     <div class="content-section">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Log In</legend>
-                {{ form|crispy }}
+                    <div class="control-group">
+                        <label for="exampleFormControlInput1">Email address</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="control-group">
+                        <label for="exampleFormControlInput1">Password</label>
+                        {{ form.password }}
+                    </div>
             </fieldset>
             <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Login</button>
-                <small class="text-muted ml-2">
-                    <a href="#">Forgot Password?</a>
-                </small>
+                <button class="btn btn-warning submit-btn" type="submit">Login</button>
             </div>
         </form>
-        <div class="border-top pt-3">
+        <div class="border-top pt-3" style="margin-left: 2rem">
+                <div>
+                    <small class="text-muted ml-2">
+                        <a href="#">Forgot Password?</a>
+                    </small>
+                </div>
             <small class="text-muted">
                 Need An Account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
             </small>

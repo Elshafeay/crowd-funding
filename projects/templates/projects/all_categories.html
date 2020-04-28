@@ -1,0 +1,92 @@
+{% extends 'projects/layouts/base.html' %}
+{% load static %}
+{% block title %} {{ project.title }} {% endblock title %}
+{% block styles %}
+    <link href="{% static 'projects/assets/css/contactstyle.css' %}" rel='stylesheet' type='text/css' media="all" />
+    <link href="{% static 'projects/assets/css/faqstyle.css' %}" rel='stylesheet' type='text/css' media="all" />
+    <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css' media="all" />
+    <link href="{% static 'projects/assets/css/font-awesome.min.css' %}" rel='stylesheet' type='text/css' media="all" />
+   <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>
+   <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+         function hideURLbar(){ window.scrollTo(0,1); } </script>
+   <script>
+
+   </script>
+
+{% endblock %}
+{% block content %}
+
+
+<!-- general -->
+	<div class="general">
+		<h4 class="latest-text w3_latest_text">All Categories </h4>
+		<div class="container">
+			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+				<div  class="tab-content">
+					<div role="tabpanel" class="tab-pane fade active in" >
+						<div class="w3_agile_featured_movies">
+							{% for cat in categories %}
+							<div class="col-md-2 w3l-movie-gride-agile">
+								<a href="/category/{{cat.id}}" class="hvr-shutter-out-horizontal"><img src="{{ cat.image.url }}" title="album-name" class="img-responsive" alt=" " />
+									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
+								</a>
+								<div class="mid-1 agileits_w3layouts_mid_1_home">
+									<div class="w3l-movie-text">
+										<h6><a href="#">{{ cat.name }}</a></h6>
+										<h6>Number of Projects {{ cat.project_set.all|length }} </h6>
+									</div>
+									<div class="mid-2 agile_mid_2_home">
+										<div class="block-stars">
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+
+							</div>
+							{% endfor %}
+
+							<div class="clearfix"> </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- //general -->
+
+
+
+
+<!-- Latest-tv-series -->
+
+	<!-- pop-up-box -->
+	<script src="{% static 'projects/assets/js/jquery.magnific-popup.js' %}"></script>
+	<!--//pop-up-box -->
+	<div id="small-dialog" class="mfp-hide">
+		<iframe src="https://player.vimeo.com/video/164819130?title=0&byline=0"></iframe>
+	</div>
+	<div id="small-dialog1" class="mfp-hide">
+		<iframe src="https://player.vimeo.com/video/148284736"></iframe>
+	</div>
+	<div id="small-dialog2" class="mfp-hide">
+		<iframe src="https://player.vimeo.com/video/165197924?color=ffffff&title=0&byline=0&portrait=0"></iframe>
+	</div>
+	<script>
+		$(document).ready(function() {
+		$('.w3_play_icon,.w3_play_icon1,.w3_play_icon2').magnificPopup({
+			type: 'inline',
+			fixedContentPos: false,
+			fixedBgPos: true,
+			overflowY: 'auto',
+			closeBtnInside: true,
+			preloader: false,
+			midClick: true,
+			removalDelay: 300,
+			mainClass: 'my-mfp-zoom-in'
+		});
+
+		});
+	</script>
+<!-- //Latest-tv-series -->
+
+{% endblock content %}
