@@ -2,7 +2,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from crowdfunding import settings
-from .views import welcome, category_project, all_category, error
+from .views import welcome, category_project, all_category, all_tags, tag_projects
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from users.views import register, logout, profile
@@ -12,6 +12,8 @@ urlpatterns = [
     path('', welcome, name='home'),
     path('category/<int:cat_id>', category_project),
     path('categories/', all_category),
+    path('tag/<int:tag_id>', tag_projects),
+    path('tags/', all_tags),
     path('profile/', profile, name='profile'),
     path('register/', register, name='register'),
     path('login/',

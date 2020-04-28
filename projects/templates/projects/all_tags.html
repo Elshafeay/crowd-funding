@@ -1,0 +1,80 @@
+{% extends 'projects/layouts/base.html' %}
+{% load static %}
+{% block title %} {{ project.title }} {% endblock title %}
+{% block styles %}
+    <link href="{% static 'projects/assets/css/contactstyle.css' %}" rel='stylesheet' type='text/css' media="all" />
+    <link href="{% static 'projects/assets/css/faqstyle.css' %}" rel='stylesheet' type='text/css' media="all" />
+    <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css' media="all" />
+    <link href="{% static 'projects/assets/css/font-awesome.min.css' %}" rel='stylesheet' type='text/css' media="all" />
+   <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>
+   <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+         function hideURLbar(){ window.scrollTo(0,1); } </script>
+   <script>
+
+   </script>
+
+{% endblock %}
+{% block content %}
+
+
+
+<!-- faq-banner -->
+	<div class="faq">
+	<div class="icons main-grid-border">
+		<div class="container">
+			<div class="grid_3 grid_4 w3_agileits_icons_page">
+						<div class="icons">
+							 <section id="new">
+								  <h3 class="page-header page-header icon-subheading">All Tags " {{tags|length}} " </h3>
+
+								  <div class="row fontawesome-icon-list">
+									  {% for tag in tags %}
+									  <a class="agile-icon" href="/tag/{{tag.id}}"><div class="icon-box col-md-3 col-sm-4"><i class="fa fa-tag"></i> {{tag.name}}</div></a>
+									  {% endfor %}
+								  </div>
+
+								</section>
+
+						</div>
+					</div>
+
+		</div>
+	</div>
+	<!-- // Terms of use -->
+	</div>
+<!-- //faq-banner -->
+
+
+<!-- Latest-tv-series -->
+
+	<!-- pop-up-box -->
+	<script src="{% static 'projects/assets/js/jquery.magnific-popup.js' %}"></script>
+	<!--//pop-up-box -->
+	<div id="small-dialog" class="mfp-hide">
+		<iframe src="https://player.vimeo.com/video/164819130?title=0&byline=0"></iframe>
+	</div>
+	<div id="small-dialog1" class="mfp-hide">
+		<iframe src="https://player.vimeo.com/video/148284736"></iframe>
+	</div>
+	<div id="small-dialog2" class="mfp-hide">
+		<iframe src="https://player.vimeo.com/video/165197924?color=ffffff&title=0&byline=0&portrait=0"></iframe>
+	</div>
+	<script>
+		$(document).ready(function() {
+		$('.w3_play_icon,.w3_play_icon1,.w3_play_icon2').magnificPopup({
+			type: 'inline',
+			fixedContentPos: false,
+			fixedBgPos: true,
+			overflowY: 'auto',
+			closeBtnInside: true,
+			preloader: false,
+			midClick: true,
+			removalDelay: 300,
+			mainClass: 'my-mfp-zoom-in'
+		});
+
+		});
+	</script>
+<!-- //Latest-tv-series -->
+
+{% endblock content %}
