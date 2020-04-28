@@ -484,7 +484,8 @@
                           $('#success_message').fadeOut("slow");
                         }, 2000 );
                     },
-                    error: function() {
+                    error: function(error) {
+                        console.log(error)
                     }
                 })
             }
