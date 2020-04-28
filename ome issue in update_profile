@@ -1,0 +1,277 @@
+commit 8f1ca6d8f4d328c9a59441bc57ae1cdf11858f62
+Author: ismailkhadr1995 <ismailkhadr80@yahoo.com>
+Date:   Tue Apr 28 22:30:45 2020 +0200
+
+    fixing some issue in update_profile
+
+commit 07ea5d784574fcdaed59e6e29d4ccf540bc8befd
+Author: Mohamed Elshafeay <mohamedelshafeay@gmail.com>
+Date:   Tue Apr 28 22:28:44 2020 +0200
+
+    Adding rate to the related projects accordian && fixing fontawesome bug
+
+commit a069415b26dc81c5287515642f96579d3d9ca40c
+Author: ismailkhadr1995 <ismailkhadr80@yahoo.com>
+Date:   Tue Apr 28 21:08:38 2020 +0200
+
+    adding update profile
+
+commit 6ef1b3b39afc0f2aeb926cd340e60bb126504e7f
+Author: Islam <iabdelhamid3@gmail.com>
+Date:   Tue Apr 28 18:11:44 2020 +0200
+
+    fix ui
+
+commit cf7f4ab325bd66cb5e633e237abd8bc941cb81f2
+Merge: 4cdc358 0d129c8
+Author: Islam <iabdelhamid3@gmail.com>
+Date:   Tue Apr 28 17:06:52 2020 +0200
+
+    merged
+
+commit 4cdc35839161feb55d54258afc591a1eb0513542
+Author: Islam <iabdelhamid3@gmail.com>
+Date:   Tue Apr 28 17:00:15 2020 +0200
+
+    before merge
+
+commit 0d129c81f871b2af1743bd3fba879c95a370c4c4
+Author: Mohamed Elshafeay <mohamedelshafeay@gmail.com>
+Date:   Tue Apr 28 10:27:01 2020 +0200
+
+    Adding login & register UI
+
+commit 4a33b043027b801f9004ada33db369c373d33d61
+Author: Mohamed Elshafeay <mohamedelshafeay@gmail.com>
+Date:   Tue Apr 28 07:51:52 2020 +0200
+
+    remove redundent messages alert
+
+commit afe3286fa0de8cfa58c28c311568bea9882c9c90
+Author: Mohamed Elshafeay <mohamedelshafeay@gmail.com>
+Date:   Tue Apr 28 07:01:05 2020 +0200
+
+    Adding the reviewing functionality
+
+commit 8633d6606e91b65ccf96908112c376d9e710037c
+Author: Mohamed Elshafeay <mohamedelshafeay@gmail.com>
+Date:   Tue Apr 28 06:04:35 2020 +0200
+
+    refactoring some functions
+
+commit 598be876956acf3bdf05b1bd17ebd89a42d210a3
+Author: Mohamed Elshafeay <mohamedelshafeay@gmail.com>
+Date:   Mon Apr 27 22:49:35 2020 +0200
+
+    Fixing a bug in 404 handler
+
+commit e48a74ee665874ec4a2a60c673dd2762ac78d623
+Author: ismailkhadr1995 <ismailkhadr80@yahoo.com>
+Date:   Mon Apr 27 16:33:43 2020 +0200
+
+    add mobile regix and profile logic
+
+commit 30ae3b90123fc2febd2a1a066373c3523ee4bff9
+Merge: 64bf348 995fc00
+Author: omarMohamedAbdo <omarknighto@gmail.com>
+Date:   Mon Apr 27 12:19:44 2020 +0200
+
+    Merge branch 'development' of https://github.com/Elshafeay/crowd-funding into development
+
+commit 64bf3484aa63f0c37e4807eeb1575b7e653e0222
+Author: omarMohamedAbdo <omarknighto@gmail.com>
+Date:   Mon Apr 27 12:19:35 2020 +0200
+
+    Project Images
+
+commit 995fc0019f871943efe8c95fa8c20fa7047220ca
+Author: Mohamed Elshafeay <mohamedelshafeay@gmail.com>
+Date:   Mon Apr 27 11:41:11 2020 +0200
+
+    Adding replies and likes functionality && related projects
+
+commit c2fbfc7a446126e5064cfc001b3fe88783c41a6a
+Author: Reham Hussein <rehamhussein_fcis@yahoo.com>
+Date:   Mon Apr 27 11:00:53 2020 +0200
+
+    add search functionality and 404 page
+
+commit 6c14360452e827c4cd1d42425462dc131a687537
+Author: Reham Hussein <rehamhussein_fcis@yahoo.com>
+Date:   Mon Apr 27 03:04:29 2020 +0200
+
+    add all categories
+
+commit b88d203a9a25a30e57df0bfde16ea525bd36c04d
+Author: Mohamed Elshafeay <mohamedelshafeay@gmail.com>
+Date:   Sun Apr 26 22:44:34 2020 +0200
+
+    Adding image field to the categories
+
+commit 6eeec6dc8009423b8e62c9c8d4524d3d7f96e69b
+Author: ismailkhadr1995 <ismailkhadr80@yahoo.com>
+Date:   Sun Apr 26 20:45:01 2020 +0200
+
+    fix some issue in login and sign up and delete logout.html
+
+commit 9eb55e2718c9365fe75af015f99c2b2b0f5c0701
+Merge: 0dfa6c3 981a870
+Author: nahlaahmed97 <nahla.elaskry97@gmail.com>
+Date:   Sun Apr 26 18:33:03 2020 +0200
+
+    fixing some issues
+
+commit 0dfa6c3e92515a6fedfe4e907873b3495efb1f93
+Author: nahlaahmed97 <nahla.elaskry97@gmail.com>
+Date:   Sun Apr 26 18:29:10 2020 +0200
+
+    fixing some issues
+
+commit 981a870a90d9b875eb32e1b43d43e23c300e3c59
+Author: Mohamed Elshafeay <mohamedelshafeay@gmail.com>
+Date:   Sun Apr 26 18:17:14 2020 +0200
+
+    Fixing urls bug
+
+commit b52becfbc8798408a92e5e2419a9929d1cf49fb8
+Author: Reham Hussein <rehamhussein_fcis@yahoo.com>
+Date:   Sun Apr 26 17:48:29 2020 +0200
+
+    handle sort categories issue
+
+commit 145cbc401860f122fd4a607e747602097379499a
+Author: Reham Hussein <rehamhussein_fcis@yahoo.com>
+Date:   Sun Apr 26 17:20:28 2020 +0200
+
+    make navbar visible to authenticated user
+
+commit 04298d0d69f04ca02a12490ed9259b4a0e3a5a4e
+Merge: f547e98 3bcb864
+Author: nahlaahmed97 <nahla.elaskry97@gmail.com>
+Date:   Sun Apr 26 16:57:03 2020 +0200
+
+    each user can see his saved project
+
+commit f547e98b8cfde9290daf360bb1e9c711739de693
+Author: nahlaahmed97 <nahla.elaskry97@gmail.com>
+Date:   Sun Apr 26 16:50:54 2020 +0200
+
+    each user can see his saved project
+
+commit 3bcb864dc5a6bd532977b9393d1f4fb04b18db4a
+Merge: d5e141b 12744ef
+Author: Reham Hussein <rehamhussein_fcis@yahoo.com>
+Date:   Sun Apr 26 16:28:42 2020 +0200
+
+    Merge remote-tracking branch 'origin/development' into development
+
+commit d5e141bf728df0e29275a44776e07ee0e3fca275
+Author: Reham Hussein <rehamhussein_fcis@yahoo.com>
+Date:   Sun Apr 26 16:28:34 2020 +0200
+
+    add sign up button to the header
+
+commit 12744ef1514fcfc4d1641d7c89a62a9a7aee48ba
+Merge: 4e3913e ae06d9c
+Author: Islam <iabdelhamid3@gmail.com>
+Date:   Sun Apr 26 16:15:27 2020 +0200
+
+    Merge branch 'development' of github.com:Elshafeay/crowd-funding into development
+
+commit 4e3913e4694702f9e6a95d41edaa36353416617c
+Merge: 1f5f040 106b703
+Author: Islam <iabdelhamid3@gmail.com>
+Date:   Sun Apr 26 16:15:07 2020 +0200
+
+    merge with single project upper
+
+commit ae06d9c737f28ac22d4ac909d2a28babeca90430
+Author: Reham Hussein <rehamhussein_fcis@yahoo.com>
+Date:   Sun Apr 26 16:06:36 2020 +0200
+
+    add login / logout buttons to header
+
+commit 97d0c9848e81c5f6b93fc02cd85a19ac8617532f
+Author: Reham Hussein <rehamhussein_fcis@yahoo.com>
+Date:   Sun Apr 26 15:35:30 2020 +0200
+
+    make only only 5 categories to display
+
+commit 1f5f040fe9711f7fe00ad929507a10907c15c663
+Author: Islam <iabdelhamid3@gmail.com>
+Date:   Sun Apr 26 15:28:30 2020 +0200
+
+    single project page i working fine
+
+commit 106b70372ab0cda6f0d5218c18649ba9e9bf069e
+Merge: 77451ba 7023641
+Author: Reham Hussein <rehamhussein_fcis@yahoo.com>
+Date:   Sun Apr 26 14:35:22 2020 +0200
+
+    Merge remote-tracking branch 'origin/development' into development
+
+commit 77451ba6acafe84b39cc7e1e792b2cece6a68c30
+Author: Reham Hussein <rehamhussein_fcis@yahoo.com>
+Date:   Sun Apr 26 14:35:09 2020 +0200
+
+    in home page
+    
+    - slider to show the highest five running rated projects
+    - list of latest 5 featured projects (which are selected by the admin)
+    - list of the categories
+
+commit 70236418f8fdc7f12dcf08c2b5f4bc6c918d2b16
+Author: Mohamed Elshafeay <mohamedelshafeay@gmail.com>
+Date:   Sun Apr 26 08:56:01 2020 +0200
+
+    Adding Comments functionalities [adding, deleting, reporting]
+
+commit b3e9bee3c11b45f8e80b9d4efb197e936c8c95f2
+Author: omarMohamedAbdo <omarknighto@gmail.com>
+Date:   Sun Apr 26 08:26:16 2020 +0200
+
+    Minor fix
+
+commit d93ced03cfafb681645ef544fe1a741d692a6d84
+Author: omarMohamedAbdo <omarknighto@gmail.com>
+Date:   Sun Apr 26 05:40:27 2020 +0200
+
+    Improvements on Projects
+
+commit 2fc1e8b81bb84861603d4f1f77f5f6643f48e193
+Author: omarMohamedAbdo <omarknighto@gmail.com>
+Date:   Sun Apr 26 04:50:10 2020 +0200
+
+    Update on Projects UI
+
+commit 47e5d2f5af2ba357023a877b048eae78bb0f4b84
+Author: Mohamed Elshafeay <mohamedelshafeay@gmail.com>
+Date:   Sat Apr 25 06:37:59 2020 +0200
+
+    Adding comments and replies UI
+
+commit 7854c5ebb4f764bcff7ae1ee9da85cbf51b08f6c
+Merge: 4ff86ab 248ec31
+Author: nahlaahmed97 <nahla.elaskry97@gmail.com>
+Date:   Sat Apr 25 04:06:04 2020 +0200
+
+    user can list his own projects and donation
+
+commit 4ff86ab820f37ebcab7cd3a308778f25347294c2
+Author: nahlaahmed97 <nahla.elaskry97@gmail.com>
+Date:   Sat Apr 25 03:38:39 2020 +0200
+
+    user can list his own projects and donation
+
+commit 248ec314298411f80a116d4bcdedef2509e5d302
+Author: omarMohamedAbdo <omarknighto@gmail.com>
+Date:   Fri Apr 24 22:59:23 2020 +0200
+
+    More On Projecte Create
+
+commit b85168b987efd9e22e5aa1eecd3c511718308186
+Merge: c0db191 c8ab359
+Author: Islam <iabdelhamid3@gmail.com>
+Date:   Fri Apr 24 22:03:51 2020 +0200
+
+   

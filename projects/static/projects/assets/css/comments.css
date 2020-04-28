@@ -110,6 +110,7 @@ input::-moz-placeholder { color: #999999; }
     border: none;
     height: 30px;
     background-color: rgba(0,0,0,0);
+    transition: .5s ease-in-out;
 }
 .commAction:hover {
     color: white;
@@ -164,9 +165,6 @@ input::-moz-placeholder { color: #999999; }
 
 .red-text{
     color: red;
-}
-.reply-btn-text{
-    display: inline-block;
 }
 
 .reply-input{

@@ -1,7 +1,9 @@
 import json
+from math import floor
 
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
@@ -31,29 +33,13 @@ def show(request, project_id):
     favourites = [_.project for _ in liked]
     is_user_reported = project.review_set.filter(user_id=request.user.id)
     is_project_saved = project.savedproject_set.filter(user_id=request.user.id)
-    review = [get_user(request).review_set.filter(
-        project=get_object_or_404(Project, pk=project_id)
-    )][0]
+    review = get_user(request).review_set.filter(project_id=project_id).first()
 
-    if review:
-        try:
-            is_rated = int(review.rate) > 0
-        except:
-            is_rated = False
-    else:
-        is_rated = False
+    is_rated = False
+    if review and review.rate:
+        is_rated = True
 
     donation_form = DonateForm()
-
-    if request.method == 'POST':
-        donation_form = DonateForm(request.POST or None)
-        if donation_form.is_valid():
-            project.donation_set.create(
-                user=request.user,
-                donation=donation_form.cleaned_data['donation']
-            )
-            messages.success(request, "Donation Added Successfully")
-            return redirect('show_project', project_id)
 
     context = {
         'project': project,
@@ -71,11 +57,24 @@ def show(request, project_id):
 
 
 @require_http_methods("POST")
+def donate(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    donation_form = DonateForm(request.POST or None)
+    if donation_form.is_valid():
+        project.donation_set.create(
+            user=request.user,
+            donation=donation_form.cleaned_data['donation']
+        )
+        messages.success(request, "Donation Added Successfully")
+        return redirect('show_project', project_id)
+
+
+@require_http_methods("POST")
 def add_comment(request, project_id):
     new_comment = request.POST.get('comment')
     current_user = get_user(request)
     current_user.comment_set.create(
-        project=get_object_or_404(Project, pk=project_id),
+        project_id=project_id,
         comment=new_comment)
     return redirect('show_project', project_id)
 
@@ -95,7 +94,7 @@ def add_reply(request):
 @require_http_methods("POST")
 def delete_comment(request):
     comment = get_object_or_404(Comment, pk=request.POST.get('comment_id'))
-    project_id = comment.project.id
+    project_id = comment.project_id
     comment.delete()
     return redirect('show_project', project_id)
 
@@ -113,17 +112,16 @@ def report_comment(request):
 @require_http_methods("POST")
 def change_favourites(request):
     project_id = request.POST.get('project')
-    project = get_object_or_404(Project, pk=project_id)
     review = get_user(request).review_set.filter(
-        project=project
-    )[0]
+        project_id=project_id
+    ).first()
 
     if review:
         review.liked = not review.liked
         review.save()
     else:
         review = get_user(request).review_set.create(
-            project=project,
+            project_id=project_id,
             liked=True
         )
 
@@ -140,24 +138,22 @@ def change_favourites(request):
 @require_http_methods("POST")
 def add_rate(request):
     project_id = request.POST.get('project')
-    project = get_object_or_404(Project, pk=project_id)
-    review = get_user(request).review_set.filter(
-        project=project
-    ).get_or_create()
+    review, created = get_user(request).review_set.get_or_create(
+        project_id=project_id
+    )
 
-    review.rate = int(request.POST.get('project'))
+    review.rate = int(request.POST.get('rate'))
     review.save()
-    message = "Your rate has been added successfully"
+    update_project_rate(project_id)
+    message = "Thanks, for taking time to rate this project."
     return HttpResponse(message)
 
 
 @require_http_methods("POST")
 def report(request, project_id):
-    project = get_object_or_404(Project, pk=project_id)
-
-    project.review_set.get_or_create(
+    get_user(request).review_set.get_or_create(
         reported=True,
-        user=request.user
+        project_id=project_id
     )
     messages.success(request, "Report Added Successfully")
     return redirect('show_project', project_id)
@@ -224,7 +220,7 @@ def create(request):
                 photo = ProjectImages(project=project, image=image)
                 photo.save()
             messages.success(request, 'Project Created Successfully')
-            return redirect('/projects/create')
+            return redirect('show_project', project.id)
         else:
             return render(request, 'projects/create_project.html', context)
 
@@ -245,6 +241,16 @@ def donate_list(request):
 
 def saved_projects(request):
     owner = get_user(request)
-    saved_projects = owner.savedproject_set.all()
-    context = {"saved_projects": saved_projects}
+    my_saved_projects = owner.savedproject_set.all()
+    context = {"saved_projects": my_saved_projects}
     return render(request, 'projects/saved_projects.html', context)
+
+
+def update_project_rate(pk):
+    project = get_object_or_404(Project, pk=pk)
+    reviews = project.review_set.filter(rate__gt=0)
+    rates = [_.rate for _ in reviews]
+    average = sum(rates)/len(rates)
+    average = round(average, 1)  # to round to 1 decimal place
+    project.rate = floor(average*2)/2
+    project.save()

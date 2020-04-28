@@ -10,8 +10,6 @@ class DonateForm(forms.Form):
         model = Donation
 
 
-
-
 class CreateForm(forms.Form):
     title = forms.CharField(max_length=50,widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title '})   )
     details = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Details ','rows':'4'}))

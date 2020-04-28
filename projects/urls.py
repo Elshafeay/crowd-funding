@@ -3,6 +3,7 @@ from .views import *
 
 urlpatterns = [
     path('<int:project_id>/', show, name='show_project'),
+    path('<int:project_id>/donate', donate, name='donate_project'),
     path('<int:project_id>/report', report, name='report_project'),
     path('<int:project_id>/cancel', cancel, name='cancel_project'),
     path('<int:project_id>/save', save, name='save_project'),

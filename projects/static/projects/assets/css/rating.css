@@ -110,9 +110,7 @@
 }
 
 .rating-card{
-    max-width: 10rem;
     height: 30px;
-    bottom: inherit !important;
 }
 
 .review-card{
@@ -210,9 +208,25 @@
 }
 
 .review-submit-btn{
+    color: white;
     background-color: #F28B31;
+    transition: .5s ease-in-out;
 }
+
 .review-submit-btn:hover{
     background-color: transparent;
-    color: #F28B31;
+    color: #c77023 !important;
+    border: 1px solid #F28B31;
+}
+.alert-danger{
+    background-color: #f8d7da !important;
+}
+
+.fa-star{
+    font-size: 20px !important;
+}
+
+.fa-reply{
+    font-size: 14px !important;
+    margin-right: .2rem;
 }

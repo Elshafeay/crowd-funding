@@ -6,8 +6,8 @@
 <br>
 
 ## Prerequisites 
-* python (>= 3.4 required) 
-
+* Python (>= 3.4 required) 
+* MySQL (or) PostgreSQL
 <br>
 
 ## Installation 

@@ -3,10 +3,9 @@
 {% block content %}
     <div class="content-section">
         <div class="media-body">
-            <div class="account-heading">{{ user.first_name }}</div>
-            <div class="account-heading">{{ user.last_name }}</div>
+            <div class="account-heading">{{ user.get_full_name }}</div>
             <div class="account-heading">{{ user.phone }}</div>
-               
+            <img src="{{ user.avatar.url }}" alt="avatar">
           </div>
        
     </div>
