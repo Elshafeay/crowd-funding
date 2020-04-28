@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
@@ -9,6 +10,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 
+@login_required
 def show(request, project_id):
     project = get_object_or_404(Project, id=project_id)
 

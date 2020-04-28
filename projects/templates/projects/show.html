@@ -40,9 +40,7 @@
 
                 <div class="show-top-grids-w3lagile">
                     <div class="col-sm-8 single-left">
-                        {% if request.user.is_authenticated %}
-
-                            <div class="more">
+                         <div class="more">
                                 <button id="more-btn" class="more-btn">
                                     <span class="more-dot"></span>
                                     <span class="more-dot"></span>
@@ -94,8 +92,6 @@
                                 </div>
 
                             </div>
-                        {% endif %}
-
 
                         <div class="song">
                             <div class="song-info">
@@ -148,8 +144,7 @@
                         <div class="donate-form">
 
                             <h3>Donate Now</h3>
-                            {% if request.user.is_authenticated %}
-                                <form class="w3ls_footer_grid_left1_pos" method="post">
+                              <form class="w3ls_footer_grid_left1_pos" method="post">
 
 
                                     <div class="input-group w3_w3layouts">
@@ -163,11 +158,6 @@
                                     {% csrf_token %}
                                     <input type="submit" value=" MAKE A DONATION" name="donate_from">
                                 </form>
-                            {% else %}
-                                <div class="w3l_sign_in_register login-now">
-                                    <a href="{% url 'login' %}">Login Now</a>
-                                </div>
-                            {% endif %}
                         </div>
                         <div class="comment-area-wrap mt-5">
                             <!-- Write a comment and post it -->
