@@ -37,3 +37,11 @@ class UserRegisterForm(CustomUserCreationForm):
             'first_name', 'last_name', 'email',
             'phone', 'password1', 'password2', 'avatar'
         ]
+
+class UserUpdateForm(CustomUserCreationForm):
+    # email = forms.EmailField()
+    phone = forms.RegexField(regex = "^(002)?01[0125]\d{8}$")
+    
+    class Meta:
+        model = UserModel
+        fields = ['first_name', 'last_name', 'country', 'birth_date', 'facebook_profile', 'phone', 'avatar','password1','password2']        

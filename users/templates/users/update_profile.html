@@ -1,0 +1,27 @@
+{% extends "projects/layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Updat_profile
+{% endblock title %}
+
+{% block styles %}
+    <link href="{% static 'projects/assets/css/bootstrap.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'users/assets/css/register.css' %}" rel='stylesheet' type='text/css'/>
+{% endblock %}
+{% block content %}
+<div class="content-section">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Crowd Funding </legend>
+            {{ u_profile|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Save</button>
+        </div>
+    </form>
+    
+</div>
+{% endblock content %}
