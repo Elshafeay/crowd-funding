@@ -1,4 +1,5 @@
 import json
+from math import floor
 
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
@@ -143,6 +144,7 @@ def add_rate(request):
 
     review.rate = int(request.POST.get('rate'))
     review.save()
+    update_project_rate(project_id)
     message = "Thanks, for taking time to rate this project."
     return HttpResponse(message)
 
@@ -242,3 +244,13 @@ def saved_projects(request):
     my_saved_projects = owner.savedproject_set.all()
     context = {"saved_projects": my_saved_projects}
     return render(request, 'projects/saved_projects.html', context)
+
+
+def update_project_rate(pk):
+    project = get_object_or_404(Project, pk=pk)
+    reviews = project.review_set.filter(rate__gt=0)
+    rates = [_.rate for _ in reviews]
+    average = sum(rates)/len(rates)
+    average = round(average, 1)  # to round to 1 decimal place
+    project.rate = floor(average*2)/2
+    project.save()

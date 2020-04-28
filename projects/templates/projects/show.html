@@ -9,9 +9,7 @@
     <link href="{% static 'projects/assets/css/accordian.css' %}" rel='stylesheet' type='text/css'/>
     <link href="{% static 'projects/assets/css/like-button.css' %}" rel='stylesheet' type='text/css'/>
     <link href="{% static 'projects/assets/css/rating.css' %}" rel='stylesheet' type='text/css'/>
-    <script defer src='https://use.fontawesome.com/releases/v5.5.0/js/all.js'
-            integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
-            crossorigin="anonymous"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
     <div class="single-page-agile-main">
@@ -484,7 +482,7 @@
                                                 required
                                         />
                                         <button class="commAction">
-                                            <i class="fas fa-reply"></i>Reply
+                                            <i class="fa fa-reply"></i>Reply
                                         </button>
                                         <input type="hidden" name="comment_id" value="{{ comment.id }}">
                                         <label for="reply-input"></label>
@@ -494,55 +492,35 @@
                         </div>
                     </div>
 
-                    <h4 class="latest-text ">Related Projects</h4>
-
-                    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
-                        <div id="myTabContent" class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
-                                <div class="w3_agile_featured_movies">
-
-                                    {% for rp in related_projects %}
-
-                                        <div class="col-md-3 w3l-movie-gride-agile">
-
-                                            <a href="{% url 'show_project' rp.id %}" class="hvr-shutter-out-horizontal"><img
-                                                    src="{{ rp.cover.url }}" title="album-name" class="img-responsive"
-                                                    alt=" ">
-                                            </a>
-                                            <div class="mid-1 agileits_w3layouts_mid_1_home">
-                                                <div class="w3l-movie-text">
-                                                    <h6><a href="{% url 'show_project' rp.id %}">{{ rp.title }}</a></h6>
-                                                </div>
-                                                <div class="mid-2 agile_mid_2_home">
-                                                    <div class="block-stars">
-                                                        <ul class="w3l-ratings">
-                                                            <li><i class="fa fa-star"
-                                                                               aria-hidden="true"></i></li>
-                                                            <li><i class="fa fa-star"
-                                                                               aria-hidden="true"></i></li>
-                                                            <li><i class="fa fa-star"
-                                                                               aria-hidden="true"></i></li>
-                                                            <li><i class="fa fa-star"
-                                                                               aria-hidden="true"></i></li>
-                                                            <li><i class="fa fa-star-half-o"
-                                                                               aria-hidden="true"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                </div>
+                        <div style="margin-top: 4rem">
+                            <h4 class="latest-text" style="margin-left: -2rem">Related Projects</h4>
+                            <div class="accordian">
+                                <ul>
+                                {% for rp in related_projects %}
+                                    <li>
+                                        <a href="{% url 'show_project' rp.id %}">
+                                            <img class="acc-img" src="{{ rp.cover.url }}" alt=""/>
+                                        </a>
+                                        <div class="image_title">
+                                            <a href="{% url 'show_project' rp.id %}">{{ rp.title }}</a>
+                                            <div class="rating rating-card">
+                                                <span class="fa fa-star {% if rp.rate > 4 %} {% if rp.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                                style="color:#F28B31;"></span>
+                                                <span class="fa fa-star {% if rp.rate > 3 %} {% if rp.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                                style="color:#F28B31;"></span>
+                                                <span class="fa fa-star {% if rp.rate > 2 %} {% if rp.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                                style="color:#F28B31;"></span>
+                                                <span class="fa fa-star {% if rp.rate > 1 %} {% if rp.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                                style="color:#F28B31;"></span>
+                                                <span class="fa fa-star {% if rp.rate > 0 %} {% if rp.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                                style="color:#F28B31;"></span>
                                             </div>
-
                                         </div>
-
-                                    {% endfor %}
-
-                                    <div class="clearfix"></div>
-                                </div>
+                                    </li>
+                                {% endfor %}
+                                </ul>
                             </div>
                         </div>
-
-
-                    </div>
                 </div>
             </div>
             <div id="success_message" class="alert alert-success fixed-top m-auto ajax_response"

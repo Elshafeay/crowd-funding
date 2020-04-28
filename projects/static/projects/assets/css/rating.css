@@ -110,9 +110,7 @@
 }
 
 .rating-card{
-    max-width: 10rem;
     height: 30px;
-    bottom: inherit !important;
 }
 
 .review-card{
@@ -222,4 +220,13 @@
 }
 .alert-danger{
     background-color: #f8d7da !important;
+}
+
+.fa-star{
+    font-size: 20px !important;
+}
+
+.fa-reply{
+    font-size: 14px !important;
+    margin-right: .2rem;
 }
