@@ -81,7 +81,7 @@ def add_reply(request):
     current_user = get_user(request)
     current_user.reply_set.create(
         reply=reply,
-        comment_id=comment
+        comment=comment
     )
     return redirect('show_project', comment.project.id)
 
@@ -109,7 +109,7 @@ def change_favourites(request):
     project_id = request.POST.get('project')
     review = get_user(request).review_set.filter(
         project_id=project_id
-    )[0]
+    ).first()
 
     if review:
         review.liked = not review.liked
@@ -133,13 +133,13 @@ def change_favourites(request):
 @require_http_methods("POST")
 def add_rate(request):
     project_id = request.POST.get('project')
-    review = get_user(request).review_set.filter(
-        project_i=project_id
-    ).get_or_create()
+    review, created = get_user(request).review_set.get_or_create(
+        project_id=project_id
+    )
 
-    review.rate = int(request.POST.get('project'))
+    review.rate = int(request.POST.get('rate'))
     review.save()
-    message = "Your rate has been added successfully"
+    message = "Thanks, for taking time to rate this project."
     return HttpResponse(message)
 
 

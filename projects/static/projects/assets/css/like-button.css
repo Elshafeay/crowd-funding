@@ -222,7 +222,7 @@ svg .main-circ {
     color: #3c763d;
     margin: auto!important;
     background-color: #dff0d8;
-    width: 30rem !important;
+    width: max-content !important;
     position: fixed;
     right: 0;
     left: 0;

@@ -5,6 +5,7 @@
 {% block title %} {{ project.title }} {% endblock title %}
 {% block styles %}
     <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'projects/assets/css/bootstrap.css' %}" rel='stylesheet' type='text/css'/>
     <link href="{% static 'projects/assets/css/comments.css' %}" rel='stylesheet' type='text/css'/>
     <link href="{% static 'projects/assets/css/accordian.css' %}" rel='stylesheet' type='text/css'/>
     <link href="{% static 'projects/assets/css/like-button.css' %}" rel='stylesheet' type='text/css'/>
@@ -18,7 +19,7 @@
         <div class="container">
             <div class="agileits-single-top">
                 <ol class="breadcrumb">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="/">Home</a></li>
                     <li class="active">{{ project.title }}</li>
                 </ol>
             </div>
@@ -335,7 +336,7 @@
                                   </div>
                                   <div class="text-right">
                                     <button
-                                        class="btn btn-warning review-submit-btn"
+                                        class="btn review-submit-btn"
                                         style="margin-bottom: 1rem" type="submit"
                                         onclick=checkRate(event)
                                     >Submit</button>
@@ -466,8 +467,8 @@
                     </div>
                 </div>
             </div>
-        <div id="success_message" class="alert alert-success ajax_response fixed-top m-auto" style="text-align:center;"></div>
-        <div id="error_message" class="alert alert-danger ajax_response fixed-top m-auto" style="max-width:320px !important; text-align:center;" ></div>
+        <div id="success_message" class="alert alert-success fixed-top m-auto ajax_response" style="text-align:center;"></div>
+        <div id="error_message" class="alert alert-danger fixed-top m-auto ajax_response" style="max-width:320px !important; text-align:center;" ></div>
         </div>
         <script>
             function handlingFav(project_id){
@@ -485,7 +486,7 @@
                         }, 2000 );
                     },
                     error: function(error) {
-                        console.log(error)
+                        console.log(error.responseText)
                     }
                 })
             }
@@ -499,41 +500,36 @@
                         $('#error_message').fadeOut("slow");
                     }, 2000 );
                 }
+                else if(rate <= 0 || rate > 5){
+                    $('#error_message').fadeIn().html("Stop fooling around!, I'm WATCHING you!!");
+                    setTimeout(function() {
+                        $('#error_message').fadeOut("slow");
+                    }, 4000 );
+                    return;
+                }
+                $.ajax({
+                    headers: {
+                        "X-CSRFToken": '{{csrf_token}}'
+                    },
+                    type: 'POST',
+                    url: "{% url 'add_rate' %}",
+                    data: {
+                        'project': {{ project.id }},
+                        'rate': rate,
+                    },
+                    success: function(result) {
+                        $('#success_message').fadeIn().html(result);
+                        setTimeout(function() {
+                            $('#success_message').fadeOut("slow");
+                        }, 4000 );
+                        document.querySelector(".reviewing-box").style.display = "none";
+                    },
+                    error: function(err) {
+                        console.log(err.responseText);
+                    }
+                });
             }
 
-              $("#review-form").submit(function(e) {
-                e.preventDefault(); // avoid to execute the actual submit of the form.
-                let rate = $("input[name='rating']:checked").val();
-                if(rate <= 0 || rate > 5){
-                  $('#error_message').fadeIn().html("Stop fooling around!, I'm WATCHING you!!");
-                  setTimeout(function() {
-                      $('#error_message').fadeOut("slow");
-                  }, 4000 );
-                  return;
-                }
-                  console.log({{project.id}})
-                $.ajax({
-                  headers: {
-                      "X-CSRFToken": '{{csrf_token}}'
-                  },
-                  type: 'POST',
-                  url: "{% url 'add_rate' %}",
-                  data: {
-                      'project': {{ project.id }},
-                      'rate': rate,
-                  },
-                  success: function(result) {
-                      $('#success_message').fadeIn().html(result);
-                      setTimeout(function() {
-                          $('#success_message').fadeOut("slow");
-                      }, 2000 );
-                      document.querySelector(".reviewing-box").style.display = "none";
-                    },
-                  error: function(err) {
-                    console.log(err);
-                  }
-                });
-              });
         </script>
     </div>
 
