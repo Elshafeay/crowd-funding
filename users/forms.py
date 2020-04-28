@@ -39,9 +39,18 @@ class UserRegisterForm(CustomUserCreationForm):
         ]
 
 class UserUpdateForm(CustomUserCreationForm):
-    # email = forms.EmailField()
+    email = forms.EmailField()
     phone = forms.RegexField(regex = "^(002)?01[0125]\d{8}$")
-    
+    password1 = None
+    password2 = None
+    def __init__(self, data=None, files=None, *args, **kwargs):
+        super().__init__(data=data, files=files, *args, **kwargs)
+        self.fields['email'].widget.attrs['disabled'] = 'disabled'
     class Meta:
         model = UserModel
-        fields = ['first_name', 'last_name', 'country', 'birth_date', 'facebook_profile', 'phone', 'avatar','password1','password2']        
+        fields = ['email',
+            'first_name', 'last_name', 
+            'country', 'birth_date', 
+            'facebook_profile', 'phone', 
+            'avatar'
+        ]        
