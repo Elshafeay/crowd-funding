@@ -40,16 +40,6 @@ def show(request, project_id):
 
     donation_form = DonateForm()
 
-    if request.method == 'POST':
-        donation_form = DonateForm(request.POST or None)
-        if donation_form.is_valid():
-            project.donation_set.create(
-                user=request.user,
-                donation=donation_form.cleaned_data['donation']
-            )
-            messages.success(request, "Donation Added Successfully")
-            return redirect('show_project', project_id)
-
     context = {
         'project': project,
         'comments': comments,
@@ -63,6 +53,19 @@ def show(request, project_id):
         'is_rated': is_rated,
     }
     return render(request, 'projects/show.html', context)
+
+
+@require_http_methods("POST")
+def donate(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    donation_form = DonateForm(request.POST or None)
+    if donation_form.is_valid():
+        project.donation_set.create(
+            user=request.user,
+            donation=donation_form.cleaned_data['donation']
+        )
+        messages.success(request, "Donation Added Successfully")
+        return redirect('show_project', project_id)
 
 
 @require_http_methods("POST")
