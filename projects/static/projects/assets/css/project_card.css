@@ -3,7 +3,6 @@
 }
 body {
   background: whiteSmoke;
-  padding: 5%;
 }
 .cards {
   display: flex;
@@ -64,7 +63,7 @@ body {
   margin: 0;
   padding: 30% 0;
   text-shadow: 1px 1px 3px #000;
-  line-height: 18px;
+  line-height: 30px;
   text-transform: uppercase;
 }
 .card__inner h2 small {
