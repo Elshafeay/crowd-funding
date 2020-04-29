@@ -1,12 +1,130 @@
 {% extends "projects/layouts/base.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'users/assets/css/profile.css'%}">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+{% endblock %}
 {% block content %}
-    <div class="content-section">
-        <div class="media-body">
-            <div class="account-heading">{{ user.get_full_name }}</div>
-            <div class="account-heading">{{ user.phone }}</div>
-            <img src="{{ user.avatar.url }}" alt="avatar">
-          </div>
-       
-    </div>
+    <div id="user-profile-2" class="user-profile" style="margin: 3rem 0">
+		<div class="tabbable">
+
+			<div class="tab-content no-border padding-24">
+				<div id="home" class="tab-pane in active">
+					<div class="row">
+						<div class="col-xs-12 col-sm-3 center">
+							<span class="profile-picture">
+								<img
+                                        class="editable img-responsive"
+                                        alt=" Avatar"
+                                        id="avatar2"
+                                        src="{{ user.avatar.url }}">
+							</span>
+
+							<div class="space space-4"></div>
+
+							<a href="{{ user.avatar.url }}" class="btn btn-sm btn-block btn-warning">
+								<span class="bigger-110">View Avatar</span>
+							</a>
+						</div><!-- /.col -->
+
+						<div class="col-xs-12 col-sm-9">
+							<h4 class="blue" style="margin-top: -2rem; margin-bottom: 1rem">
+								<span class="middle">{{ user.get_full_name }}</span>
+
+								<span class="label label-purple arrowed-in-right" style="color: green!important;">
+									<i class="ace-icon fa fa-circle smaller-80 align-middle"></i>
+									online
+								</span>
+							</h4>
+
+							<div class="profile-user-info">
+								<div class="profile-info-row">
+									<div class="profile-info-name"> Email-Address </div>
+
+									<div class="profile-info-value">
+										<span>{{ user.email }}</span>
+									</div>
+								</div>
+                                {% if user.country %}
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Location </div>
+
+                                        <div class="profile-info-value">
+                                            <i class="fa fa-map-marker light-orange bigger-110"></i>
+                                            <span>{{ user.country.name }}</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% if user.birth_date %}
+								<div class="profile-info-row">
+									<div class="profile-info-name"> Birth-Date </div>
+
+									<div class="profile-info-value">
+										<span>{{ user.birth_date }}</span>
+									</div>
+								</div>
+                            {% endif %}
+                                <div class="profile-info-row">
+									<div class="profile-info-name"> Joined </div>
+
+									<div class="profile-info-value">
+										<span>{{ user.date_joined.date }}</span>
+									</div>
+								</div>
+
+								<div class="profile-info-row">
+									<div class="profile-info-name"> Phone Number </div>
+
+									<div class="profile-info-value">
+										<span>{{ user.phone }}</span>
+									</div>
+								</div>
+                            {% if user.id == request.user.id %}
+								<div class="profile-info-row">
+									<div class="profile-info-name" style="font-size: 15px"> Owned Projects </div>
+
+									<div class="profile-info-value">
+                                        <a href="{% url 'my_projects' %}"><span>{{ user.project_set.all.count }}</span></a>
+									</div>
+								</div>
+                            {% endif %}
+                                <div class="profile-info-row">
+									<div class="profile-info-name" style="font-size: 15px"> Total Made Donations</div>
+
+									<div class="profile-info-value">
+                                        <span>
+                                            {% if total_donations %}
+                                                {{ total_donations }}$
+                                            {% else %}
+                                                0$
+                                            {% endif %}
+                                        </span>
+									</div>
+								</div>
+							</div>
+
+							<div class="hr hr-8 dotted"></div>
+
+							<div class="profile-user-info" style="margin-top: 2rem;">
+
+                                {% if user.facebook_profile %}
+                                    <div class="profile-info-row">
+                                            <div class="profile-info-value">
+                                            <i class="middle ace-icon fa fa-facebook-square bigger-150 blue"></i>
+                                                <a href="https://www.facebook.com/{{ user.facebook_profile }}">Facebook Account</a>
+                                            </div>
+                                    </div>
+                                {% endif %}
+							</div>
+						</div><!-- /.col -->
+					</div><!-- /.row -->
+
+					<div class="space-20"></div>
+			</div>
+		</div>
+	</div>
 {% endblock content %}

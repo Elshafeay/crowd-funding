@@ -3,7 +3,7 @@ from django.contrib.auth.models import (
 	BaseUserManager, AbstractUser
 )
 from django.utils.translation import ugettext_lazy as _
-
+from django_countries.fields import CountryField
 
 class UserManager(BaseUserManager):
 	"""
@@ -41,7 +41,7 @@ class UserModel(AbstractUser):
 	first_name = models.CharField(_('first name'), max_length=30)
 	last_name = models.CharField(_('last name'), max_length=30, blank=True)
 	email = models.EmailField(_('email address'), unique=True)
-	country = models.CharField(max_length=50, null=True, blank=True)
+	country = CountryField(null=True, blank=True)
 	birth_date = models.DateField(null=True, blank=True)
 	facebook_profile = models.CharField(max_length=50, null=True, blank=True)
 	avatar = models.ImageField(upload_to='users/avatars', default='users/avatar.png')

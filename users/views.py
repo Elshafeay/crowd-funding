@@ -1,8 +1,12 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth import get_user
+from django.db.models import Sum
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserRegisterForm, UserUpdateForm
 from django.contrib import messages
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+
+from .models import UserModel
 
 
 def register(request):
@@ -30,7 +34,13 @@ def logout(request):
 
 @login_required
 def profile(request):
-    return render(request,'users/profile.html')
+    total_donations = get_user(request).donation_set.aggregate(Sum('donation'))
+    total_donations = total_donations.get('donation__sum')
+    return render(
+        request,
+        'users/profile.html',
+        {'total_donations': total_donations}
+    )
 
 
 @login_required
@@ -45,4 +55,17 @@ def update_profile(request):
         u_profile=UserUpdateForm(instance=request.user)  
     
     context={'u_profile': u_profile}  
-    return render(request,'users/update_profile.html',context)       
+    return render(request,'users/update_profile.html',context)
+
+
+@login_required
+def show_user_profile(request, user_id):
+    user = get_object_or_404(UserModel, pk=user_id)
+    total_donations = user.donation_set.aggregate(Sum('donation'))
+    total_donations = total_donations.get('donation__sum')
+    context = {'total_donations': total_donations, 'user': user}
+    return render(
+        request,
+        'users/profile.html',
+        context
+    )

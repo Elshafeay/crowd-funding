@@ -494,107 +494,135 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 4rem">
-                    <h4 class="latest-text" style="margin-left: -2rem">Related Projects</h4>
-                    <div class="accordian">
-                        <ul>
-                            {% for rp in related_projects %}
-                            <li>
-                                <a href="{% url 'show_project' rp.id %}">
-                                    <img class="acc-img" src="{{ rp.cover.url }}" alt="" />
-                                </a>
-                                <div class="image_title">
-                                    <a href="{% url 'show_project' rp.id %}">{{ rp.title }}</a>
-                                    <div class="rating rating-card">
-                                        <span
-                                            class="fa fa-star {% if rp.rate > 4 %} {% if rp.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                            style="color:#F28B31;"></span>
-                                        <span
-                                            class="fa fa-star {% if rp.rate > 3 %} {% if rp.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                            style="color:#F28B31;"></span>
-                                        <span
-                                            class="fa fa-star {% if rp.rate > 2 %} {% if rp.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                            style="color:#F28B31;"></span>
-                                        <span
-                                            class="fa fa-star {% if rp.rate > 1 %} {% if rp.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                            style="color:#F28B31;"></span>
-                                        <span
-                                            class="fa fa-star {% if rp.rate > 0 %} {% if rp.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                            style="color:#F28B31;"></span>
-                                    </div>
-                                </div>
-                            </li>
-                            {% endfor %}
-                        </ul>
+                <div class="commWrapAll">
+                    {% for comment in comments %}
+                    <!-- Posted comment -->
+                    <div class="comment-wrap">
+                        <div class="comment-options">
+                            {% if comment.user == request.user %}
+                            <form method='POST' action='{% url 'delete_comment' %}'>
+                                <button class="comment-options-btn" title='delete'>
+                                    <i class="fas fa-trash-alt" aria-hidden='true'></i>
+                                </button>
+                                {% else %}
+                                <form method='POST' action='{% url 'report_comment' %}'>
+                                    {% if comment in reported_comments %}
+                                    <p class="red-text">Already reported...</p>
+                                    {% else %}
+                                    <button class="comment-options-btn" title='report'>
+                                        <i class="fas fa-flag" aria-hidden='true'></i>
+                                    </button>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% csrf_token %}
+                                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                </form>
+                        </div>
+                        <a href="{% url 'show_user_profile' comment.user_id %}"><img class="avatarMed"
+                                src='{{ comment.user.avatar.url }}' alt="avatar" /></a>
+                        <div class="postInfo">
+                            <span class="userName textOrange textSemiBold">
+                                {{ comment.user.get_full_name }}
+                            </span>
+                            <span class="timePosted textRegularSml">
+                                {{ comment.created_at|time_since }}
+                            </span>
+                            <p class="userComm textRegularLrg">{{ comment.comment }}</p>
+                            <!-- Posted comment actions -->
+
+                        </div>
+                        {% block replies %}
+                        {% for reply in comment.reply_set.all %}
+                        <!-- Comment reply -->
+                        <div class="commReplyWrap">
+                            <a href="{% url 'show_user_profile' reply.user_id %}"><img class="avatarMed"
+                                    src='{{ reply.user.avatar.url }}' alt="" /></a>
+                            <div class="postInfo">
+                                <span class="userName textOrange textSemiBold">
+                                    {{ reply.user.get_full_name }}</span>
+                                <span class="timePosted textRegularSml">
+                                    {{ reply.created_at|time_since }}
+                                </span>
+                                <p class="userComm textRegularLrg">
+                                    {{ reply.reply }}
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endblock %}
                     </div>
+                    </li>
+                    {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
-        <div id="success_message" class="alert alert-success fixed-top m-auto ajax_response" style="text-align:center;">
-        </div>
-        <div id="error_message" class="alert alert-danger fixed-top m-auto ajax_response"
-            style="max-width:320px !important; text-align:center;"></div>
     </div>
-    <script>
-        function handlingFav(project_id) {
-            $.ajax({
-                headers: {
-                    "X-CSRFToken": '{{csrf_token}}'
-                },
-                type: 'POST',
-                url: "{% url 'change_favourites' %}",
-                data: { project: project_id },
-                success: function (result) {
-                    $('#success_message').fadeIn().html(result);
-                    setTimeout(function () {
-                        $('#success_message').fadeOut("slow");
-                    }, 2000);
-                },
-                error: function (error) {
-                    console.log(error.responseText)
-                }
-            })
-        }
-
-        function checkRate(e) {
-            e.preventDefault()
-            let rate = $("input[name='rating']:checked").val();
-            if (!rate) {
-                $('#error_message').fadeIn().html("You must choose a rate!");
+    <div id="success_message" class="alert alert-success fixed-top m-auto ajax_response" style="text-align:center;">
+    </div>
+    <div id="error_message" class="alert alert-danger fixed-top m-auto ajax_response"
+        style="max-width:320px !important; text-align:center;"></div>
+</div>
+<script>
+    function handlingFav(project_id) {
+        $.ajax({
+            headers: {
+                "X-CSRFToken": '{{csrf_token}}'
+            },
+            type: 'POST',
+            url: "{% url 'change_favourites' %}",
+            data: { project: project_id },
+            success: function (result) {
+                $('#success_message').fadeIn().html(result);
                 setTimeout(function () {
-                    $('#error_message').fadeOut("slow");
+                    $('#success_message').fadeOut("slow");
                 }, 2000);
-            } else if (rate <= 0 || rate > 5) {
-                $('#error_message').fadeIn().html("Stop fooling around!, I'm WATCHING you!!");
-                setTimeout(function () {
-                    $('#error_message').fadeOut("slow");
-                }, 4000);
-                return;
+            },
+            error: function (error) {
+                console.log(error.responseText)
             }
-            $.ajax({
-                headers: {
-                    "X-CSRFToken": '{{csrf_token}}'
-                },
-                type: 'POST',
-                url: "{% url 'add_rate' %}",
-                data: {
-                    'project': {{ project.id }},
-        'rate': rate,
-                    },
-        success: function (result) {
-            $('#success_message').fadeIn().html(result);
+        })
+    }
+
+    function checkRate(e) {
+        e.preventDefault()
+        let rate = $("input[name='rating']:checked").val();
+        if (!rate) {
+            $('#error_message').fadeIn().html("You must choose a rate!");
             setTimeout(function () {
-                $('#success_message').fadeOut("slow");
+                $('#error_message').fadeOut("slow");
+            }, 2000);
+        } else if (rate <= 0 || rate > 5) {
+            $('#error_message').fadeIn().html("Stop fooling around!, I'm WATCHING you!!");
+            setTimeout(function () {
+                $('#error_message').fadeOut("slow");
             }, 4000);
-            document.querySelector(".reviewing-box").style.display = "none";
-        },
-        error: function (err) {
-            console.log(err.responseText);
+            return;
         }
+        $.ajax({
+            headers: {
+                "X-CSRFToken": '{{csrf_token}}'
+            },
+            type: 'POST',
+            url: "{% url 'add_rate' %}",
+            data: {
+                'project': {{ project.id }},
+    'rate': rate,
+                    },
+    success: function (result) {
+        $('#success_message').fadeIn().html(result);
+        setTimeout(function () {
+            $('#success_message').fadeOut("slow");
+        }, 4000);
+        document.querySelector(".reviewing-box").style.display = "none";
+    },
+    error: function (err) {
+        console.log(err.responseText);
+    }
                 });
             }
 
-    </script>
+</script>
 </div>
 
 
