@@ -33,16 +33,21 @@ $(document).ready(function () {
         }
     );
 
-    $(document).ready(function () {
-        $("#owl-demo").owlCarousel({
-            autoPlay: 3000, //Set AutoPlay to 3 seconds
-            items: 3,
-            itemsDesktop: [640, 5],
-            itemsDesktopSmall: [414, 4]
-
-        });
+    $("#owl-demo").owlCarousel({
+        autoPlay: 3000, //Set AutoPlay to 3 seconds
+        items: 3,
+        itemsDesktop: [640, 5],
+        itemsDesktopSmall: [414, 4]
 
     });
+
+    $('.progress-wrap').each(function () {
+        let percent = $(this).data('progress-percent');
+        let animationLength = 2500;
+        $(this).find('.progress-bar').stop().animate({
+            left: percent * 2
+        }, animationLength);
+    })
 
 
     var el = document.querySelector('.more');
@@ -62,7 +67,7 @@ $(document).ready(function () {
 
     function hideMenu(e) {
 
-        if(e.target.classList.contains('more-menu-btn')){
+        if (e.target.classList.contains('more-menu-btn')) {
             return;
         }
 
