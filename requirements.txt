@@ -1,6 +1,7 @@
 backcall==0.1.0
 decorator==4.4.2
 Django==2.2.12
+django-countries==6.1.2
 django-crispy-forms==1.9.0
 django-seed==0.2.2
 Faker==4.0.3

@@ -3,15 +3,19 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-    Updat_profile
+    Update Profile
 {% endblock title %}
 
 {% block styles %}
-    <link href="{% static 'projects/assets/css/bootstrap.css' %}" rel='stylesheet' type='text/css'/>
     <link href="{% static 'users/assets/css/register.css' %}" rel='stylesheet' type='text/css'/>
 {% endblock %}
 {% block content %}
-<div class="content-section">
+<div class="content-section" style="margin-top:3rem;">
+    <style>
+        #div_id_password{
+            display:none;
+        }
+    </style>
     <form method="POST">
         {% csrf_token %}
         <fieldset class="form-group">

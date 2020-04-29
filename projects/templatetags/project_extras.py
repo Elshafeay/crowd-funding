@@ -22,3 +22,8 @@ def time_since(dt, default="Just now"):
         if period >= 1:
             return "%d %s ago" % (period, singular if period == 1 else plural)
     return default
+
+
+@register.filter
+def get_value_from_dict(dictionary, key):
+    return dictionary.get(key)

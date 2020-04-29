@@ -11,7 +11,7 @@ urlpatterns = [
     path('donation/', donate_list),
     path('create/', show_create_project, name='show_create_project'),
     path('create/submit/', create, name='create_project'),
-    path('self/', projects_list),
+    path('mine/', projects_list, name='my_projects'),
     path('<int:project_id>/add-comment', add_comment, name='add_comment'),
     path('delete-comment/', delete_comment, name='delete_comment'),
     path('report-comment/', report_comment, name='report_comment'),
