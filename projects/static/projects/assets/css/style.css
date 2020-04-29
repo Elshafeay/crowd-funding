@@ -106,6 +106,10 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
     padding: 6px 30px;
     font-weight: bold;
 }
+.w3l_sign_in_register > ul{
+	display:flex !important;
+}
+
 .w3l_sign_in_register a:focus{
 	outline:none;
 }
