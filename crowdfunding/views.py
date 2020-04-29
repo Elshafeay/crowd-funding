@@ -26,8 +26,8 @@ def welcome(request):
 
     else:
         highest_five_rated = Project.objects.filter(status=0).order_by('-rate')[:5]
-        latest_five_projects = Project.objects.all().order_by('-created_at')[:5]
-        featured_project = FeaturedProject.objects.all().order_by('-featured_at')[:5]
+        latest_five_projects = Project.objects.all().order_by('created_at')[:5]
+        featured_project = FeaturedProject.objects.all().order_by('featured_at')[:5]
         categories_and_projects = get_categories_have_highest_projects_number()
         first_category = categories_and_projects.get('first_category')
         categories = categories_and_projects.get('categories')
@@ -169,22 +169,15 @@ def tag_projects(request, tag_id):
 def search(request):
     key_word = request.GET['Search']
 
-    projects = []
     search_by_title = Project.objects.filter(title__icontains=key_word)
+    search_by_tag = ProjectTags.objects.filter(tag__name__icontains=key_word)
 
-    search_by_tage = Tag.objects.filter(name__icontains=key_word)
-    all_projects = Project.objects.all()
+    projects = [_.project for _ in search_by_tag]
 
-    for tag in search_by_tage:
-        for pro in ProjectTags.objects.filter(tag_id=tag.id):
-            for proj in all_projects:
-                if proj.id == pro.project_id:
-                    projects.append(proj)
     for proj in search_by_title:
         projects.append(proj)
 
     projects = list(dict.fromkeys(projects))
-
     return projects
 
 
