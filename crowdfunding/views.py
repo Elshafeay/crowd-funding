@@ -1,5 +1,6 @@
 from django.shortcuts import render, render_to_response
-from projects.models import Category, FeaturedProject, Project
+from projects.models import Category, FeaturedProject, Project, Tag, ProjectTags
+
 
 # Homepage should contains the following:
 # - *A slider to show the highest five rated running projects to encourage users to donate
@@ -52,7 +53,7 @@ def welcome(request):
                 {
                     "highest_five_rated": highest_five_rated,
                     "featured_project": featured_project,
-                 }
+                }
             )
 
 
@@ -89,7 +90,7 @@ def category_project(request, cat_id):
             "projects": projects,
             "title": "All Projects Related to " + get_category.name + " category",
             "found": 1
-            }
+        }
         return render(
             request,
             'projects/search_projects.html',
@@ -119,9 +120,71 @@ def all_category(request):
     )
 
 
+def all_tags(request):
+    tags = Tag.objects.all()
+    return render(
+        request,
+        'projects/all_tags.html',
+        {
+            "tags": tags,
+        },
+    )
+
+
+def tag_projects(request, tag_id):
+    try:
+        tag_projects = ProjectTags.objects.filter(tag_id=tag_id)
+        all_projects = Project.objects.all()
+
+        projects = []
+
+        for pro in all_projects:
+            for tp in tag_projects:
+                if pro.id == tp.project_id:
+                    projects.append(pro)
+
+        context = {
+            "projects": projects,
+            "title": "All Projects Related to " + Tag.objects.get(id=tag_id).name + " tag",
+            "found": 1
+        }
+        return render(
+            request,
+            'projects/search_projects.html',
+            context,
+        )
+    except ProjectTags.DoesNotExist:
+        context = {
+            "projects": [],
+            "title": "Sorry",
+            "found": -1,
+        }
+        return render(
+            request,
+            'projects/search_projects.html',
+            context,
+        )
+
+
 def search(request):
     key_word = request.GET['Search']
-    projects = Project.objects.filter(title__icontains=key_word)
+
+    projects = []
+    search_by_title = Project.objects.filter(title__icontains=key_word)
+
+    search_by_tage = Tag.objects.filter(name__icontains=key_word)
+    all_projects = Project.objects.all()
+
+    for tag in search_by_tage:
+        for pro in ProjectTags.objects.filter(tag_id=tag.id):
+            for proj in all_projects:
+                if proj.id == pro.project_id:
+                    projects.append(proj)
+    for proj in search_by_title:
+        projects.append(proj)
+
+    projects = list(dict.fromkeys(projects))
+
     return projects
 
 

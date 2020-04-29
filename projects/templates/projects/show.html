@@ -4,642 +4,626 @@
 
 {% block title %} {{ project.title }} {% endblock title %}
 {% block styles %}
-    <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css'/>
-    <link href="{% static 'projects/assets/css/comments.css' %}" rel='stylesheet' type='text/css'/>
-    <link href="{% static 'projects/assets/css/accordian.css' %}" rel='stylesheet' type='text/css'/>
-    <link href="{% static 'projects/assets/css/like-button.css' %}" rel='stylesheet' type='text/css'/>
-    <link href="{% static 'projects/assets/css/rating.css' %}" rel='stylesheet' type='text/css'/>
-    <script defer src='https://use.fontawesome.com/releases/v5.5.0/js/all.js'
-            integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
-            crossorigin="anonymous"></script>
+<link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css' />
+<link href="{% static 'projects/assets/css/comments.css' %}" rel='stylesheet' type='text/css' />
+<link href="{% static 'projects/assets/css/accordian.css' %}" rel='stylesheet' type='text/css' />
+<link href="{% static 'projects/assets/css/like-button.css' %}" rel='stylesheet' type='text/css' />
+<link href="{% static 'projects/assets/css/rating.css' %}" rel='stylesheet' type='text/css' />
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
-    <div class="single-page-agile-main">
-        <div class="container">
-            <div class="agileits-single-top">
-                <ol class="breadcrumb">
-                    <li><a href="/">Home</a></li>
-                    <li class="active">{{ project.title }}</li>
-                </ol>
-            </div>
+<div class="single-page-agile-main">
+    <div class="container">
+        <div class="agileits-single-top">
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li class="active">{{ project.title }}</li>
+            </ol>
         </div>
-        {% if is_project_canceled %}
-            <div class="alert alert-danger">
-                <p>This project has been canceled</p>
-            </div>
-        {% endif %}
+    </div>
+    {% if is_project_canceled %}
+    <div class="alert alert-danger">
+        <p>This project has been canceled</p>
+    </div>
+    {% endif %}
 
-        <div class="single-page-agile-info">
+    <div class="single-page-agile-info">
 
-            <div class="show-top-grids-w3lagile">
-                <div class="col-sm-8 single-left">
-                    <div class="more">
-                        <button id="more-btn" class="more-btn">
-                            <span class="more-dot"></span>
-                            <span class="more-dot"></span>
-                            <span class="more-dot"></span>
-                        </button>
-                        <div class="more-menu">
+        <div class="show-top-grids-w3lagile">
+            <div class="col-sm-8 single-left">
+                <div class="more">
+                    <button id="more-btn" class="more-btn">
+                        <span class="more-dot"></span>
+                        <span class="more-dot"></span>
+                        <span class="more-dot"></span>
+                    </button>
+                    <div class="more-menu">
 
 
-                            <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn"
-                                aria-hidden="true">
+                        <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn"
+                            aria-hidden="true">
 
-                                <li class="more-menu-item" role="presentation">
-                                    <form action="{% url 'save_project' project.id %}" method="post">
-                                        {% if is_project_saved %}
-                                            <input type="submit" class="more-menu-btn"
-                                                   role="menuitem" value="Remove">
-                                        {% else %}
-                                            <input type="submit" class="more-menu-btn"
-                                                   role="menuitem" value="Save">
-                                        {% endif %}
-                                        {% csrf_token %}
-
-                                    </form>
-                                </li>
-                                <li class="more-menu-item" role="presentation">
-                                    {% if not is_user_reported %}
-                                        <form action="{% url 'report_project' project.id %}" method="post">
-                                            <input type="submit" class="more-menu-btn"
-                                                   role="menuitem" value="Report">
-                                            {% csrf_token %}
-
-                                        </form>
+                            <li class="more-menu-item" role="presentation">
+                                <form action="{% url 'save_project' project.id %}" method="post">
+                                    {% if is_project_saved %}
+                                    <input type="submit" class="more-menu-btn" role="menuitem" value="Remove">
+                                    {% else %}
+                                    <input type="submit" class="more-menu-btn" role="menuitem" value="Save">
                                     {% endif %}
+                                    {% csrf_token %}
 
+                                </form>
+                            </li>
+                            <li class="more-menu-item" role="presentation">
+                                {% if not is_user_reported %}
+                                <form action="{% url 'report_project' project.id %}" method="post">
+                                    <input type="submit" class="more-menu-btn" role="menuitem" value="Report">
+                                    {% csrf_token %}
 
-                                </li>
-                                {% if project.owner.id == request.user.id %}
-                                    <li class="more-menu-item" role="presentation">
-                                        {% if not is_project_canceled %}
-                                            <form action="{% url 'cancel_project' project.id %}" method="post">
-                                                <input type="submit" class="more-menu-btn"
-                                                       role="menuitem" value="Cancel">
-                                                {% csrf_token %}
-                                            </form>
-                                        {% endif %}
-                                    </li>
+                                </form>
                                 {% endif %}
-                            </ul>
-                        </div>
 
+
+                            </li>
+                            {% if project.owner.id == request.user.id %}
+                            <li class="more-menu-item" role="presentation">
+                                {% if not is_project_canceled %}
+                                <form action="{% url 'cancel_project' project.id %}" method="post">
+                                    <input type="submit" class="more-menu-btn" role="menuitem" value="Cancel">
+                                    {% csrf_token %}
+                                </form>
+                                {% endif %}
+                            </li>
+                            {% endif %}
+                        </ul>
                     </div>
 
-                    <div class="song">
-                        <div class="song-info">
-                            <i class="fa fa-clock-o"></i> {{ project.start_date }}
-                            <i class="fa fa-hourglass-end"></i> {{ project.end_date }}
-                        </div>
+                </div>
+
+                <div class="song">
+                    <div class="song-info">
+                        <i class="fa fa-clock-o"></i> {{ project.start_date }}
+                        <i class="fa fa-hourglass-end"></i> {{ project.end_date }}
+                    </div>
 
 
-                        <div class="post-image">
-                               <div class="song-info" style="text-align: left;">
+                    <div class="post-image">
+                        <div class="song-info" style="text-align: left;">
                             <h2 style="display: inline-block">{{ project.title }}</h2>
                         </div>
-                            <div class="like-box">
+                        <div class="like-box">
                             <div class="heart-btn">
                                 <div class="liked-button">
-                                    <input
-                                            type="checkbox"
-                                            class="love-checkbox"
-                                            id="{{ project.id }}"
-                                            onclick="handlingFav({{ project.id }})"
-                                            {% if project in favourites %} checked {% endif %}
-                                    />
+                                    <input type="checkbox" class="love-checkbox" id="{{ project.id }}"
+                                        onclick="handlingFav({{ project.id }})" {% if project in favourites %} checked
+                                        {% endif %} />
                                     <label for="{{ project.id }}">
                                         <svg class="heart-svg" viewBox="467 392 58 57"
-                                             xmlns="http://www.w3.org/2000/svg">
+                                            xmlns="http://www.w3.org/2000/svg">
                                             <g class="Group" fill="none" fill-rule="evenodd"
-                                               transform="translate(467 392)">
-                                                <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z"
-                                                      class="heart" fill="#AAB8C2"/>
+                                                transform="translate(467 392)">
+                                                <path
+                                                    d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z"
+                                                    class="heart" fill="#AAB8C2" />
                                                 <circle class="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5"
-                                                        r="1.5"/>
+                                                    r="1.5" />
 
                                                 <g class="grp7" opacity="0" transform="translate(7 6)">
-                                                    <circle class="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
-                                                    <circle class="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
+                                                    <circle class="oval1" fill="#9CD8C3" cx="2" cy="6" r="2" />
+                                                    <circle class="oval2" fill="#8CE8C3" cx="5" cy="2" r="2" />
                                                 </g>
 
                                                 <g class="grp6" opacity="0" transform="translate(0 28)">
-                                                    <circle class="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"/>
-                                                    <circle class="oval2" fill="#91D2FA" cx="3" cy="2" r="2"/>
+                                                    <circle class="oval1" fill="#CC8EF5" cx="2" cy="7" r="2" />
+                                                    <circle class="oval2" fill="#91D2FA" cx="3" cy="2" r="2" />
                                                 </g>
 
                                                 <g class="grp3" opacity="0" transform="translate(52 28)">
-                                                    <circle class="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"/>
-                                                    <circle class="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"/>
+                                                    <circle class="oval2" fill="#9CD8C3" cx="2" cy="7" r="2" />
+                                                    <circle class="oval1" fill="#8CE8C3" cx="4" cy="2" r="2" />
                                                 </g>
 
                                                 <g class="grp2" opacity="0" transform="translate(44 6)">
-                                                    <circle class="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"/>
-                                                    <circle class="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"/>
+                                                    <circle class="oval2" fill="#CC8EF5" cx="5" cy="6" r="2" />
+                                                    <circle class="oval1" fill="#CC8EF5" cx="2" cy="2" r="2" />
                                                 </g>
 
                                                 <g class="grp5" opacity="0" transform="translate(14 50)">
-                                                    <circle class="oval1" fill="#91D2FA" cx="6" cy="5" r="2"/>
-                                                    <circle class="oval2" fill="#91D2FA" cx="2" cy="2" r="2"/>
+                                                    <circle class="oval1" fill="#91D2FA" cx="6" cy="5" r="2" />
+                                                    <circle class="oval2" fill="#91D2FA" cx="2" cy="2" r="2" />
                                                 </g>
 
                                                 <g class="grp4" opacity="0" transform="translate(35 50)">
-                                                    <circle class="oval1" fill="#F48EA7" cx="6" cy="5" r="2"/>
-                                                    <circle class="oval2" fill="#F48EA7" cx="2" cy="2" r="2"/>
+                                                    <circle class="oval1" fill="#F48EA7" cx="6" cy="5" r="2" />
+                                                    <circle class="oval2" fill="#F48EA7" cx="2" cy="2" r="2" />
                                                 </g>
 
                                                 <g class="grp1" opacity="0" transform="translate(24)">
-                                                    <circle class="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
-                                                    <circle class="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
+                                                    <circle class="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2" />
+                                                    <circle class="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2" />
                                                 </g>
                                             </g>
                                         </svg>
                                     </label>
                                 </div>
                             </div>
-                            <img src="{{ project.cover.url }}" alt="{{ project.title }}"
-                                 class="img-responsive"/>
+                            <img src="{{ project.cover.url }}" alt="{{ project.title }}" class="img-responsive" />
                         </div>
 
-                        </div>
-                        <div class="song-grid-right">
-                            <div class="share">
-                                <p>
-                                    {{ project.details }}
-                                </p>
-                                <div class="single-agile-shar-buttons">
-                                    {% for tag in project.tags %}
-                                        <span class="tag"> <a href="#tags">{{ tag.name }}</a></span>
-                                    {% empty %}
-                                        <p style="
+                    </div>
+                    <div class="song-grid-right">
+                        <div class="share">
+                            <p>
+                                {{ project.details }}
+                            </p>
+                            <div class="single-agile-shar-buttons">
+                                {% for tag in project.tags %}
+                                <span class="tag"> <a href="#tags">{{ tag.name }}</a></span>
+                                {% empty %}
+                                <p style="
                                                 background-color: indianred;
                                                 width:70px;
                                                 text-align: center;
                                                 color: #fff;
                                             "> No Tags... </p>
-                                    {% endfor %}
+                                {% endfor %}
 
-                                </div>
                             </div>
                         </div>
-                        {% if project.projectimages_set.all %}
-                            <div class="w3_agile_banner_bottom_grid">
-                                <div id="owl-demo" class="owl-carousel owl-theme">
-                                    {% for image in project.projectimages_set.all %}
-                                        <div class="item ml-3">
-                                            <img src={{ image.image.url }} class="img-responsive"/>
-                                        </div>
-                                    {% endfor %}
-
-                                </div>
-                            </div>
-                        {% endif %}
-
                     </div>
-
-                    {% for donation in project.donation_set.all %}
-                        {{ donation.project_set.all }}
-                    {% endfor %}
-
-                    <div class="donate-form">
-
-                        <h3>Donate Now</h3>
-                        <form class="w3ls_footer_grid_left1_pos" method="post"
-                              action='{% url 'donate_project' project.id %}'>
-
-
-                            <div class="input-group w3_w3layouts">
-                                <span class="input-group-addon">$</span>
-                                {{ donation_form.donation }}
-                                <span class="input-group-addon">.00</span>
+                    {% if project.projectimages_set.all %}
+                    <div class="w3_agile_banner_bottom_grid">
+                        <div id="owl-demo" class="owl-carousel owl-theme">
+                            {% for image in project.projectimages_set.all %}
+                            <div class="item ml-3">
+                                <img src={{ image.image.url }} class="img-responsive" />
                             </div>
-                            {{ donation_form.donation.errors }}
+                            {% endfor %}
 
-                            {{ form.user_id }}
-                            {% csrf_token %}
-                            <input type="submit" value=" MAKE A DONATION" name="donate_from">
-                        </form>
-                    </div>
-                    {% if not is_rated %}
-                        <div class="reviewing-box">
-                            <h5 class="alert alert-warning">What do you think?</h5>
-                            <div class="row review-cont" id="post-review-box">
-                                <div class="col-md-12">
-                                    <form accept-charset="UTF-8" id="review-form" action="">
-                                        <div class="rating">
-                                            <input type="radio" name="rating" id="rating-5" value="5">
-                                            <label for="rating-5"></label>
-                                            <input type="radio" name="rating" id="rating-4" value="4">
-                                            <label for="rating-4"></label>
-                                            <input type="radio" name="rating" id="rating-3" value="3">
-                                            <label for="rating-3"></label>
-                                            <input type="radio" name="rating" id="rating-2" value="2">
-                                            <label for="rating-2"></label>
-                                            <input type="radio" name="rating" id="rating-1" value="1" required>
-                                            <label for="rating-1"></label>
-                                            <div class="emoji-wrapper">
-                                                <div class="emoji">
-                                                    <svg class="rating-0" xmlns="http://www.w3.org/2000/svg"
-                                                         viewBox="0 0 512 512">
-                                                        <circle cx="256" cy="256" r="256" fill="#ffd93b"/>
-                                                        <path d="M512 256c0 141.44-114.64 256-256 256-80.48 0-152.32-37.12-199.28-95.28 43.92 35.52 99.84 56.72 160.72 56.72 141.36 0 256-114.56 256-256 0-60.88-21.2-116.8-56.72-160.72C474.8 103.68 512 175.52 512 256z"
-                                                              fill="#f4c534"></path>
-                                                        <ellipse transform="scale(-1) rotate(31.21 715.433 -595.455)"
-                                                                 cx="166.318" cy="199.829" rx="56.146" ry="56.13"
-                                                                 fill="#fff"/>
-                                                        <ellipse transform="rotate(-148.804 180.87 175.82)" cx="180.871"
-                                                                 cy="175.822" rx="28.048" ry="28.08" fill="#3e4347"/>
-                                                        <ellipse transform="rotate(-113.778 194.434 165.995)"
-                                                                 cx="194.433" cy="165.993" rx="8.016" ry="5.296"
-                                                                 fill="#5a5f63"/>
-                                                        <ellipse transform="scale(-1) rotate(31.21 715.397 -1237.664)"
-                                                                 cx="345.695" cy="199.819" rx="56.146" ry="56.13"
-                                                                 fill="#fff"/>
-                                                        <ellipse transform="rotate(-148.804 360.25 175.837)"
-                                                                 cx="360.252" cy="175.84" rx="28.048" ry="28.08"
-                                                                 fill="#3e4347"/>
-                                                        <ellipse transform="scale(-1) rotate(66.227 254.508 -573.138)"
-                                                                 cx="373.794" cy="165.987" rx="8.016" ry="5.296"
-                                                                 fill="#5a5f63"/>
-                                                        <path d="M370.56 344.4c0 7.696-6.224 13.92-13.92 13.92H155.36c-7.616 0-13.92-6.224-13.92-13.92s6.304-13.92 13.92-13.92h201.296c7.696.016 13.904 6.224 13.904 13.92z"
-                                                              fill="#3e4347"/>
-                                                    </svg>
-                                                    <svg class="rating-1" xmlns="http://www.w3.org/2000/svg"
-                                                         viewBox="0 0 512 512">
-                                                        <circle cx="256" cy="256" r="256" fill="#ffd93b"/>
-                                                        <path d="M512 256A256 256 0 0 1 56.7 416.7a256 256 0 0 0 360-360c58.1 47 95.3 118.8 95.3 199.3z"
-                                                              fill="#f4c534"/>
-                                                        <path d="M328.4 428a92.8 92.8 0 0 0-145-.1 6.8 6.8 0 0 1-12-5.8 86.6 86.6 0 0 1 84.5-69 86.6 86.6 0 0 1 84.7 69.8c1.3 6.9-7.7 10.6-12.2 5.1z"
-                                                              fill="#3e4347"/>
-                                                        <path d="M269.2 222.3c5.3 62.8 52 113.9 104.8 113.9 52.3 0 90.8-51.1 85.6-113.9-2-25-10.8-47.9-23.7-66.7-4.1-6.1-12.2-8-18.5-4.2a111.8 111.8 0 0 1-60.1 16.2c-22.8 0-42.1-5.6-57.8-14.8-6.8-4-15.4-1.5-18.9 5.4-9 18.2-13.2 40.3-11.4 64.1z"
-                                                              fill="#f4c534"/>
-                                                        <path d="M357 189.5c25.8 0 47-7.1 63.7-18.7 10 14.6 17 32.1 18.7 51.6 4 49.6-26.1 89.7-67.5 89.7-41.6 0-78.4-40.1-82.5-89.7A95 95 0 0 1 298 174c16 9.7 35.6 15.5 59 15.5z"
-                                                              fill="#fff"/>
-                                                        <path d="M396.2 246.1a38.5 38.5 0 0 1-38.7 38.6 38.5 38.5 0 0 1-38.6-38.6 38.6 38.6 0 1 1 77.3 0z"
-                                                              fill="#3e4347"/>
-                                                        <path d="M380.4 241.1c-3.2 3.2-9.9 1.7-14.9-3.2-4.8-4.8-6.2-11.5-3-14.7 3.3-3.4 10-2 14.9 2.9 4.9 5 6.4 11.7 3 15z"
-                                                              fill="#fff"/>
-                                                        <path d="M242.8 222.3c-5.3 62.8-52 113.9-104.8 113.9-52.3 0-90.8-51.1-85.6-113.9 2-25 10.8-47.9 23.7-66.7 4.1-6.1 12.2-8 18.5-4.2 16.2 10.1 36.2 16.2 60.1 16.2 22.8 0 42.1-5.6 57.8-14.8 6.8-4 15.4-1.5 18.9 5.4 9 18.2 13.2 40.3 11.4 64.1z"
-                                                              fill="#f4c534"/>
-                                                        <path d="M155 189.5c-25.8 0-47-7.1-63.7-18.7-10 14.6-17 32.1-18.7 51.6-4 49.6 26.1 89.7 67.5 89.7 41.6 0 78.4-40.1 82.5-89.7A95 95 0 0 0 214 174c-16 9.7-35.6 15.5-59 15.5z"
-                                                              fill="#fff"/>
-                                                        <path d="M115.8 246.1a38.5 38.5 0 0 0 38.7 38.6 38.5 38.5 0 0 0 38.6-38.6 38.6 38.6 0 1 0-77.3 0z"
-                                                              fill="#3e4347"/>
-                                                        <path d="M131.6 241.1c3.2 3.2 9.9 1.7 14.9-3.2 4.8-4.8 6.2-11.5 3-14.7-3.3-3.4-10-2-14.9 2.9-4.9 5-6.4 11.7-3 15z"
-                                                              fill="#fff"/>
-                                                    </svg>
-                                                    <svg class="rating-2" xmlns="http://www.w3.org/2000/svg"
-                                                         viewBox="0 0 512 512">
-                                                        <circle cx="256" cy="256" r="256" fill="#ffd93b"/>
-                                                        <path d="M512 256A256 256 0 0 1 56.7 416.7a256 256 0 0 0 360-360c58.1 47 95.3 118.8 95.3 199.3z"
-                                                              fill="#f4c534"/>
-                                                        <path d="M336.6 403.2c-6.5 8-16 10-25.5 5.2a117.6 117.6 0 0 0-110.2 0c-9.4 4.9-19 3.3-25.6-4.6-6.5-7.7-4.7-21.1 8.4-28 45.1-24 99.5-24 144.6 0 13 7 14.8 19.7 8.3 27.4z"
-                                                              fill="#3e4347"/>
-                                                        <path d="M276.6 244.3a79.3 79.3 0 1 1 158.8 0 79.5 79.5 0 1 1-158.8 0z"
-                                                              fill="#fff"/>
-                                                        <circle cx="340" cy="260.4" r="36.2" fill="#3e4347"/>
-                                                        <g fill="#fff">
-                                                            <ellipse transform="rotate(-135 326.4 246.6)" cx="326.4"
-                                                                     cy="246.6" rx="6.5" ry="10"/>
-                                                            <path d="M231.9 244.3a79.3 79.3 0 1 0-158.8 0 79.5 79.5 0 1 0 158.8 0z"/>
-                                                        </g>
-                                                        <circle cx="168.5" cy="260.4" r="36.2" fill="#3e4347"/>
-                                                        <ellipse transform="rotate(-135 182.1 246.7)" cx="182.1"
-                                                                 cy="246.7" rx="10" ry="6.5" fill="#fff"/>
-                                                    </svg>
-                                                    <svg class="rating-3" xmlns="http://www.w3.org/2000/svg"
-                                                         viewBox="0 0 512 512">
-                                                        <circle cx="256" cy="256" r="256" fill="#ffd93b"/>
-                                                        <path d="M407.7 352.8a163.9 163.9 0 0 1-303.5 0c-2.3-5.5 1.5-12 7.5-13.2a780.8 780.8 0 0 1 288.4 0c6 1.2 9.9 7.7 7.6 13.2z"
-                                                              fill="#3e4347"/>
-                                                        <path d="M512 256A256 256 0 0 1 56.7 416.7a256 256 0 0 0 360-360c58.1 47 95.3 118.8 95.3 199.3z"
-                                                              fill="#f4c534"/>
-                                                        <g fill="#fff">
-                                                            <path d="M115.3 339c18.2 29.6 75.1 32.8 143.1 32.8 67.1 0 124.2-3.2 143.2-31.6l-1.5-.6a780.6 780.6 0 0 0-284.8-.6z"/>
-                                                            <ellipse cx="356.4" cy="205.3" rx="81.1" ry="81"/>
-                                                        </g>
-                                                        <ellipse cx="356.4" cy="205.3" rx="44.2" ry="44.2"
-                                                                 fill="#3e4347"/>
-                                                        <g fill="#fff">
-                                                            <ellipse transform="scale(-1) rotate(45 454 -906)"
-                                                                     cx="375.3" cy="188.1" rx="12" ry="8.1"/>
-                                                            <ellipse cx="155.6" cy="205.3" rx="81.1" ry="81"/>
-                                                        </g>
-                                                        <ellipse cx="155.6" cy="205.3" rx="44.2" ry="44.2"
-                                                                 fill="#3e4347"/>
-                                                        <ellipse transform="scale(-1) rotate(45 454 -421.3)" cx="174.5"
-                                                                 cy="188" rx="12" ry="8.1" fill="#fff"/>
-                                                    </svg>
-                                                    <svg class="rating-4" xmlns="http://www.w3.org/2000/svg"
-                                                         viewBox="0 0 512 512">
-                                                        <circle cx="256" cy="256" r="256" fill="#ffd93b"/>
-                                                        <path d="M512 256A256 256 0 0 1 56.7 416.7a256 256 0 0 0 360-360c58.1 47 95.3 118.8 95.3 199.3z"
-                                                              fill="#f4c534"/>
-                                                        <path d="M232.3 201.3c0 49.2-74.3 94.2-74.3 94.2s-74.4-45-74.4-94.2a38 38 0 0 1 74.4-11.1 38 38 0 0 1 74.3 11.1z"
-                                                              fill="#e24b4b"/>
-                                                        <path d="M96.1 173.3a37.7 37.7 0 0 0-12.4 28c0 49.2 74.3 94.2 74.3 94.2C80.2 229.8 95.6 175.2 96 173.3z"
-                                                              fill="#d03f3f"/>
-                                                        <path d="M215.2 200c-3.6 3-9.8 1-13.8-4.1-4.2-5.2-4.6-11.5-1.2-14.1 3.6-2.8 9.7-.7 13.9 4.4 4 5.2 4.6 11.4 1.1 13.8z"
-                                                              fill="#fff"/>
-                                                        <path d="M428.4 201.3c0 49.2-74.4 94.2-74.4 94.2s-74.3-45-74.3-94.2a38 38 0 0 1 74.4-11.1 38 38 0 0 1 74.3 11.1z"
-                                                              fill="#e24b4b"/>
-                                                        <path d="M292.2 173.3a37.7 37.7 0 0 0-12.4 28c0 49.2 74.3 94.2 74.3 94.2-77.8-65.7-62.4-120.3-61.9-122.2z"
-                                                              fill="#d03f3f"/>
-                                                        <path d="M411.3 200c-3.6 3-9.8 1-13.8-4.1-4.2-5.2-4.6-11.5-1.2-14.1 3.6-2.8 9.7-.7 13.9 4.4 4 5.2 4.6 11.4 1.1 13.8z"
-                                                              fill="#fff"/>
-                                                        <path d="M381.7 374.1c-30.2 35.9-75.3 64.4-125.7 64.4s-95.4-28.5-125.8-64.2a17.6 17.6 0 0 1 16.5-28.7 627.7 627.7 0 0 0 218.7-.1c16.2-2.7 27 16.1 16.3 28.6z"
-                                                              fill="#3e4347"/>
-                                                        <path d="M256 438.5c25.7 0 50-7.5 71.7-19.5-9-33.7-40.7-43.3-62.6-31.7-29.7 15.8-62.8-4.7-75.6 34.3 20.3 10.4 42.8 17 66.5 17z"
-                                                              fill="#e24b4b"/>
-                                                    </svg>
-                                                    <svg class="rating-5" xmlns="http://www.w3.org/2000/svg"
-                                                         viewBox="0 0 512 512">
-                                                        <g fill="#ffd93b">
-                                                            <circle cx="256" cy="256" r="256"/>
-                                                            <path d="M512 256A256 256 0 0 1 56.8 416.7a256 256 0 0 0 360-360c58 47 95.2 118.8 95.2 199.3z"/>
-                                                        </g>
-                                                        <path d="M512 99.4v165.1c0 11-8.9 19.9-19.7 19.9h-187c-13 0-23.5-10.5-23.5-23.5v-21.3c0-12.9-8.9-24.8-21.6-26.7-16.2-2.5-30 10-30 25.5V261c0 13-10.5 23.5-23.5 23.5h-187A19.7 19.7 0 0 1 0 264.7V99.4c0-10.9 8.8-19.7 19.7-19.7h472.6c10.8 0 19.7 8.7 19.7 19.7z"
-                                                              fill="#e9eff4"/>
-                                                        <path d="M204.6 138v88.2a23 23 0 0 1-23 23H58.2a23 23 0 0 1-23-23v-88.3a23 23 0 0 1 23-23h123.4a23 23 0 0 1 23 23z"
-                                                              fill="#45cbea"/>
-                                                        <path d="M476.9 138v88.2a23 23 0 0 1-23 23H330.3a23 23 0 0 1-23-23v-88.3a23 23 0 0 1 23-23h123.4a23 23 0 0 1 23 23z"
-                                                              fill="#e84d88"/>
-                                                        <g fill="#38c0dc">
-                                                            <path d="M95.2 114.9l-60 60v15.2l75.2-75.2zM123.3 114.9L35.1 203v23.2c0 1.8.3 3.7.7 5.4l116.8-116.7h-29.3z"/>
-                                                        </g>
-                                                        <g fill="#d23f77">
-                                                            <path d="M373.3 114.9l-66 66V196l81.3-81.2zM401.5 114.9l-94.1 94v17.3c0 3.5.8 6.8 2.2 9.8l121.1-121.1h-29.2z"/>
-                                                        </g>
-                                                        <path d="M329.5 395.2c0 44.7-33 81-73.4 81-40.7 0-73.5-36.3-73.5-81s32.8-81 73.5-81c40.5 0 73.4 36.3 73.4 81z"
-                                                              fill="#3e4347"/>
-                                                        <path d="M256 476.2a70 70 0 0 0 53.3-25.5 34.6 34.6 0 0 0-58-25 34.4 34.4 0 0 0-47.8 26 69.9 69.9 0 0 0 52.6 24.5z"
-                                                              fill="#e24b4b"/>
-                                                        <path d="M290.3 434.8c-1 3.4-5.8 5.2-11 3.9s-8.4-5.1-7.4-8.7c.8-3.3 5.7-5 10.7-3.8 5.1 1.4 8.5 5.3 7.7 8.6z"
-                                                              fill="#fff" opacity=".2"/>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="text-right">
-                                            <button
-                                                    class="btn review-submit-btn"
-                                                    style="margin-bottom: 1rem" type="submit"
-                                                    onclick=checkRate(event)
-                                            >Submit
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
                         </div>
+                    </div>
                     {% endif %}
-                    <div class="comment-area-wrap mb-5">
-                        <!-- Write a comment and post it -->
-                        <form method='POST' action='{% url 'add_comment' project.id %}'>
-                            <div class="comment-input-wrap mb-3">
-                                <img class="avatarSml" src='{{ request.user.avatar.url }}' alt="avatar"/>
-                                {% csrf_token %}
-                                <label for="comment-input"></label>
-                                <input
-                                        type="text"
-                                        class="comment-input textRegularLrg"
-                                        id="comment-input"
-                                        name="comment"
-                                        placeholder="Write a comment"
-                                        required
-                                />
-                                <button
-                                        id='comment-btn'
-                                        class="btn comment-btn bgOrange"
-                                        title="comment"
-                                >Comment
-                                </button>
-                            </div>
-                        </form>
 
-                        <div class="commWrapAll">
-                            {% for comment in comments %}
-                                <!-- Posted comment -->
-                                <div class="comment-wrap">
-                                    <div class="comment-options">
-                                        {% if comment.user == request.user %}
-                                            <form method='POST' action='{% url 'delete_comment' %}'>
-                                            <button class="comment-options-btn" title='delete'>
-                                                <i class="fas fa-trash-alt" aria-hidden='true'></i>
-                                            </button>
+                </div>
+
+                {% for donation in project.donation_set.all %}
+                {{ donation.project_set.all }}
+                {% endfor %}
+
+                <div class="donate-form">
+
+                    <h3>Donate Now</h3>
+                    <form class="w3ls_footer_grid_left1_pos" method="post"
+                        action='{% url 'donate_project' project.id %}'>
+
+
+                        <div class="input-group w3_w3layouts">
+                            <span class="input-group-addon">$</span>
+                            {{ donation_form.donation }}
+                            <span class="input-group-addon">.00</span>
+                        </div>
+                        {{ donation_form.donation.errors }}
+
+                        {{ form.user_id }}
+                        {% csrf_token %}
+                        <input type="submit" value=" MAKE A DONATION" name="donate_from">
+                    </form>
+                </div>
+                {% if not is_rated %}
+                <div class="reviewing-box">
+                    <h5 class="alert alert-warning">What do you think?</h5>
+                    <div class="row review-cont" id="post-review-box">
+                        <div class="col-md-12">
+                            <form accept-charset="UTF-8" id="review-form" action="">
+                                <div class="rating">
+                                    <input type="radio" name="rating" id="rating-5" value="5">
+                                    <label for="rating-5"></label>
+                                    <input type="radio" name="rating" id="rating-4" value="4">
+                                    <label for="rating-4"></label>
+                                    <input type="radio" name="rating" id="rating-3" value="3">
+                                    <label for="rating-3"></label>
+                                    <input type="radio" name="rating" id="rating-2" value="2">
+                                    <label for="rating-2"></label>
+                                    <input type="radio" name="rating" id="rating-1" value="1" required>
+                                    <label for="rating-1"></label>
+                                    <div class="emoji-wrapper">
+                                        <div class="emoji">
+                                            <svg class="rating-0" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <circle cx="256" cy="256" r="256" fill="#ffd93b" />
+                                                <path
+                                                    d="M512 256c0 141.44-114.64 256-256 256-80.48 0-152.32-37.12-199.28-95.28 43.92 35.52 99.84 56.72 160.72 56.72 141.36 0 256-114.56 256-256 0-60.88-21.2-116.8-56.72-160.72C474.8 103.68 512 175.52 512 256z"
+                                                    fill="#f4c534"></path>
+                                                <ellipse transform="scale(-1) rotate(31.21 715.433 -595.455)"
+                                                    cx="166.318" cy="199.829" rx="56.146" ry="56.13" fill="#fff" />
+                                                <ellipse transform="rotate(-148.804 180.87 175.82)" cx="180.871"
+                                                    cy="175.822" rx="28.048" ry="28.08" fill="#3e4347" />
+                                                <ellipse transform="rotate(-113.778 194.434 165.995)" cx="194.433"
+                                                    cy="165.993" rx="8.016" ry="5.296" fill="#5a5f63" />
+                                                <ellipse transform="scale(-1) rotate(31.21 715.397 -1237.664)"
+                                                    cx="345.695" cy="199.819" rx="56.146" ry="56.13" fill="#fff" />
+                                                <ellipse transform="rotate(-148.804 360.25 175.837)" cx="360.252"
+                                                    cy="175.84" rx="28.048" ry="28.08" fill="#3e4347" />
+                                                <ellipse transform="scale(-1) rotate(66.227 254.508 -573.138)"
+                                                    cx="373.794" cy="165.987" rx="8.016" ry="5.296" fill="#5a5f63" />
+                                                <path
+                                                    d="M370.56 344.4c0 7.696-6.224 13.92-13.92 13.92H155.36c-7.616 0-13.92-6.224-13.92-13.92s6.304-13.92 13.92-13.92h201.296c7.696.016 13.904 6.224 13.904 13.92z"
+                                                    fill="#3e4347" />
+                                            </svg>
+                                            <svg class="rating-1" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <circle cx="256" cy="256" r="256" fill="#ffd93b" />
+                                                <path
+                                                    d="M512 256A256 256 0 0 1 56.7 416.7a256 256 0 0 0 360-360c58.1 47 95.3 118.8 95.3 199.3z"
+                                                    fill="#f4c534" />
+                                                <path
+                                                    d="M328.4 428a92.8 92.8 0 0 0-145-.1 6.8 6.8 0 0 1-12-5.8 86.6 86.6 0 0 1 84.5-69 86.6 86.6 0 0 1 84.7 69.8c1.3 6.9-7.7 10.6-12.2 5.1z"
+                                                    fill="#3e4347" />
+                                                <path
+                                                    d="M269.2 222.3c5.3 62.8 52 113.9 104.8 113.9 52.3 0 90.8-51.1 85.6-113.9-2-25-10.8-47.9-23.7-66.7-4.1-6.1-12.2-8-18.5-4.2a111.8 111.8 0 0 1-60.1 16.2c-22.8 0-42.1-5.6-57.8-14.8-6.8-4-15.4-1.5-18.9 5.4-9 18.2-13.2 40.3-11.4 64.1z"
+                                                    fill="#f4c534" />
+                                                <path
+                                                    d="M357 189.5c25.8 0 47-7.1 63.7-18.7 10 14.6 17 32.1 18.7 51.6 4 49.6-26.1 89.7-67.5 89.7-41.6 0-78.4-40.1-82.5-89.7A95 95 0 0 1 298 174c16 9.7 35.6 15.5 59 15.5z"
+                                                    fill="#fff" />
+                                                <path
+                                                    d="M396.2 246.1a38.5 38.5 0 0 1-38.7 38.6 38.5 38.5 0 0 1-38.6-38.6 38.6 38.6 0 1 1 77.3 0z"
+                                                    fill="#3e4347" />
+                                                <path
+                                                    d="M380.4 241.1c-3.2 3.2-9.9 1.7-14.9-3.2-4.8-4.8-6.2-11.5-3-14.7 3.3-3.4 10-2 14.9 2.9 4.9 5 6.4 11.7 3 15z"
+                                                    fill="#fff" />
+                                                <path
+                                                    d="M242.8 222.3c-5.3 62.8-52 113.9-104.8 113.9-52.3 0-90.8-51.1-85.6-113.9 2-25 10.8-47.9 23.7-66.7 4.1-6.1 12.2-8 18.5-4.2 16.2 10.1 36.2 16.2 60.1 16.2 22.8 0 42.1-5.6 57.8-14.8 6.8-4 15.4-1.5 18.9 5.4 9 18.2 13.2 40.3 11.4 64.1z"
+                                                    fill="#f4c534" />
+                                                <path
+                                                    d="M155 189.5c-25.8 0-47-7.1-63.7-18.7-10 14.6-17 32.1-18.7 51.6-4 49.6 26.1 89.7 67.5 89.7 41.6 0 78.4-40.1 82.5-89.7A95 95 0 0 0 214 174c-16 9.7-35.6 15.5-59 15.5z"
+                                                    fill="#fff" />
+                                                <path
+                                                    d="M115.8 246.1a38.5 38.5 0 0 0 38.7 38.6 38.5 38.5 0 0 0 38.6-38.6 38.6 38.6 0 1 0-77.3 0z"
+                                                    fill="#3e4347" />
+                                                <path
+                                                    d="M131.6 241.1c3.2 3.2 9.9 1.7 14.9-3.2 4.8-4.8 6.2-11.5 3-14.7-3.3-3.4-10-2-14.9 2.9-4.9 5-6.4 11.7-3 15z"
+                                                    fill="#fff" />
+                                            </svg>
+                                            <svg class="rating-2" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <circle cx="256" cy="256" r="256" fill="#ffd93b" />
+                                                <path
+                                                    d="M512 256A256 256 0 0 1 56.7 416.7a256 256 0 0 0 360-360c58.1 47 95.3 118.8 95.3 199.3z"
+                                                    fill="#f4c534" />
+                                                <path
+                                                    d="M336.6 403.2c-6.5 8-16 10-25.5 5.2a117.6 117.6 0 0 0-110.2 0c-9.4 4.9-19 3.3-25.6-4.6-6.5-7.7-4.7-21.1 8.4-28 45.1-24 99.5-24 144.6 0 13 7 14.8 19.7 8.3 27.4z"
+                                                    fill="#3e4347" />
+                                                <path d="M276.6 244.3a79.3 79.3 0 1 1 158.8 0 79.5 79.5 0 1 1-158.8 0z"
+                                                    fill="#fff" />
+                                                <circle cx="340" cy="260.4" r="36.2" fill="#3e4347" />
+                                                <g fill="#fff">
+                                                    <ellipse transform="rotate(-135 326.4 246.6)" cx="326.4" cy="246.6"
+                                                        rx="6.5" ry="10" />
+                                                    <path
+                                                        d="M231.9 244.3a79.3 79.3 0 1 0-158.8 0 79.5 79.5 0 1 0 158.8 0z" />
+                                                </g>
+                                                <circle cx="168.5" cy="260.4" r="36.2" fill="#3e4347" />
+                                                <ellipse transform="rotate(-135 182.1 246.7)" cx="182.1" cy="246.7"
+                                                    rx="10" ry="6.5" fill="#fff" />
+                                            </svg>
+                                            <svg class="rating-3" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <circle cx="256" cy="256" r="256" fill="#ffd93b" />
+                                                <path
+                                                    d="M407.7 352.8a163.9 163.9 0 0 1-303.5 0c-2.3-5.5 1.5-12 7.5-13.2a780.8 780.8 0 0 1 288.4 0c6 1.2 9.9 7.7 7.6 13.2z"
+                                                    fill="#3e4347" />
+                                                <path
+                                                    d="M512 256A256 256 0 0 1 56.7 416.7a256 256 0 0 0 360-360c58.1 47 95.3 118.8 95.3 199.3z"
+                                                    fill="#f4c534" />
+                                                <g fill="#fff">
+                                                    <path
+                                                        d="M115.3 339c18.2 29.6 75.1 32.8 143.1 32.8 67.1 0 124.2-3.2 143.2-31.6l-1.5-.6a780.6 780.6 0 0 0-284.8-.6z" />
+                                                    <ellipse cx="356.4" cy="205.3" rx="81.1" ry="81" />
+                                                </g>
+                                                <ellipse cx="356.4" cy="205.3" rx="44.2" ry="44.2" fill="#3e4347" />
+                                                <g fill="#fff">
+                                                    <ellipse transform="scale(-1) rotate(45 454 -906)" cx="375.3"
+                                                        cy="188.1" rx="12" ry="8.1" />
+                                                    <ellipse cx="155.6" cy="205.3" rx="81.1" ry="81" />
+                                                </g>
+                                                <ellipse cx="155.6" cy="205.3" rx="44.2" ry="44.2" fill="#3e4347" />
+                                                <ellipse transform="scale(-1) rotate(45 454 -421.3)" cx="174.5" cy="188"
+                                                    rx="12" ry="8.1" fill="#fff" />
+                                            </svg>
+                                            <svg class="rating-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <circle cx="256" cy="256" r="256" fill="#ffd93b" />
+                                                <path
+                                                    d="M512 256A256 256 0 0 1 56.7 416.7a256 256 0 0 0 360-360c58.1 47 95.3 118.8 95.3 199.3z"
+                                                    fill="#f4c534" />
+                                                <path
+                                                    d="M232.3 201.3c0 49.2-74.3 94.2-74.3 94.2s-74.4-45-74.4-94.2a38 38 0 0 1 74.4-11.1 38 38 0 0 1 74.3 11.1z"
+                                                    fill="#e24b4b" />
+                                                <path
+                                                    d="M96.1 173.3a37.7 37.7 0 0 0-12.4 28c0 49.2 74.3 94.2 74.3 94.2C80.2 229.8 95.6 175.2 96 173.3z"
+                                                    fill="#d03f3f" />
+                                                <path
+                                                    d="M215.2 200c-3.6 3-9.8 1-13.8-4.1-4.2-5.2-4.6-11.5-1.2-14.1 3.6-2.8 9.7-.7 13.9 4.4 4 5.2 4.6 11.4 1.1 13.8z"
+                                                    fill="#fff" />
+                                                <path
+                                                    d="M428.4 201.3c0 49.2-74.4 94.2-74.4 94.2s-74.3-45-74.3-94.2a38 38 0 0 1 74.4-11.1 38 38 0 0 1 74.3 11.1z"
+                                                    fill="#e24b4b" />
+                                                <path
+                                                    d="M292.2 173.3a37.7 37.7 0 0 0-12.4 28c0 49.2 74.3 94.2 74.3 94.2-77.8-65.7-62.4-120.3-61.9-122.2z"
+                                                    fill="#d03f3f" />
+                                                <path
+                                                    d="M411.3 200c-3.6 3-9.8 1-13.8-4.1-4.2-5.2-4.6-11.5-1.2-14.1 3.6-2.8 9.7-.7 13.9 4.4 4 5.2 4.6 11.4 1.1 13.8z"
+                                                    fill="#fff" />
+                                                <path
+                                                    d="M381.7 374.1c-30.2 35.9-75.3 64.4-125.7 64.4s-95.4-28.5-125.8-64.2a17.6 17.6 0 0 1 16.5-28.7 627.7 627.7 0 0 0 218.7-.1c16.2-2.7 27 16.1 16.3 28.6z"
+                                                    fill="#3e4347" />
+                                                <path
+                                                    d="M256 438.5c25.7 0 50-7.5 71.7-19.5-9-33.7-40.7-43.3-62.6-31.7-29.7 15.8-62.8-4.7-75.6 34.3 20.3 10.4 42.8 17 66.5 17z"
+                                                    fill="#e24b4b" />
+                                            </svg>
+                                            <svg class="rating-5" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <g fill="#ffd93b">
+                                                    <circle cx="256" cy="256" r="256" />
+                                                    <path
+                                                        d="M512 256A256 256 0 0 1 56.8 416.7a256 256 0 0 0 360-360c58 47 95.2 118.8 95.2 199.3z" />
+                                                </g>
+                                                <path
+                                                    d="M512 99.4v165.1c0 11-8.9 19.9-19.7 19.9h-187c-13 0-23.5-10.5-23.5-23.5v-21.3c0-12.9-8.9-24.8-21.6-26.7-16.2-2.5-30 10-30 25.5V261c0 13-10.5 23.5-23.5 23.5h-187A19.7 19.7 0 0 1 0 264.7V99.4c0-10.9 8.8-19.7 19.7-19.7h472.6c10.8 0 19.7 8.7 19.7 19.7z"
+                                                    fill="#e9eff4" />
+                                                <path
+                                                    d="M204.6 138v88.2a23 23 0 0 1-23 23H58.2a23 23 0 0 1-23-23v-88.3a23 23 0 0 1 23-23h123.4a23 23 0 0 1 23 23z"
+                                                    fill="#45cbea" />
+                                                <path
+                                                    d="M476.9 138v88.2a23 23 0 0 1-23 23H330.3a23 23 0 0 1-23-23v-88.3a23 23 0 0 1 23-23h123.4a23 23 0 0 1 23 23z"
+                                                    fill="#e84d88" />
+                                                <g fill="#38c0dc">
+                                                    <path
+                                                        d="M95.2 114.9l-60 60v15.2l75.2-75.2zM123.3 114.9L35.1 203v23.2c0 1.8.3 3.7.7 5.4l116.8-116.7h-29.3z" />
+                                                </g>
+                                                <g fill="#d23f77">
+                                                    <path
+                                                        d="M373.3 114.9l-66 66V196l81.3-81.2zM401.5 114.9l-94.1 94v17.3c0 3.5.8 6.8 2.2 9.8l121.1-121.1h-29.2z" />
+                                                </g>
+                                                <path
+                                                    d="M329.5 395.2c0 44.7-33 81-73.4 81-40.7 0-73.5-36.3-73.5-81s32.8-81 73.5-81c40.5 0 73.4 36.3 73.4 81z"
+                                                    fill="#3e4347" />
+                                                <path
+                                                    d="M256 476.2a70 70 0 0 0 53.3-25.5 34.6 34.6 0 0 0-58-25 34.4 34.4 0 0 0-47.8 26 69.9 69.9 0 0 0 52.6 24.5z"
+                                                    fill="#e24b4b" />
+                                                <path
+                                                    d="M290.3 434.8c-1 3.4-5.8 5.2-11 3.9s-8.4-5.1-7.4-8.7c.8-3.3 5.7-5 10.7-3.8 5.1 1.4 8.5 5.3 7.7 8.6z"
+                                                    fill="#fff" opacity=".2" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <button class="btn review-submit-btn" style="margin-bottom: 1rem" type="submit"
+                                        onclick=checkRate(event)>Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="comment-area-wrap mb-5">
+                    <!-- Write a comment and post it -->
+                    <form method='POST' action='{% url 'add_comment' project.id %}'>
+                        <div class="comment-input-wrap mb-3">
+                            <img class="avatarSml" src='{{ request.user.avatar.url }}' alt="avatar" />
+                            {% csrf_token %}
+                            <label for="comment-input"></label>
+                            <input type="text" class="comment-input textRegularLrg" id="comment-input" name="comment"
+                                placeholder="Write a comment" required />
+                            <button id='comment-btn' class="btn comment-btn bgOrange" title="comment">Comment
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="commWrapAll">
+                        {% for comment in comments %}
+                        <!-- Posted comment -->
+                        <div class="comment-wrap">
+                            <div class="comment-options">
+                                {% if comment.user == request.user %}
+                                <form method='POST' action='{% url 'delete_comment' %}'>
+                                    <button class="comment-options-btn" title='delete'>
+                                        <i class="fas fa-trash-alt" aria-hidden='true'></i>
+                                    </button>
+                                    {% else %}
+                                    <form method='POST' action='{% url 'report_comment' %}'>
+                                        {% if comment in reported_comments %}
+                                        <p class="red-text">Already reported...</p>
                                         {% else %}
-                                            <form method='POST' action='{% url 'report_comment' %}'>
-                                            {% if comment in reported_comments %}
-                                                <p class="red-text">Already reported...</p>
-                                            {% else %}
-                                                <button class="comment-options-btn" title='report'>
-                                                    <i class="fas fa-flag" aria-hidden='true'></i>
-                                                </button>
-                                            {% endif %}
+                                        <button class="comment-options-btn" title='report'>
+                                            <i class="fas fa-flag" aria-hidden='true'></i>
+                                        </button>
+                                        {% endif %}
                                         {% endif %}
                                         {% csrf_token %}
                                         <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                                        </form>
-                                    </div>
-                                    <img class="avatarMed" src='{{ comment.user.avatar.url }}' alt="avatar"/>
-                                    <div class="postInfo">
-                                        <span class="userName textOrange textSemiBold">
-                                            {{ comment.user.get_full_name }}
-                                        </span>
-                                        <span class="timePosted textRegularSml">
-                                            {{ comment.created_at|time_since }}
-                                        </span>
-                                        <p class="userComm textRegularLrg">{{ comment.comment }}</p>
-                                        <!-- Posted comment actions -->
+                                    </form>
+                            </div>
+                            <img class="avatarMed" src='{{ comment.user.avatar.url }}' alt="avatar" />
+                            <div class="postInfo">
+                                <span class="userName textOrange textSemiBold">
+                                    {{ comment.user.get_full_name }}
+                                </span>
+                                <span class="timePosted textRegularSml">
+                                    {{ comment.created_at|time_since }}
+                                </span>
+                                <p class="userComm textRegularLrg">{{ comment.comment }}</p>
+                                <!-- Posted comment actions -->
 
-                                    </div>
-                                    {% block replies %}
-                                        {% for reply in comment.reply_set.all %}
-                                            <!-- Comment reply -->
-                                            <div class="commReplyWrap">
-                                                <img class="avatarMed" src='{{ reply.user.avatar.url }}' alt=""/>
-                                                <div class="postInfo">
-                                                    <span class="userName textOrange textSemiBold">
-                                                        {{ reply.user.get_full_name }}</span>
-                                                    <span class="timePosted textRegularSml">
-                                                        {{ reply.created_at|time_since }}
-                                                    </span>
-                                                    <p class="userComm textRegularLrg">
-                                                        {{ reply.reply }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
-                                    {% endblock %}
-                                </div>
-                                <form method='POST' action='{% url 'add_reply' %}'>
-                                    <div class="comment-input-wrap commReplyWrap">
-                                        <img class="avatarSml" src='{{ request.user.avatar.url }}' alt="avatar"/>
-                                        {% csrf_token %}
-                                        <input
-                                                type="text"
-                                                class="reply-input textRegularLrg"
-                                                id="reply-input"
-                                                name="reply"
-                                                placeholder="Write a reply"
-                                                required
-                                        />
-                                        <button class="commAction">
-                                            <i class="fas fa-reply"></i>Reply
-                                        </button>
-                                        <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                                        <label for="reply-input"></label>
-                                    </div>
-                                </form>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <h4 class="latest-text ">Related Projects</h4>
-
-                    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
-                        <div id="myTabContent" class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
-                                <div class="w3_agile_featured_movies">
-
-                                    {% for rp in related_projects %}
-
-                                        <div class="col-md-3 w3l-movie-gride-agile">
-
-                                            <a href="{% url 'show_project' rp.id %}" class="hvr-shutter-out-horizontal"><img
-                                                    src="{{ rp.cover.url }}" title="album-name" class="img-responsive"
-                                                    alt=" ">
-                                            </a>
-                                            <div class="mid-1 agileits_w3layouts_mid_1_home">
-                                                <div class="w3l-movie-text">
-                                                    <h6><a href="{% url 'show_project' rp.id %}">{{ rp.title }}</a></h6>
-                                                </div>
-                                                <div class="mid-2 agile_mid_2_home">
-                                                    <div class="block-stars">
-                                                        <ul class="w3l-ratings">
-                                                                               aria-hidden="true"></i></li>
-                                                            <li><i class="fa fa-star"
-                                                                               aria-hidden="true"></i></li>
-                                                            <li><i class="fa fa-star"
-                                                                               aria-hidden="true"></i></li>
-                                                            <li><i class="fa fa-star"
-                                                                               aria-hidden="true"></i></li>
-                                                            <li><i class="fa fa-star"
-                                                                               aria-hidden="true"></i></li>
-                                                            <li><i class="fa fa-star-half-o"
-                                                        </ul>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    {% endfor %}
-
-                                    <div class="clearfix"></div>
+                            </div>
+                            {% block replies %}
+                            {% for reply in comment.reply_set.all %}
+                            <!-- Comment reply -->
+                            <div class="commReplyWrap">
+                                <img class="avatarMed" src='{{ reply.user.avatar.url }}' alt="" />
+                                <div class="postInfo">
+                                    <span class="userName textOrange textSemiBold">
+                                        {{ reply.user.get_full_name }}</span>
+                                    <span class="timePosted textRegularSml">
+                                        {{ reply.created_at|time_since }}
+                                    </span>
+                                    <p class="userComm textRegularLrg">
+                                        {{ reply.reply }}
+                                    </p>
                                 </div>
                             </div>
+                            {% endfor %}
+                            {% endblock %}
                         </div>
+                        <form method='POST' action='{% url 'add_reply' %}'>
+                            <div class="comment-input-wrap commReplyWrap">
+                                <img class="avatarSml" src='{{ request.user.avatar.url }}' alt="avatar" />
+                                {% csrf_token %}
+                                <input type="text" class="reply-input textRegularLrg" id="reply-input" name="reply"
+                                    placeholder="Write a reply" required />
+                                <button class="commAction">
+                                    <i class="fa fa-reply"></i>Reply
+                                </button>
+                                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                <label for="reply-input"></label>
+                            </div>
+                        </form>
+                        {% endfor %}
+                    </div>
+                </div>
 
-
+                <div style="margin-top: 4rem">
+                    <h4 class="latest-text" style="margin-left: -2rem">Related Projects</h4>
+                    <div class="accordian">
+                        <ul>
+                            {% for rp in related_projects %}
+                            <li>
+                                <a href="{% url 'show_project' rp.id %}">
+                                    <img class="acc-img" src="{{ rp.cover.url }}" alt="" />
+                                </a>
+                                <div class="image_title">
+                                    <a href="{% url 'show_project' rp.id %}">{{ rp.title }}</a>
+                                    <div class="rating rating-card">
+                                        <span
+                                            class="fa fa-star {% if rp.rate > 4 %} {% if rp.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                            style="color:#F28B31;"></span>
+                                        <span
+                                            class="fa fa-star {% if rp.rate > 3 %} {% if rp.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                            style="color:#F28B31;"></span>
+                                        <span
+                                            class="fa fa-star {% if rp.rate > 2 %} {% if rp.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                            style="color:#F28B31;"></span>
+                                        <span
+                                            class="fa fa-star {% if rp.rate > 1 %} {% if rp.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                            style="color:#F28B31;"></span>
+                                        <span
+                                            class="fa fa-star {% if rp.rate > 0 %} {% if rp.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                            style="color:#F28B31;"></span>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </div>
-            <div id="success_message" class="alert alert-success fixed-top m-auto ajax_response"
-                 style="text-align:center;"></div>
-            <div id="error_message" class="alert alert-danger fixed-top m-auto ajax_response"
-                 style="max-width:320px !important; text-align:center;"></div>
         </div>
-        <script>
-            function handlingFav(project_id) {
-                $.ajax({
-                    headers: {
-                        "X-CSRFToken": '{{csrf_token}}'
-                    },
-                    type: 'POST',
-                    url: "{% url 'change_favourites' %}",
-                    data: {project: project_id},
-                    success: function (result) {
-                        $('#success_message').fadeIn().html(result);
-                        setTimeout(function () {
-                            $('#success_message').fadeOut("slow");
-                        }, 2000);
-                    },
-                    error: function (error) {
-                        console.log(error.responseText)
-                    }
-                })
-            }
-
-            function checkRate(e) {
-                e.preventDefault()
-                let rate = $("input[name='rating']:checked").val();
-                if (!rate) {
-                    $('#error_message').fadeIn().html("You must choose a rate!");
+        <div id="success_message" class="alert alert-success fixed-top m-auto ajax_response" style="text-align:center;">
+        </div>
+        <div id="error_message" class="alert alert-danger fixed-top m-auto ajax_response"
+            style="max-width:320px !important; text-align:center;"></div>
+    </div>
+    <script>
+        function handlingFav(project_id) {
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                type: 'POST',
+                url: "{% url 'change_favourites' %}",
+                data: { project: project_id },
+                success: function (result) {
+                    $('#success_message').fadeIn().html(result);
                     setTimeout(function () {
-                        $('#error_message').fadeOut("slow");
+                        $('#success_message').fadeOut("slow");
                     }, 2000);
-                } else if (rate <= 0 || rate > 5) {
-                    $('#error_message').fadeIn().html("Stop fooling around!, I'm WATCHING you!!");
-                    setTimeout(function () {
-                        $('#error_message').fadeOut("slow");
-                    }, 4000);
-                    return;
+                },
+                error: function (error) {
+                    console.log(error.responseText)
                 }
-                $.ajax({
-                    headers: {
-                        "X-CSRFToken": '{{csrf_token}}'
+            })
+        }
+
+        function checkRate(e) {
+            e.preventDefault()
+            let rate = $("input[name='rating']:checked").val();
+            if (!rate) {
+                $('#error_message').fadeIn().html("You must choose a rate!");
+                setTimeout(function () {
+                    $('#error_message').fadeOut("slow");
+                }, 2000);
+            } else if (rate <= 0 || rate > 5) {
+                $('#error_message').fadeIn().html("Stop fooling around!, I'm WATCHING you!!");
+                setTimeout(function () {
+                    $('#error_message').fadeOut("slow");
+                }, 4000);
+                return;
+            }
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": '{{csrf_token}}'
+                },
+                type: 'POST',
+                url: "{% url 'add_rate' %}",
+                data: {
+                    'project': {{ project.id }},
+        'rate': rate,
                     },
-                    type: 'POST',
-                    url: "{% url 'add_rate' %}",
-                    data: {
-                        'project': {{ project.id }},
-                        'rate': rate,
-                    },
-                    success: function (result) {
-                        $('#success_message').fadeIn().html(result);
-                        setTimeout(function () {
-                            $('#success_message').fadeOut("slow");
-                        }, 4000);
-                        document.querySelector(".reviewing-box").style.display = "none";
-                    },
-                    error: function (err) {
-                        console.log(err.responseText);
-                    }
+        success: function (result) {
+            $('#success_message').fadeIn().html(result);
+            setTimeout(function () {
+                $('#success_message').fadeOut("slow");
+            }, 4000);
+            document.querySelector(".reviewing-box").style.display = "none";
+        },
+        error: function (err) {
+            console.log(err.responseText);
+        }
                 });
             }
 
-        </script>
-    </div>
+    </script>
+</div>
 
 
-    {#    #}
-    {#    <div class="modal video-modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModal">#}
-    {#        <div class="modal-dialog" role="document">#}
-    {#            <div class="modal-content">#}
-    {#                <div class="modal-header">#}
-    {#                    Report This Project#}
-    {#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
-    {#                            aria-hidden="true">&times;</span>#}
-    {#                    </button>#}
-    {#                </div>#}
-    {#                <section>#}
-    {#                    <div class="modal-body">#}
-    {#                        <div class="w3_login_module">#}
-    {#                            <div class="form">#}
-    {#                                <form action="{% url 'report_project' project.id %}" method="post">#}
-    {#                                    <br>#}
-    {#                                    <input type="submit" class="btn btn-block" value="Report">#}
-    {#                                    {% csrf_token %}#}
-    {##}
-    {#                                </form>#}
-    {#                            </div>#}
-    {#                        </div>#}
-    {#                    </div>#}
-    {#                </section>#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    #}
-    {#    </div>#}
+{#    #}
+{#    <div class="modal video-modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModal">#}
+{#        <div class="modal-dialog" role="document">#}
+{#            <div class="modal-content">#}
+{#                <div class="modal-header">#}
+{#                    Report This Project#}
+{#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
+{#                            aria-hidden="true">&times;</span>#}
+{#                    </button>#}
+{#                </div>#}
+{#                <section>#}
+{#                    <div class="modal-body">#}
+{#                        <div class="w3_login_module">#}
+{#                            <div class="form">#}
+{#                                <form action="{% url 'report_project' project.id %}" method="post">#}
+{#                                    <br>#}
+{#                                    <input type="submit" class="btn btn-block" value="Report">#}
+{#                                    {% csrf_token %}#}
+{##}
+{#                                </form>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </section>#}
+{#            </div>#}
+{#        </div>#}
+{#    #}
+{#    </div>#}
 {% endblock content %}
-

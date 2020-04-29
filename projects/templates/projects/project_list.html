@@ -1,107 +1,68 @@
 {% extends 'projects/layouts/base.html' %}
 {% load static %}
-
+{% load project_extras %}
 {% block title %} {{ project.title }} {% endblock title %}
 {% block styles %}
-    <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css'/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'projects/assets/css/rating.css' %}" rel='stylesheet' type='text/css'/>
+        <link href="{% static 'projects/assets/css/project_card.css' %}" rel='stylesheet' type='text/css'/>
+        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="{% static 'projects/assets/css/progress-bar.css' %}" rel='stylesheet' type='text/css'/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+    <script src="https://raw.github.com/LeaVerou/HTML5-Progress-polyfill/master/progress-polyfill.min.js"></script>
 
 {% endblock %}
 {% block content %}
-    <div class="single-page-agile-main">
-        <div class="container">
-
-           <div class="agileits-single-top">
-                <ol class="breadcrumb">
-                    <li><a href="#">your projects</a></li>
-
-                </ol>
-            </div>
-            <div class="single-page-agile-info">
-
-                <div class="show-top-grids-w3lagile">
-                    <div class="col-sm-8 single-left">
-                        <div class="more">
-                            <button id="more-btn" class="more-btn">
-                                <span class="more-dot"></span>
-                                <span class="more-dot"></span>
-                                <span class="more-dot"></span>
-                            </button>
-                            <div class="more-menu">
-                                <div class="more-menu-caret">
-                                    <div class="more-menu-caret-outer"></div>
-                                    <div class="more-menu-caret-inner"></div>
-                                </div>
-                                <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn"
-                                    aria-hidden="true">
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Save</button>
-                                    </li>
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Report</button>
-                                    </li>
-                                    <li class="more-menu-item" role="presentation">
-                                        <button type="button" class="more-menu-btn" role="menuitem">Cancel</button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-
-                        <div class="song">
-
-                        {% for project in projects %}
-                            <div class="song-grid-right">
-                                <div class="share">
-                                    <h5>{{ project.title }}</h5>
-
-                                      <span class="tag">
-
-                                          <a href="{% url 'show_project'  project.id %}">
-                                            show more
-                                          </a>
-                                        </span>
-                                    <div class="single-agile-shar-buttons">
-                                        {% for tag in project.tags %}
-                                            <span class="tag"> {{ tag.name }} </span>
-                                        {% endfor %}
 
 
 
-                                     <div class="item md-3">
-                                        <img src={{ project.cover.url }} class="img-responsive" width="400px" height="500px"/>
-                                    </div>
-
-                                    </div>
-                                </div>
-                            </div>
+    <div class="cards">
+        {% for project in projects%}
+            <div class="book-card">
+                <div class="book-card-body">
+                    <div class="card__inner" style="background: url({{project.cover.url}}) no-repeat;">
+                        <h2>{{project.title}}</h2>
+                        <div class="card__buttons">
+                            <a href="{% url 'show_project' project.id %}">More Details</a>
 
                         </div>
-                         {%endfor%}
                     </div>
-
-
-
-                    <div class="col-md-4 single-right">
-                        <h3>Up Next</h3>
-                        <div class="single-grid-right">
-                            <div class="single-right-grids">
-                                <div class="col-md-4 single-right-grid-left">
-                                    <a href="single.html"><img src="images/m1.jpg" alt=""/></a>
-                                </div>
-                                <div class="col-md-8 single-right-grid-right">
-                                    <a href="single.html" class="title"> Nullam interdum metus</a>
-                                    <p class="author"><a href="#" class="author">John Maniya</a></p>
-                                    <p class="views">2,114,200 views</p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
+                    <div class="card-bdy">
+                        <div class="rating rating-card">
+                            <span class="fa fa-star {% if project.rate > 4 %} {% if project.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                            style="color:#F28B31;"></span>
+                            <span class="fa fa-star {% if project.rate > 3 %} {% if project.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                            style="color:#F28B31;"></span>
+                            <span class="fa fa-star {% if project.rate > 2 %} {% if project.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                            style="color:#F28B31;"></span>
+                            <span class="fa fa-star {% if project.rate > 1 %} {% if project.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                            style="color:#F28B31;"></span>
+                            <span class="fa fa-star {% if project.rate > 0 %} {% if project.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                            style="color:#F28B31;"></span>
                         </div>
-
                     </div>
                 </div>
+
+                <div class="book-card-footer">
+{#                    <div#}
+{#                            class="progress-wrap progress"#}
+{#                            data-progress-percent='{{ donations | get_value_from_dict:project.id }}'#}
+{#                    >#}
+{#                        <div class="progress-bar progress"></div>#}
+                        <progress
+                                max="100"
+                                value="{{ donations | get_value_from_dict:project.id }}"
+                                class="html5"
+                            style="width: 50%" {# do not change this #}
+                        >
+                        </progress>
+                </div>
             </div>
-        </div>
-    </div>
+    {% endfor %}
+    <script defer>
+      $(document).ready(()=>{
+
+      });
+    </script>
+</div>
 {% endblock content %}
-
-

@@ -44,9 +44,15 @@ default width = 800/5 = 160px;
 .accordian ul:hover li {width: 100px}
 /*Lets apply hover effects now*/
 /*The LI hover style should override the UL hover style*/
-.accordian ul li:hover {width: 300px !important;}
-
-
+.accordian ul li:hover {
+	width: 300px !important;
+}
+.accordian ul li:hover .image_title a {
+	color: blue;
+}
+.accordian ul li:hover .fa-star{
+	color: blue !important;
+}
 .accordian li img {
 	display: inline;
 }
@@ -60,6 +66,7 @@ default width = 800/5 = 160px;
     text-align: center;
 
 }
+
 .image_title a {
 	display: block;
 	color: #fff;

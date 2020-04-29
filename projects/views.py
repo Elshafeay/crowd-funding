@@ -1,4 +1,5 @@
 import json
+from math import floor
 
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
@@ -6,6 +7,7 @@ from django.http import Http404
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
+from django.db.models import Sum
 
 from .models import \
     Project, Donation, Category, Comment, CommentReports, ProjectImages
@@ -143,6 +145,7 @@ def add_rate(request):
 
     review.rate = int(request.POST.get('rate'))
     review.save()
+    update_project_rate(project_id)
     message = "Thanks, for taking time to rate this project."
     return HttpResponse(message)
 
@@ -226,7 +229,12 @@ def create(request):
 def projects_list(request):
     owner = get_user(request)
     projects = owner.project_set.all()
-    context = {"projects": projects}
+    donations = {}
+    for project in projects:
+        total = project.donation_set.aggregate(Sum('donation'))
+        donations[project.id] = int((int(total.get('donation__sum') or 0) / project.target) * 100)
+
+    context = {"projects": projects, "donations": donations}
     return render(request, 'projects/project_list.html', context)
 
 
@@ -242,3 +250,13 @@ def saved_projects(request):
     my_saved_projects = owner.savedproject_set.all()
     context = {"saved_projects": my_saved_projects}
     return render(request, 'projects/saved_projects.html', context)
+
+
+def update_project_rate(pk):
+    project = get_object_or_404(Project, pk=pk)
+    reviews = project.review_set.filter(rate__gt=0)
+    rates = [_.rate for _ in reviews]
+    average = sum(rates)/len(rates)
+    average = round(average, 1)  # to round to 1 decimal place
+    project.rate = floor(average*2)/2
+    project.save()
