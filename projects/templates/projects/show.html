@@ -438,7 +438,7 @@
                                         <input type="hidden" name="comment_id" value="{{ comment.id }}">
                                         </form>
                                     </div>
-                                    <img class="avatarMed" src='{{ comment.user.avatar.url }}' alt="avatar"/>
+                                    <a href="{% url 'show_user_profile' comment.user_id %}"><img class="avatarMed" src='{{ comment.user.avatar.url }}' alt="avatar"/></a>
                                     <div class="postInfo">
                                         <span class="userName textOrange textSemiBold">
                                             {{ comment.user.get_full_name }}
@@ -454,7 +454,7 @@
                                         {% for reply in comment.reply_set.all %}
                                             <!-- Comment reply -->
                                             <div class="commReplyWrap">
-                                                <img class="avatarMed" src='{{ reply.user.avatar.url }}' alt=""/>
+                                                <a href="{% url 'show_user_profile' reply.user_id %}"><img class="avatarMed" src='{{ reply.user.avatar.url }}' alt=""/></a>
                                                 <div class="postInfo">
                                                     <span class="userName textOrange textSemiBold">
                                                         {{ reply.user.get_full_name }}</span>
