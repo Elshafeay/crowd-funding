@@ -7,6 +7,7 @@ from django.http import Http404
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
+from django.db.models import Sum
 
 from .models import \
     Project, Donation, Category, Comment, CommentReports, ProjectImages
@@ -228,7 +229,12 @@ def create(request):
 def projects_list(request):
     owner = get_user(request)
     projects = owner.project_set.all()
-    context = {"projects": projects}
+    donations = {}
+    for project in projects:
+        total = project.donation_set.aggregate(Sum('donation'))
+        donations[project.id] = int((int(total.get('donation__sum') or 0) / project.target) * 100)
+
+    context = {"projects": projects, "donations": donations}
     return render(request, 'projects/project_list.html', context)
 
 
