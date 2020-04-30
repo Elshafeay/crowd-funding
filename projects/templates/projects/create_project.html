@@ -101,13 +101,18 @@
 				<label for="birthday">Start Date : </label>
                 {{ create_form.start_date }}
             </div>
-            {{ create_form.start_date.errors }}
-            
+            <div class="alert alert-danger" role="alert">
+                <strong>Oh snap!</strong> {{ create_form.start_date.errors }}
+            </div>
+           
             <div class="input-group date" >
                 <label for="birthday">End Date : &nbsp; </label>
                 {{ create_form.end_date }}
             </div>
-            {{ create_form.end_date.errors }}
+            <div class="alert alert-danger" role="alert">
+                <strong>Oh snap!</strong> {{ create_form.end_date.errors }}
+            </div>
+            
             {% csrf_token %}
             <input type="submit" value=" Create" name="create_from">
         </form>

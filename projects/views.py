@@ -212,7 +212,7 @@ def show_all(request):
     all_projects = Project.objects.all()
     categories = Category.objects.all()
     page = request.GET.get('page', 1)
-    paginator = Paginator(all_projects, 2)
+    paginator = Paginator(all_projects, 18)
     try:
         all_projects = paginator.page(page)
     except PageNotAnInteger:
