@@ -63,16 +63,16 @@
                                         <div class="w3l-movie-text">
                                             <h6><a href="{% url 'show_project'  proj.id %}"><strong>{{proj.title}}</strong></a></h6>
                                         </div>
-                                        <div class="mid-2 agile_mid_2_home">
-                                            <p><strong>{{proj.target}}</strong> $</p>
+                                        <div  class="mid-2 agile_mid_2_home">
+                                            <p style="margin-right: 15px;"><strong>{{proj.target}}</strong> $</p>
                                             
-                                            <div class="block-stars" style="align-items: center;">
+                                            <div class="block-stars" >
                                                 <ul class="w3l-ratings" style="align-items: center;">
-                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star {% if proj.rate > 4 %} {% if proj.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star {% if proj.rate > 3 %} {% if proj.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star {% if proj.rate > 2 %} {% if proj.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star {% if proj.rate > 1 %} {% if proj.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star {% if proj.rate > 0 %} {% if proj.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
                                                 </ul>
                                             </div>
                                             <div class="clearfix"></div>
@@ -118,14 +118,14 @@
                                         <h6><a href="{% url 'show_project'  proj.id %}">{{proj.title}}</a></h6>
                                     </div>
                                     <div class="mid-2 agile_mid_2_home">
-                                        <p><strong>{{proj.target}}</strong> $</p>
+                                        <p style="margin-right: 15px;"><strong>{{proj.target}}</strong> $</p>
                                         <div class="block-stars">
                                             <ul class="w3l-ratings">
-                                                <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-star {% if proj.rate > 4 %} {% if proj.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-star {% if proj.rate > 3 %} {% if proj.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-star {% if proj.rate > 2 %} {% if proj.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-star {% if proj.rate > 1 %} {% if proj.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
+                                                <li><a href="#"><i class="fa fa-star {% if proj.rate > 0 %} {% if proj.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
                                             </ul>
                                         </div>
                                         <div class="clearfix"></div>
