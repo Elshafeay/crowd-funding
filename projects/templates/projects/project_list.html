@@ -15,33 +15,45 @@
         {% for project in projects %}
             <div class="book-card">
                 <div class="book-card-body">
-                    <div class="card__inner" style="background: url({{ project.cover.url }}) no-repeat;">
-                        <h2>{{ project.title }}</h2>
+                    <div
+                            class="card__inner"
+                            style="
+                                    background: url({{ project.cover.url }}) no-repeat;
+                                    background-size: cover;
+                                    "
+                    >
+                        <h2 class="book-card-title">{{ project.title }}</h2>
                         <div class="card__buttons">
-                            <a href="{% url 'show_project' project.id %}">More Details</a>
-
+                            <a href="{% url 'show_project' project.id %}">View Project</a>
+                            <a href="{% url 'show_project' project.id %}#donation">Donate</a>
                         </div>
                     </div>
                     <div class="card-bdy">
-                        <div class="rating rating-card">
-                            <span class="fa fa-star {% if project.rate > 4 %} {% if project.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                  style="color:#F28B31;"></span>
-                            <span class="fa fa-star {% if project.rate > 3 %} {% if project.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                  style="color:#F28B31;"></span>
-                            <span class="fa fa-star {% if project.rate > 2 %} {% if project.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                  style="color:#F28B31;"></span>
-                            <span class="fa fa-star {% if project.rate > 1 %} {% if project.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                  style="color:#F28B31;"></span>
-                            <span class="fa fa-star {% if project.rate > 0 %} {% if project.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                  style="color:#F28B31;"></span>
+                        <div class="card-rating">
+                            <div class="rating rating-card">
+                                <span class="fa fa-star {% if project.rate > 4 %} {% if project.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                      style="color:#F28B31;"></span>
+                                <span class="fa fa-star {% if project.rate > 3 %} {% if project.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                      style="color:#F28B31;"></span>
+                                <span class="fa fa-star {% if project.rate > 2 %} {% if project.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                      style="color:#F28B31;"></span>
+                                <span class="fa fa-star {% if project.rate > 1 %} {% if project.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                      style="color:#F28B31;"></span>
+                                <span class="fa fa-star {% if project.rate > 0 %} {% if project.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                      style="color:#F28B31;"></span>
+                            </div>
                         </div>
                     </div>
+                    <div class="card-details">
+                        <p class="card-text"><strong>Details: </strong>{{ project.details|truncatechars:50 }}</p>
+                    </div>
                     <div class="book-card-footer">
-                        <h1>{{ donations | get_value_from_dict:project.id }}</h1>
+                                                        <h4>raised <strong style="color: {% if project.status == 1 %} green {% else %} #FF8D1B {% endif %}">${{ total_donations | get_value_from_dict:project.id }}</strong> out of <strong style="color: green">${{ project.target }}</strong></h4>
                         <div
                                 class="progress-wrap progress"
                                 data-progress-percent='{{ donations | get_value_from_dict:project.id }}'
                         >
+                        <p class="progress-bar-text">{{ donations | get_value_from_dict:project.id }}%</p>
                             <div class="progress-bar progress"></div>
                         </div>
                     </div>

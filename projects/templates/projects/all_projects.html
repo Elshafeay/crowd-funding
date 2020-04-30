@@ -1,87 +1,83 @@
 {% extends 'projects/layouts/base.html' %}
 {% load static %}
+{% load project_extras %}
+
 
 {% block title %} Projects List {% endblock title %}
 {% block styles %}
-    <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css'/>
-    <link href="{% static 'projects/assets/css/contactstyle.css' %}" rel='stylesheet' type='text/css' media="all" />
-    <link href="{% static 'projects/assets/css/faqstyle.css' %}" rel='stylesheet' type='text/css' media="all" />
     <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css' media="all" />
     <link href="{% static 'projects/assets/css/font-awesome.min.css' %}" rel='stylesheet' type='text/css' media="all" />
 	<link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>
-	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
-			function hideURLbar(){ window.scrollTo(0,1); } </script>
-	<script>
-		$(document).ready(function() {
-			$("#owl-demo").owlCarousel({
+    <link href="{% static 'projects/assets/css/rating.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'projects/assets/css/project_card.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'projects/assets/css/progress-bar.css' %}" rel='stylesheet' type='text/css'/>
 
-			  autoPlay: 3000, //Set AutoPlay to 3 seconds
-
-			  items : 5,
-			  itemsDesktop : [640,4],
-			  itemsDesktopSmall : [414,3]
-
-			});
-
-		});
-	</script>
-	<script type="text/javascript">
-		jQuery(document).ready(function($) {
-			$(".scroll").click(function(event){
-				event.preventDefault();
-				$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
-			});
-		});
-	</script>
 {% endblock %}
 {% block content %}
-<div class="faq">
-    <div class="container">
-        <h4 class="latest-text w3_faq_latest_text w3_latest_text" style="margin-left: 0em;">Projects List</h4>
-        <div class="agileits-single-top">
-            <ol class="breadcrumb">
-                <li><a href="/">Home</a></li>
-                <li class="active">All Projects</li>
-            </ol>
-        </div>
-        
-        <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
-            <ul id="myTab" class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#all" id="all-tab" role="tab" data-toggle="tab" aria-controls="all" aria-expanded="true">All</a></li>
-                {% for cat in categories %}
-                <li role="presentation"><a href="#cat-{{cat.id}}" role="tab" id="cat-{{cat.id}}-tab" data-toggle="tab" aria-controls="cat-{{cat.id}}" aria-expanded="false">{{cat.name}}</a></li>
-                {% endfor %}
-            </ul>
-            <div id="myTabContent" class="tab-content">
-                <div role="tabpanel" class="tab-pane fade active in" id="all" aria-labelledby="all-tab">
-                    <div class="w3_agile_featured_movies">
-                            {% for proj in all_projects %}
-                                <div class="col-md-2 w3l-movie-gride-agile">
-                                    <a href="{% url 'show_project'  proj.id %}"><img src="{{ proj.cover.url }}" title="{{proj.title}}"  width="170px" height="230px" alt="None " />
-                                    </a>
-                                    <div class="mid-1 agileits_w3layouts_mid_1_home">
-                                        <div class="w3l-movie-text">
-                                            <h6><a href="{% url 'show_project'  proj.id %}"><strong>{{proj.title}}</strong></a></h6>
-                                        </div>
-                                        <div  class="mid-2 agile_mid_2_home">
-                                            <p style="margin-right: 15px;"><strong>{{proj.target}}</strong> $</p>
-                                            
-                                            <div class="block-stars" >
-                                                <ul class="w3l-ratings" style="align-items: center;">
-                                                    <li><a href="#"><i class="fa fa-star {% if proj.rate > 4 %} {% if proj.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-star {% if proj.rate > 3 %} {% if proj.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-star {% if proj.rate > 2 %} {% if proj.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-star {% if proj.rate > 1 %} {% if proj.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-star {% if proj.rate > 0 %} {% if proj.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
+    <div class="faq">
+        <div class="container">
+            <h4 class="latest-text w3_faq_latest_text w3_latest_text" style="margin-left: 0em;">Projects List</h4>
+            <div class="agileits-single-top">
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a></li>
+                    <li class="active">All Projects</li>
+                </ol>
+            </div>
+
+           <div role="tabpanel" class="tab-pane fade active in" id="all" aria-labelledby="all-tab">
+                <div class="cards">
+                {% for project in all_projects %}
+                    <div class="book-card">
+                        <div class="book-card-body">
+                            <div
+                                    class="card__inner"
+                                    style="
+                                            background: url({{ project.cover.url }}) no-repeat;
+                                            background-size: cover;
+                                            "
+                            >
+                                <h2 class="book-card-title">{{ project.title }}</h2>
+                                <div class="card__buttons">
+                                    <a href="{% url 'show_project' project.id %}">View Project</a>
+                                    <a href="{% url 'show_project' project.id %}#donation">Donate</a>
+                                </div>
+                            </div>
+                            <div class="card-bdy">
+                                <div class="card-rating">
+                                    <div class="rating rating-card">
+                                        <span class="fa fa-star {% if project.rate > 4 %} {% if project.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                              style="color:#F28B31;"></span>
+                                        <span class="fa fa-star {% if project.rate > 3 %} {% if project.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                              style="color:#F28B31;"></span>
+                                        <span class="fa fa-star {% if project.rate > 2 %} {% if project.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                              style="color:#F28B31;"></span>
+                                        <span class="fa fa-star {% if project.rate > 1 %} {% if project.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                              style="color:#F28B31;"></span>
+                                        <span class="fa fa-star {% if project.rate > 0 %} {% if project.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                              style="color:#F28B31;"></span>
                                     </div>
                                 </div>
-                            {% endfor %}
-                        <div class="clearfix"> </div>
-                        {% if all_projects.has_other_pages %}
+                            </div>
+                            <div class="card-details">
+                                <p class="card-text"><strong>Details: </strong>{{ project.details|truncatechars:50 }}</p>
+                            </div>
+                            <div class="book-card-footer">
+                                <h4>raised <strong style="color: {% if project.status == 1 %} green {% else %} #FF8D1B {% endif %}">${{ total_donations | get_value_from_dict:project.id }}</strong> out of <strong style="color: green">${{ project.target }}</strong></h4>
+                                <div
+                                        class="progress-wrap progress"
+                                        data-progress-percent='{{ donations | get_value_from_dict:project.id }}'
+                                >
+                                <p class="progress-bar-text">{{ donations | get_value_from_dict:project.id }}%</p>
+                                    <div class="progress-bar progress"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                    <div class="clearfix"> </div>
+                    {% if all_projects.has_other_pages %}
+                    <div style="margin-left: 35%">
                         <ul class="pagination">
                             {% if all_projects.has_previous %}
                             <li><a href="?page={{ all_projects.previous_page_number }}">&laquo;</a></li>
@@ -101,90 +97,11 @@
                             <li class="disabled"><span>&raquo;</span></li>
                             {% endif %}
                         </ul>
-                        {% endif %}
                     </div>
-                </div>
-
-               
-
-                {% for cat in categories %}
-                    <div role="tabpanel" class="tab-pane fade" id="cat-{{cat.id}}" aria-labelledby="cat-{{cat.id}}-tab">
-                        {% for proj in cat.project_set.all %}
-                            <div class="col-md-2 w3l-movie-gride-agile">
-                                <a href="{% url 'show_project'  proj.id %}"><img src="{{ proj.cover.url }}" title="{{proj.title}}"  width="170px" height="230px" alt="None " />
-                                </a>
-                                <div class="mid-1 agileits_w3layouts_mid_1_home">
-                                    <div class="w3l-movie-text">
-                                        <h6><a href="{% url 'show_project'  proj.id %}">{{proj.title}}</a></h6>
-                                    </div>
-                                    <div class="mid-2 agile_mid_2_home">
-                                        <p style="margin-right: 15px;"><strong>{{proj.target}}</strong> $</p>
-                                        <div class="block-stars">
-                                            <ul class="w3l-ratings">
-                                                <li><a href="#"><i class="fa fa-star {% if proj.rate > 4 %} {% if proj.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-star {% if proj.rate > 3 %} {% if proj.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-star {% if proj.rate > 2 %} {% if proj.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-star {% if proj.rate > 1 %} {% if proj.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-star {% if proj.rate > 0 %} {% if proj.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}" aria-hidden="true"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                        <div class="clearfix"> </div>
-                    </div>
-                {% endfor %}
-
+                    {% endif %}
             </div>
         </div>
-
-
     </div>
-</div>
-
-<link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen" property="" />
-<script defer src="{% static 'projects/assets/js/jquery.flexslider.js' %}"></script>
-<script type="text/javascript">
-$(window).load(function(){
-  $('.flexslider').flexslider({
-    animation: "slide",
-    start: function(slider){
-      $('body').removeClass('loading');
-    }
-  });
-});
-</script>
-<!-- pop-up-box -->
-<script src="{% static 'projects/assets/js/jquery.magnific-popup.js' %}" type="text/javascript"></script>
-<!--//pop-up-box -->
-<div id="small-dialog" class="mfp-hide">
-    <iframe src="https://player.vimeo.com/video/164819130?title=0&byline=0"></iframe>
-</div>
-<div id="small-dialog1" class="mfp-hide">
-    <iframe src="https://player.vimeo.com/video/148284736"></iframe>
-</div>
-<div id="small-dialog2" class="mfp-hide">
-    <iframe src="https://player.vimeo.com/video/165197924?color=ffffff&title=0&byline=0&portrait=0"></iframe>
-</div>
-<script>
-    $(document).ready(function() {
-    $('.w3_play_icon,.w3_play_icon1,.w3_play_icon2').magnificPopup({
-        type: 'inline',
-        fixedContentPos: false,
-        fixedBgPos: true,
-        overflowY: 'auto',
-        closeBtnInside: true,
-        preloader: false,
-        midClick: true,
-        removalDelay: 300,
-        mainClass: 'my-mfp-zoom-in'
-    });
-
-    });
-</script>
-  
 {% endblock content %}
 
 

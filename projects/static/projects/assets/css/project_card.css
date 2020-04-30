@@ -1,14 +1,11 @@
 * {
   box-sizing: border-box;
 }
-body {
-  background: whiteSmoke;
-}
 .cards {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 0;
+  margin: 2rem 0;
   padding: 0;
   text-align: center;
 }
@@ -19,7 +16,7 @@ body {
 }
 .book-card {
   position: relative;
-  min-width: 400px !important;
+  min-width: 350px !important;
   width: 30%;
   margin: 1%;
   background: whiteSmoke;
@@ -54,9 +51,9 @@ body {
   border-radius: 0.5rem 0.5rem 0 0;
   background-size:100% auto;
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   box-sizing: unset;
-  padding-bottom: 10rem;
+  height: 270px;
 }
 .card__inner h2 {
   color: white;
@@ -73,9 +70,10 @@ body {
 .card__buttons {
   position: absolute;
   width: 100%;
-  margin-top: 10rem;
   transform: translateY(0);
   transition: transform 0.5s ease;
+  top: 0;
+  padding-top: 270px;
 }
 .card__buttons a {
   position: relative;
@@ -127,18 +125,18 @@ body {
   display: block;
   padding-bottom: 5px;
 }
-.book-card p {
-  position: absolute;
-  bottom: 0;
-  text-align: center;
-  width: 100%;
-}
 
 
 .card-text{
   text-align: left;
+  margin-left: 1rem;
+  font-size: 16px;
 }
 
+.card-rating{
+  float: right;
+  margin-right: 1rem;
+}
 
 .currency {
   display: inline-block;
@@ -171,12 +169,10 @@ body {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  bottom: 10px;
   justify-content: center;
   align-items: center;
-  position: relative;
-  bottom: 0;
-  justify-content: space-around;
+  bottom: 0 !important;
+  margin-top: 1rem;
 }
 
 .book-card-body{
@@ -215,4 +211,8 @@ a.disabled {
 
 .cont{
   margin-top: 3rem !important;
+}
+
+.book-card-title{
+  transform: translateY(-20%);
 }

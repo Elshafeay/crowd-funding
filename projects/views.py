@@ -3,7 +3,6 @@ from math import floor
 
 from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods
@@ -77,8 +76,9 @@ def donate(request, project_id):
         user=get_user(request),
         donation=int(request.POST.get('donation'))
     )
-    print(request.POST.get('donation'))
-    print(new_donation)
+    if get_total_donations(project) > project.target:
+        project.status = 1
+        project.save()
     messages.success(request, "Donation Added Successfully")
     return redirect('show_project', project_id)
 
@@ -210,7 +210,7 @@ def cancel(request, project_id):
 
 def show_all(request):
     all_projects = Project.objects.all()
-    categories = Category.objects.all()
+    donations, total_donations = get_projects_donations(all_projects)
     page = request.GET.get('page', 1)
     paginator = Paginator(all_projects, 18)
     try:
@@ -219,7 +219,12 @@ def show_all(request):
         all_projects = paginator.page(1)
     except EmptyPage:
         all_projects = paginator.page(paginator.num_pages)
-    context = {"categories": categories, "all_projects": all_projects}
+
+    context = {
+        "donations": donations,
+        'total_donations': total_donations,
+        "all_projects": all_projects
+    }
     return render(request, "projects/all_projects.html", context)
 
 
@@ -262,14 +267,13 @@ def create(request):
 
 
 def projects_list(request):
-    owner = get_user(request)
-    projects = owner.project_set.all()
-    donations = {}
-    for project in projects:
-        total = project.donation_set.aggregate(Sum('donation'))
-        donations[project.id] = int((int(total.get('donation__sum') or 0) / project.target) * 100)
-
-    context = {"projects": projects, "donations": donations}
+    projects = get_user(request).project_set.all()
+    donations, total_donations = get_projects_donations(projects)
+    context = {
+        "projects": projects,
+        "donations": donations,
+        'total_donations': total_donations
+    }
     return render(request, 'projects/project_list.html', context)
 
 
@@ -307,7 +311,19 @@ def get_the_most_similar_projects(project, tags):
     return [_[0] for _ in related_projects[1:]]
 
 
+# get total donations for a project
 def get_total_donations(project):
     total_donations = project.donation_set.aggregate(
         Sum('donation')).get('donation__sum')
     return total_donations or 0
+
+
+# get donations for a list of projects
+def get_projects_donations(projects):
+    donations_percentages = {}
+    total_donations = {}
+    for project in projects:
+        total = get_total_donations(project)
+        donations_percentages[project.id] = (int(total / project.target) * 100)
+        total_donations[project.id] = total
+    return donations_percentages, total_donations
