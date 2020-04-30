@@ -1693,3 +1693,26 @@ h3.head {
 .login-now {
     float: none;
 }
+
+.orange-btn {
+    color: #fff;
+    display: inline-block;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #FF8D1B;
+    text-align: center;
+    padding: 6px 30px;
+    font-weight: bold;
+}
+
+.song-info-details {
+    font-size: 12px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.border-light {
+    border:1px solid #ccc;
+    padding: 15px;
+}
