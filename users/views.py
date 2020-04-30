@@ -8,10 +8,8 @@ from django.contrib import messages
 from django.contrib import auth
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_text
-from django.utils import six
-from django.core.mail import EmailMessage
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -22,7 +20,7 @@ def register(request):
     if request.user.is_authenticated:
         redirect('home')
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
+        form = UserRegisterForm(request.POST, request.FILES)
         if form.is_valid():
             save_it = form.save(commit=False)
             save_it.is_active = False
@@ -60,7 +58,6 @@ def register(request):
             )
             return redirect('login')
     else:
-        print(request.user)
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
@@ -76,11 +73,14 @@ def logout(request):
 def activate(request, code):
     all_users = UserModel.objects.all()
     for user in all_users:
-        token = urlsafe_base64_encode(force_bytes(user.pk +
-                                                  user.date_joined.year +
-                                                  user.date_joined.month +
-                                                  user.date_joined.day
-                                                  ))
+        token = urlsafe_base64_encode(
+            force_bytes(
+                user.pk +
+                user.date_joined.year +
+                user.date_joined.month +
+                user.date_joined.day
+            )
+        )
         if code == token:
             print("code", code, " ", token)
             user.is_active = 1
@@ -109,7 +109,11 @@ def profile(request):
 @login_required
 def update_profile(request):
     if request.method == 'POST':
-        u_profile = UserUpdateForm(request.POST, request.FILES, instance=request.user)
+        u_profile = UserUpdateForm(
+            request.POST,
+            request.FILES,
+            instance=request.user
+        )
         if u_profile.is_valid():
             u_profile.save()
             messages.success(request, f'Your account has been has updated ')

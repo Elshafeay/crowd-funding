@@ -20,10 +20,6 @@ class CustomUserChangeForm(UserChangeForm):
 class UserRegisterForm(CustomUserCreationForm):
     email = forms.EmailField()
     phone = forms.RegexField(regex="^(002)?01[0125]\d{8}$")
-    avatar = forms.FileField(
-        label='Select an image',
-        help_text='max. 1 megabytes'
-    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
