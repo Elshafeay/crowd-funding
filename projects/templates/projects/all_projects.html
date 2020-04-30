@@ -57,8 +57,7 @@
                     <div class="w3_agile_featured_movies">
                             {% for proj in all_projects %}
                                 <div class="col-md-2 w3l-movie-gride-agile">
-                                    <a href="{% url 'show_project'  proj.id %}" class="hvr-shutter-out-horizontal"><img src="{{ proj.cover.url }}" title="{{proj.title}}"  width="170px" height="230px" alt="None " />
-                                        <div class="w3l-action-icon"></div>
+                                    <a href="{% url 'show_project'  proj.id %}"><img src="{{ proj.cover.url }}" title="{{proj.title}}"  width="170px" height="230px" alt="None " />
                                     </a>
                                     <div class="mid-1 agileits_w3layouts_mid_1_home">
                                         <div class="w3l-movie-text">
@@ -89,8 +88,7 @@
                     <div role="tabpanel" class="tab-pane fade" id="cat-{{cat.id}}" aria-labelledby="cat-{{cat.id}}-tab">
                         {% for proj in cat.project_set.all %}
                             <div class="col-md-2 w3l-movie-gride-agile">
-                                <a href="{% url 'show_project'  proj.id %}" class="hvr-shutter-out-horizontal"><img src="{{ proj.cover.url }}" title="{{proj.title}}"  width="170px" height="230px" alt="None " />
-                                    <div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
+                                <a href="{% url 'show_project'  proj.id %}"><img src="{{ proj.cover.url }}" title="{{proj.title}}"  width="170px" height="230px" alt="None " />
                                 </a>
                                 <div class="mid-1 agileits_w3layouts_mid_1_home">
                                     <div class="w3l-movie-text">

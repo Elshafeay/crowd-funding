@@ -27,8 +27,7 @@
 						<div class="w3_agile_featured_movies">
 							{% for cat in categories %}
 							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="/category/{{cat.id}}" class="hvr-shutter-out-horizontal"><img src="{{ cat.image.url }}" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
+								<a href="{% url 'show_category' cat.id %}"><img src="{{ cat.image.url }}" title="album-name" class="img-responsive" alt=" " />
 								</a>
 								<div class="mid-1 agileits_w3layouts_mid_1_home">
 									<div class="w3l-movie-text">
