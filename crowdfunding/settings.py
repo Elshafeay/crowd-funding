@@ -20,8 +20,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 
-INSTALLED_APPS = [
-    'accounts',
+INSTALLED_APPS = [ 
     'projects',
     'users',
     'django.contrib.admin',

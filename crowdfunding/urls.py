@@ -13,7 +13,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('projects/', include('projects.urls')),
     path('users/', include('users.urls')),
-    path('users/', include('accounts.urls')),
+    
     path('', welcome, name='home'),
     path('category/<int:cat_id>', category_project, name='show_category'),
     path('categories/', all_category, name='show_all_categories'),
@@ -37,7 +37,21 @@ urlpatterns = [
     path('saved-projects/', saved_projects, name='saved_projects'),
     path('my-projects/', projects_list, name='my_projects'),
     path('delete-my-account/', delete_my_account, name='delete-my-account'),
-    
+    path('reset_password/',
+     auth_views.PasswordResetView.as_view(template_name="users/password_reset.html"),
+     name="reset_password"),
+
+    path('reset_password_sent/', 
+        auth_views.PasswordResetDoneView.as_view(template_name="users/password_reset_sent.html"), 
+        name="password_reset_done"),
+
+    path('reset/<uidb64>/<token>/',
+     auth_views.PasswordResetConfirmView.as_view(template_name="users/password_reset_form.html"), 
+     name="password_reset_confirm"),
+
+    path('reset_password_complete/', 
+        auth_views.PasswordResetCompleteView.as_view(template_name="users/password_reset_done.html"), 
+        name="password_reset_complete"),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
