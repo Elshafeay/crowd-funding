@@ -21,6 +21,7 @@ EMAIL_USE_TLS = True
 
 
 INSTALLED_APPS = [
+    'accounts',
     'projects',
     'users',
     'django.contrib.admin',
@@ -116,3 +117,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
 MEDIA_URL = '/uploads/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'home'
+
+# resset password by gmail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'test@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'crowdfunding40@gmail.com'
+EMAIL_HOST_PASSWORD = 'eivnezduqnzjbvsf'
+EMAIL_PORT = 587
+
+
+
