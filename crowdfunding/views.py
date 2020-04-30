@@ -11,48 +11,36 @@ from projects.models import Category, FeaturedProject, Project, Tag, ProjectTags
 
 
 def welcome(request):
-    if request.GET.get('Search'):
-        projects = search(request)
+    highest_five_rated = Project.objects.filter(status=0).order_by('-rate')[:5]
+    latest_five_projects = Project.objects.all().order_by('created_at')[:5]
+    featured_project = FeaturedProject.objects.all().order_by('featured_at')[:5]
+    categories_and_projects = get_categories_have_highest_projects_number()
+    first_category = categories_and_projects.get('first_category')
+    categories = categories_and_projects.get('categories')
+    print("first_category", first_category)
+    print("categories", categories)
+    if first_category:
         context = {
-            "projects": projects,
-            "title": "Your Search Key Word is ' " + request.GET['Search'] + " ' ",
-            "found": 1
+            "highest_five_rated": highest_five_rated,
+            "latest_five_projects": latest_five_projects,
+            "featured_project": featured_project,
+            "first_category": first_category,
+            "categories": categories,
         }
         return render(
             request,
-            'projects/search_projects.html',
+            'projects/home_page.html',
             context,
         )
-
     else:
-        highest_five_rated = Project.objects.filter(status=0).order_by('-rate')[:5]
-        latest_five_projects = Project.objects.all().order_by('created_at')[:5]
-        featured_project = FeaturedProject.objects.all().order_by('featured_at')[:5]
-        categories_and_projects = get_categories_have_highest_projects_number()
-        first_category = categories_and_projects.get('first_category')
-        categories = categories_and_projects.get('categories')
-        if first_category:
-            context = {
+        return render(
+            request,
+            "projects/home_page.html",
+            {
                 "highest_five_rated": highest_five_rated,
-                "latest_five_projects": latest_five_projects,
                 "featured_project": featured_project,
-                "first_category": first_category,
-                "categories": categories,
             }
-            return render(
-                request,
-                'projects/home_page.html',
-                context,
-            )
-        else:
-            return render(
-                request,
-                "projects/home_page.html",
-                {
-                    "highest_five_rated": highest_five_rated,
-                    "featured_project": featured_project,
-                }
-            )
+        )
 
 
 def get_categories_have_highest_projects_number():
@@ -165,18 +153,52 @@ def tag_projects(request, tag_id):
 
 
 def search(request):
-    key_word = request.GET['Search']
+    key_word = request.GET.get('Search')
+    print("search", request.GET.get('Search'))
+    if key_word != "":
+        search_by_title = Project.objects.filter(title__icontains=key_word)
+        search_by_tag = ProjectTags.objects.filter(tag__name__icontains=key_word)
 
-    search_by_title = Project.objects.filter(title__icontains=key_word)
-    search_by_tag = ProjectTags.objects.filter(tag__name__icontains=key_word)
+        projects = [_.project for _ in search_by_tag]
 
-    projects = [_.project for _ in search_by_tag]
+        for proj in search_by_title:
+            projects.append(proj)
 
-    for proj in search_by_title:
-        projects.append(proj)
+        projects = list(dict.fromkeys(projects))
+        if len(projects) == 0:
+            context = {
+                "projects": [],
+                "title": "Sorry",
+                "found": -1,
+            }
+            return render(
+                request,
+                'projects/search_projects.html',
+                context,
+            )
 
-    projects = list(dict.fromkeys(projects))
-    return projects
+        else:
+            context = {
+                "projects": projects,
+                "title": "Your Search Keyword is ' "+key_word+" '",
+                "found": 1,
+            }
+            return render(
+                request,
+                'projects/search_projects.html',
+                context,
+            )
+
+    context = {
+        "projects": [],
+        "title": "Sorry",
+        "found": -1,
+    }
+    return render(
+        request,
+        'projects/search_projects.html',
+        context,
+    )
 
 
 def error(request, exception):
