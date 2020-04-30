@@ -88,6 +88,10 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
 }
+
+.auth-btn {
+    font-family: 'Roboto Condensed', sans-serif;
+}
 .w3_search input[type="submit"]:hover{
 	background:#FF8D1B;
 }

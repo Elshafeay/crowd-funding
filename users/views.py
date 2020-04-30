@@ -136,3 +136,14 @@ def show_user_profile(request, user_id):
         'users/profile.html',
         context
     )
+
+
+@require_http_methods("POST")
+@login_required
+def delete_my_account(request):
+    get_user(request).delete()
+    messages.success(
+        request,
+        "Your account has been deleted successfully, We're sorry to hear that!"
+    )
+    return redirect('home')

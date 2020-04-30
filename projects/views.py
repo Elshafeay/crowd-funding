@@ -34,7 +34,8 @@ def show(request, project_id):
     tags = [_.tag for _ in project.projecttags_set.all()]
 
     related_projects = get_the_most_similar_projects(project, tags)
-
+    if len(related_projects) < 2:
+        related_projects = project.category.project_set.all()
     total_donations = get_total_donations(project)
 
     total_likes = project.review_set.filter(liked=True).count()

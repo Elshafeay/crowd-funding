@@ -23,7 +23,10 @@
     </div>
     {% if is_project_canceled %}
     <div class="alert alert-danger" style="width: max-content">
-        <p>This project has been canceled</p>
+        This project has been canceled
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     {% endif %}
 
@@ -55,7 +58,7 @@
                                 </form>
                             </li>
                             <li class="more-menu-item" role="presentation">
-                                {% if not is_user_reported %}
+                                {% if not is_user_reported and not project.owner.id == request.user.id %}
                                 <form action="{% url 'report_project' project.id %}" method="post">
                                     <input type="submit" class="more-menu-btn" role="menuitem" value="Report">
                                     {% csrf_token %}
@@ -92,6 +95,11 @@
                             <h2 style="display: inline-block">Title: {{ project.title }}</h2>
                             <h2>Target: {{ project.target }}</h2>
                             <h2>Total Donations: {{ total_donations }}</h2>
+                            <h2>Category:
+                                <a href="{% url 'show_category' project.category_id %}">
+                                    {{ project.category.name }}
+                                </a>
+                            </h2>
                             <h2 style="display: inline-block">Likes:</h2>
                             <p style="display: inline-block ;margin-left:1rem; font-size:1rem">{{ total_likes }} People liked this project
                             <i class="fa fa-heart" style="color:red; font-size: 16px!important;"></i></p>
@@ -209,8 +217,8 @@
                 {% for donation in project.donation_set.all %}
                 {{ donation.project_set.all }}
                 {% endfor %}
-
-                <div class="donate-form">
+                {% if project.status == 0 %}
+                    <div class="donate-form">
 
                     <h3>Donate Now</h3>
                     <form class="w3ls_footer_grid_left1_pos" method="post"
@@ -224,6 +232,7 @@
                         <input type="submit" value=" MAKE A DONATION" name="donate_from">
                     </form>
                 </div>
+                {% endif %}
                 {% if not is_rated %}
                 <div class="reviewing-box">
                     <h5 class="alert alert-warning">What do you think?</h5>

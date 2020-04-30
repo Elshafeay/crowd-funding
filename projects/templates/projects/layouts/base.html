@@ -43,8 +43,21 @@
             <div class="col-md-8">
                 {% if messages %}
                     {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">
+                        <div
+                            class="
+                                alert
+                                {% if message.tags == 'error' %}
+                                    alert-danger
+                                {% elif message.tags == 'success' %}
+                                    alert-success
+                                {% elif message.tags == 'warning' %}
+                                    alert-warning
+                                {% endif %}"
+                        >
                             {{ message }}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
                         </div>
                     {% endfor %}
                 {% endif %}
@@ -97,11 +110,12 @@
             <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                 <nav>
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="/">Home</a></li>
-                        <li><a href="/projects/">All Projects</a></li>
-                        <li><a href="/categories/">All Categories</a></li>
-                        <li><a href="/tags/">All Tags</a></li>
-                        <li><a href="/projects/mine/">My Projects</a></li>
+                        <li class="active"><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'show_create_project' %}">Create Project</a></li>
+                        <li><a href="{% url 'my_projects' %}">My Projects</a></li>
+                        <li><a href="{% url 'show_all_projects' %}">All Projects</a></li>
+                        <li><a href="{% url 'show_all_categories' %}">All Categories</a></li>
+                        <li><a href="{% url 'show_all_tag' %}">All Tags</a></li>
                     </ul>
                 </nav>
             </div>
