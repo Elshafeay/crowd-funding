@@ -9,7 +9,23 @@
 {% block content %}
 <div class="single-page-agile-main">
     <div class="container">
-
+    <style>
+        .date{
+            display: flex;
+        }
+        .date > select{
+            width: 7rem !important;
+            border-radius: 3px !important;
+            margin-right: .5rem;
+        }
+        .date label{
+            margin-right: 1rem;
+            margin-top: .3rem;
+        }
+        .form-group{
+            margin-bottom: 2rem;
+        }
+    </style>
     <div class="agileits-single-top">
         <ol class="breadcrumb">
             <li><a href="/">Home</a></li>
@@ -88,7 +104,7 @@
             {{ create_form.start_date.errors }}
             
             <div class="input-group date" >
-                <label for="birthday">End Date : </label>
+                <label for="birthday">End Date : &nbsp; </label>
                 {{ create_form.end_date }}
             </div>
             {{ create_form.end_date.errors }}

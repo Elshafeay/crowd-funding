@@ -24,7 +24,7 @@
 			{% for highest_five in highest_five_rated%}
 			<li><img src="{{ highest_five.cover.url }}" alt=" ">
 				<p class='title'><a href="{% url 'show_project' highest_five.id %}">{{ highest_five.title }}</a></p>
-				<p class='description'>Details: {{ highest_five.details }} <br/> Rating: {{highest_five.rate}}/5.0 </p>
+                <p class='description'><strong>Details: </strong>{{ highest_five.details }} <br/> <strong>Rating: </strong> {{highest_five.rate}}/5.0 </p>
 			</li>
 	        {% endfor %}
 		</ul>
@@ -36,7 +36,7 @@
 
 <!-- general -->
 	<div class="general">
-		<h4 class="latest-text w3_latest_text">Categories Have Highest Number of Projects</h4>
+		<h4 class="latest-text w3_latest_text" style="margin-left: -3rem;">Categories With Highest Number of Projects</h4>
 		<div class="container">
 			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
 				<div  class="tab-content">
@@ -73,7 +73,7 @@
 
 <!-- general -->
 	<div class="general">
-		<h4 class="latest-text w3_latest_text">Latest Five Projects</h4>
+		<h4 class="latest-text w3_latest_text" style="margin-left: -3rem;">Latest Five Projects</h4>
 		<div class="container">
 			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
 				<div id="" class="tab-content">
@@ -121,11 +121,9 @@
 <!-- //general -->
 
 
-
-
 <!-- general -->
 	<div class="general">
-		<h4 class="latest-text w3_latest_text">Featured Projects</h4>
+		<h4 class="latest-text w3_latest_text" style="margin-left: -3rem;">Featured Projects</h4>
 		<div class="container">
 			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
 				<div id="2" class="tab-content">
