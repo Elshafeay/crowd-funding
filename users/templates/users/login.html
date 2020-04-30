@@ -1,7 +1,8 @@
 {% extends "projects/layouts/base.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
-
+{% load socialaccount %}
+{% providers_media_js %}
 {% block title %}
     Login
 {% endblock title %}
@@ -55,6 +56,8 @@
         <div class="border-top pt-3" style="margin-left: 2rem">
                 <div>
                     <small class="text-muted ml-2">
+                        <a href='{% provider_login_url "facebook" mathod="js_sdk" %}'>Login with Facebook?</a>
+                        <br/>
                         <a href="{% url 'reset_password' %}">Forgot Password?</a>
                     </small>
                 </div>
