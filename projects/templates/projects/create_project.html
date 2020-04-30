@@ -9,7 +9,23 @@
 {% block content %}
 <div class="single-page-agile-main">
     <div class="container">
-
+    <style>
+        .date{
+            display: flex;
+        }
+        .date > select{
+            width: 7rem !important;
+            border-radius: 3px !important;
+            margin-right: .5rem;
+        }
+        .date label{
+            margin-right: 1rem;
+            margin-top: .3rem;
+        }
+        .form-group{
+            margin-bottom: 2rem;
+        }
+    </style>
     <div class="agileits-single-top">
         <ol class="breadcrumb">
             <li><a href="/">Home</a></li>
@@ -63,6 +79,11 @@
                 {{ create_form.images }}
             </div>
 
+            <div class="input-group input-group-lg w3_w3layouts">
+				<span class="input-group-addon" id="sizing-addon1">Tags</span>
+				{{ create_form.tags }}
+            </div>
+
             
             <div class="form-group">
                 <!-- <label for="categ">Choose Category : </label>
@@ -80,13 +101,18 @@
 				<label for="birthday">Start Date : </label>
                 {{ create_form.start_date }}
             </div>
-            {{ create_form.start_date.errors }}
-            
+            <div class="alert alert-danger" role="alert">
+                <strong>Oh snap!</strong> {{ create_form.start_date.errors }}
+            </div>
+           
             <div class="input-group date" >
-                <label for="birthday">End Date : </label>
+                <label for="birthday">End Date : &nbsp; </label>
                 {{ create_form.end_date }}
             </div>
-            {{ create_form.end_date.errors }}
+            <div class="alert alert-danger" role="alert">
+                <strong>Oh snap!</strong> {{ create_form.end_date.errors }}
+            </div>
+            
             {% csrf_token %}
             <input type="submit" value=" Create" name="create_from">
         </form>

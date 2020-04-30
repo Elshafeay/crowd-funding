@@ -295,7 +295,9 @@ i.glyphicon.glyphicon-play-circle {
 }
 
 .w3l-movie-gride-agile img:hover {
-    opacity: 0.5;
+    filter: contrast(1.2);
+    transform: scale(1.1);
+    transition: .5s ease-in-out;
 }
 
 .ribben {
@@ -429,6 +431,7 @@ ol.breadcrumb li a {
 
     .w3l-movie-gride-agile img {
         width: 100%;
+        transition: 1s ease-in-out;
     }
 }
 

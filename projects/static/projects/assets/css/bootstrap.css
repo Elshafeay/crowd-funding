@@ -4922,10 +4922,11 @@ a.thumbnail.active {
 }
 .alert {
   padding: 15px;
-  margin-bottom: 20px;
   border: 1px solid transparent;
   border-radius: 4px;
+  width: max-content !important;
 }
+
 .alert h4 {
   margin-top: 0;
   color: inherit;
@@ -4955,6 +4956,12 @@ a.thumbnail.active {
   color: #3c763d;
   background-color: #dff0d8;
   border-color: #d6e9c6;
+  margin: auto;
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  z-index: 1030;
 }
 .alert-success hr {
   border-top-color: #c9e2b3;
@@ -4988,6 +4995,12 @@ a.thumbnail.active {
   color: #a94442;
   background-color: #f2dede;
   border-color: #ebccd1;
+  margin: auto;
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  z-index: 1030;
 }
 .alert-danger hr {
   border-top-color: #e4b9c0;
@@ -5700,6 +5713,8 @@ a.list-group-item-danger.active:focus {
   text-shadow: 0 1px 0 #fff;
   filter: alpha(opacity=20);
   opacity: .2;
+  margin-left: 1rem;
+  margin-top: -.5rem;
 }
 .close:hover,
 .close:focus {

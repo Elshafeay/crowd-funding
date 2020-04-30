@@ -10,10 +10,12 @@ from django.views.decorators.http import require_http_methods
 from django.db.models import Sum
 
 from .models import \
-    Project, Donation, Category, Comment, CommentReports, ProjectImages
+    Project, Donation, Category, Comment, CommentReports, ProjectImages,Tag
 from .forms import DonateForm, CreateForm
 from django.contrib import messages
 from django.shortcuts import redirect
+from collections import Counter
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required()
@@ -29,7 +31,15 @@ def show(request, project_id):
     reported_comments = [
         _.comment for _ in get_user(request).commentreports_set.all()
     ]
-    related_projects = project.category.project_set.all()[:10]
+
+    tags = [_.tag for _ in project.projecttags_set.all()]
+
+    related_projects = get_the_most_similar_projects(project, tags)
+    if len(related_projects) < 2:
+        related_projects = project.category.project_set.all()
+    total_donations = get_total_donations(project)
+
+    total_likes = project.review_set.filter(liked=True).count()
     liked = get_user(request).review_set.filter(liked=True)
     favourites = [_.project for _ in liked]
     is_user_reported = project.review_set.filter(user_id=request.user.id)
@@ -45,9 +55,12 @@ def show(request, project_id):
     context = {
         'project': project,
         'comments': comments,
+        'tags': tags,
         'favourites': favourites,
         'donation_form': donation_form,
-        's_user_reported': is_user_reported,
+        'total_donations': total_donations,
+        'total_likes': total_likes,
+        'is_user_reported': is_user_reported,
         'is_project_saved': is_project_saved,
         'related_projects': related_projects,
         'reported_comments': reported_comments,
@@ -60,14 +73,14 @@ def show(request, project_id):
 @require_http_methods("POST")
 def donate(request, project_id):
     project = get_object_or_404(Project, id=project_id)
-    donation_form = DonateForm(request.POST or None)
-    if donation_form.is_valid():
-        project.donation_set.create(
-            user=request.user,
-            donation=donation_form.cleaned_data['donation']
-        )
-        messages.success(request, "Donation Added Successfully")
-        return redirect('show_project', project_id)
+    new_donation = project.donation_set.create(
+        user=get_user(request),
+        donation=int(request.POST.get('donation'))
+    )
+    print(request.POST.get('donation'))
+    print(new_donation)
+    messages.success(request, "Donation Added Successfully")
+    return redirect('show_project', project_id)
 
 
 @require_http_methods("POST")
@@ -177,18 +190,35 @@ def save(request, project_id):
 
 @require_http_methods("POST")
 def cancel(request, project_id):
-    try:
-        Project.objects.filter(id=project_id).update(status=-1)
+    project = get_object_or_404(Project, id=project_id)
+    if get_total_donations(project)/project.target < .25:
+        project.status = -1
+        project.save()
+        messages.success(
+            request,
+            "The project has been canceled Successfully, we're sorry for that"
+        )
 
-    except Project.DoesNotExist:
-        raise Http404("project not found")
-
+    else:
+        messages.error(
+            request,
+            "You can't cancel the project, "
+            "the donations exceeded 25% of the target"
+        )
     return redirect('show_project', project_id)
 
 
 def show_all(request):
     all_projects = Project.objects.all()
     categories = Category.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(all_projects, 18)
+    try:
+        all_projects = paginator.page(page)
+    except PageNotAnInteger:
+        all_projects = paginator.page(1)
+    except EmptyPage:
+        all_projects = paginator.page(paginator.num_pages)
     context = {"categories": categories, "all_projects": all_projects}
     return render(request, "projects/all_projects.html", context)
 
@@ -217,6 +247,11 @@ def create(request):
                 owner_id=request.user.id
             )
             project.save()
+            tags = create_form.cleaned_data['tags']
+            tags = tags.split(',')
+            for tag in tags:
+                obj, created = Tag.objects.get_or_create(name=tag)
+                project.projecttags_set.create(tag=obj)
             for image in project_images:
                 photo = ProjectImages(project=project, image=image)
                 photo.save()
@@ -260,3 +295,19 @@ def update_project_rate(pk):
     average = round(average, 1)  # to round to 1 decimal place
     project.rate = floor(average*2)/2
     project.save()
+
+
+def get_the_most_similar_projects(project, tags):
+    related_projects = [tag.projecttags_set.all() for tag in tags]
+    related_projects = [
+        rp.project for sub_query in related_projects for rp in sub_query
+    ]
+    counts = Counter(related_projects)
+    related_projects = counts.most_common(11)
+    return [_[0] for _ in related_projects[1:]]
+
+
+def get_total_donations(project):
+    total_donations = project.donation_set.aggregate(
+        Sum('donation')).get('donation__sum')
+    return total_donations or 0

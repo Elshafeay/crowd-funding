@@ -120,9 +120,9 @@ class Donation(models.Model):
 
 	def __str__(self):
 		return \
-			f"{self.user.get_full_name()} " \
+			f"{self.user.get_full_name() or 'Deleted User'} " \
 			f"=donated=> {self.donation} " \
-			f"=to=> {self.project.title}"
+			f"=to=> {self.project or 'Deleted Project'}"
 
 
 # Review Model

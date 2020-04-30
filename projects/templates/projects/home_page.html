@@ -24,7 +24,7 @@
 			{% for highest_five in highest_five_rated%}
 			<li><img src="{{ highest_five.cover.url }}" alt=" ">
 				<p class='title'><a href="{% url 'show_project' highest_five.id %}">{{ highest_five.title }}</a></p>
-				<p class='description'>Details: {{ highest_five.details }} <br/> Rating: {{highest_five.rate}}/5.0 </p>
+                <p class='description'><strong>Details: </strong>{{ highest_five.details }} <br/> <strong>Rating: </strong> {{highest_five.rate}}/5.0 </p>
 			</li>
 	        {% endfor %}
 		</ul>
@@ -36,7 +36,7 @@
 
 <!-- general -->
 	<div class="general">
-		<h4 class="latest-text w3_latest_text">Categories Have Highest Number of Projects</h4>
+		<h4 class="latest-text w3_latest_text" style="margin-left: -3rem;">Categories With Highest Number of Projects</h4>
 		<div class="container">
 			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
 				<div  class="tab-content">
@@ -44,8 +44,7 @@
 						<div class="w3_agile_featured_movies">
 							{% for cat in categories %}
 							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="/category/{{cat.id}}" class="hvr-shutter-out-horizontal"><img src="{{ cat.image.url }}" title="" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
+								<a href="{% url 'show_category' cat.id %}"><img src="{{ cat.image.url }}" title="" class="img-responsive" alt=" " />
 								</a>
 								<div class="mid-1 agileits_w3layouts_mid_1_home">
 									<div class="w3l-movie-text">
@@ -73,7 +72,7 @@
 
 <!-- general -->
 	<div class="general">
-		<h4 class="latest-text w3_latest_text">Latest Five Projects</h4>
+		<h4 class="latest-text w3_latest_text" style="margin-left: -3rem;">Latest Five Projects</h4>
 		<div class="container">
 			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
 				<div id="" class="tab-content">
@@ -81,8 +80,7 @@
 						<div class="w3_agile_featured_movies">
 							{% for proj in latest_five_projects %}
 							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="{% url 'show_project' proj.id %}" class="hvr-shutter-out-horizontal"><img src="{{proj.cover.url}}" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
+								<a href="{% url 'show_project' proj.id %}"><img src="{{proj.cover.url}}" title="album-name" class="img-responsive" alt=" " />
 								</a>
 								<div class="mid-1 agileits_w3layouts_mid_1_home">
 									<div class="w3l-movie-text">
@@ -121,11 +119,9 @@
 <!-- //general -->
 
 
-
-
 <!-- general -->
 	<div class="general">
-		<h4 class="latest-text w3_latest_text">Featured Projects</h4>
+		<h4 class="latest-text w3_latest_text" style="margin-left: -3rem;">Featured Projects</h4>
 		<div class="container">
 			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
 				<div id="2" class="tab-content">
@@ -133,26 +129,30 @@
 						<div class="w3_agile_featured_movies">
 							{% for proj in featured_project %}
 							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="{% url 'show_project' proj.id %}" class="hvr-shutter-out-horizontal"><img src="{{proj.cover.url}}" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
+								<a href="{% url 'show_project' proj.project.id %}">
+                                    <img
+                                            src="{{proj.project.cover.url}}"
+                                            title="album-name"
+                                            class="img-responsive" alt=" "
+                                    />
 								</a>
 								<div class="mid-1 agileits_w3layouts_mid_1_home">
 									<div class="w3l-movie-text">
-										<h6><a href="{% url 'show_project' proj.id %}">{{proj.title}}</a></h6>
+										<h6><a href="{% url 'show_project' proj.project.id %}">{{proj.project.title}}</a></h6>
 									</div>
 									<div class="mid-2 agile_mid_2_home">
-										<p>{{ proj.created_at.year }}</p>
+										<p>{{ proj.project.created_at.year }}</p>
 										<div class="block-stars">
 											<div class="rating rating-card">
-                                                <span class="fa fa-star {% if proj.rate > 4 %} {% if proj.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                                <span class="fa fa-star {% if proj.project.rate > 4 %} {% if proj.project.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
                                                 style="color:#F28B31;"></span>
-                                                <span class="fa fa-star {% if proj.rate > 3 %} {% if proj.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                                <span class="fa fa-star {% if proj.project.rate > 3 %} {% if proj.project.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
                                                 style="color:#F28B31;"></span>
-                                                <span class="fa fa-star {% if proj.rate > 2 %} {% if proj.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                                <span class="fa fa-star {% if proj.project.rate > 2 %} {% if proj.project.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
                                                 style="color:#F28B31;"></span>
-                                                <span class="fa fa-star {% if proj.rate > 1 %} {% if proj.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                                <span class="fa fa-star {% if proj.project.rate > 1 %} {% if proj.project.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
                                                 style="color:#F28B31;"></span>
-                                                <span class="fa fa-star {% if proj.rate > 0 %} {% if proj.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                                <span class="fa fa-star {% if proj.project.rate > 0 %} {% if proj.project.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
                                                 style="color:#F28B31;"></span>
 									</div>
 

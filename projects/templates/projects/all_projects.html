@@ -57,8 +57,7 @@
                     <div class="w3_agile_featured_movies">
                             {% for proj in all_projects %}
                                 <div class="col-md-2 w3l-movie-gride-agile">
-                                    <a href="{% url 'show_project'  proj.id %}" class="hvr-shutter-out-horizontal"><img src="{{ proj.cover.url }}" title="{{proj.title}}"  width="170px" height="230px" alt="None " />
-                                        <div class="w3l-action-icon"></div>
+                                    <a href="{% url 'show_project'  proj.id %}"><img src="{{ proj.cover.url }}" title="{{proj.title}}"  width="170px" height="230px" alt="None " />
                                     </a>
                                     <div class="mid-1 agileits_w3layouts_mid_1_home">
                                         <div class="w3l-movie-text">
@@ -82,15 +81,37 @@
                                 </div>
                             {% endfor %}
                         <div class="clearfix"> </div>
+                        {% if all_projects.has_other_pages %}
+                        <ul class="pagination">
+                            {% if all_projects.has_previous %}
+                            <li><a href="?page={{ all_projects.previous_page_number }}">&laquo;</a></li>
+                            {% else %}
+                            <li class="disabled"><span>&laquo;</span></li>
+                            {% endif %}
+                            {% for i in all_projects.paginator.page_range %}
+                            {% if all_projects.number == i %}
+                                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                            {% else %}
+                                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if all_projects.has_next %}
+                            <li><a href="?page={{ all_projects.next_page_number }}">&raquo;</a></li>
+                            {% else %}
+                            <li class="disabled"><span>&raquo;</span></li>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
                     </div>
                 </div>
+
+               
 
                 {% for cat in categories %}
                     <div role="tabpanel" class="tab-pane fade" id="cat-{{cat.id}}" aria-labelledby="cat-{{cat.id}}-tab">
                         {% for proj in cat.project_set.all %}
                             <div class="col-md-2 w3l-movie-gride-agile">
-                                <a href="{% url 'show_project'  proj.id %}" class="hvr-shutter-out-horizontal"><img src="{{ proj.cover.url }}" title="{{proj.title}}"  width="170px" height="230px" alt="None " />
-                                    <div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
+                                <a href="{% url 'show_project'  proj.id %}"><img src="{{ proj.cover.url }}" title="{{proj.title}}"  width="170px" height="230px" alt="None " />
                                 </a>
                                 <div class="mid-1 agileits_w3layouts_mid_1_home">
                                     <div class="w3l-movie-text">
