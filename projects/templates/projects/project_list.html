@@ -48,7 +48,7 @@
                         <p class="card-text"><strong>Details: </strong>{{ project.details|truncatechars:50 }}</p>
                     </div>
                     <div class="book-card-footer">
-                                                        <h4>raised <strong style="color: {% if project.status == 1 %} green {% else %} #FF8D1B {% endif %}">${{ total_donations | get_value_from_dict:project.id }}</strong> out of <strong style="color: green">${{ project.target }}</strong></h4>
+                        <h4>raised <strong style="color: {% if project.status == 1 %} green {% else %} #FF8D1B {% endif %}">${{ total_donations | get_value_from_dict:project.id }}</strong> out of <strong style="color: green">${{ project.target }}</strong></h4>
                         <div
                                 class="progress-wrap progress"
                                 data-progress-percent='{{ donations | get_value_from_dict:project.id }}'

@@ -1,13 +1,6 @@
 from django.shortcuts import render, render_to_response
 from projects.models import Category, FeaturedProject, Project, Tag, ProjectTags
-
-
-# Homepage should contains the following:
-# - *A slider to show the highest five rated running projects to encourage users to donate
-# - *List of the latest 5 projects
-# - *List of latest 5 featured projects (which are selected by the admin)
-# - *A list of the categories. User can open each category to view its projects
-# - Search bar that enables users to search projects by title or tag
+from projects.views import get_context
 
 
 def welcome(request):
@@ -49,9 +42,6 @@ def get_categories_have_highest_projects_number():
 
     for cat in categories:
         category_projects[cat] = len(cat.project_set.all())
-    # category_projects = OrderedDict(sorted(category_projects.items(),
-    # key=lambda x: x[1],
-    # reverse=True))
 
     category_projects = sorted(
         category_projects.items(),
@@ -72,11 +62,9 @@ def category_project(request, cat_id):
     try:
         get_category = Category.objects.get(pk=cat_id)
         projects = get_category.project_set.all()
-        context = {
-            "projects": projects,
-            "title": "All Projects Related to " + get_category.name + " category",
-            "found": 1
-        }
+        context = get_context(request, projects)
+        context["title"] = "All Projects Related to " + get_category.name + " category"
+        context["found"] = 1
         return render(
             request,
             'projects/search_projects.html',
@@ -129,11 +117,9 @@ def tag_projects(request, tag_id):
                 if pro.id == tp.project_id:
                     projects.append(pro)
 
-        context = {
-            "projects": projects,
-            "title": "All Projects Related to " + Tag.objects.get(id=tag_id).name + " tag",
-            "found": 1
-        }
+        context = get_context(request, projects)
+        context["title"] = "All Projects Related to " + Tag.objects.get(id=tag_id).name + " tag"
+        context["found"] = 1
         return render(
             request,
             'projects/search_projects.html',
@@ -178,11 +164,9 @@ def search(request):
             )
 
         else:
-            context = {
-                "projects": projects,
-                "title": "Your Search Keyword is ' "+key_word+" '",
-                "found": 1,
-            }
+            context = get_context(request, projects)
+            context["title"] = "Your Search Keyword is ' "+key_word+" '"
+            context["found"] = 1
             return render(
                 request,
                 'projects/search_projects.html',

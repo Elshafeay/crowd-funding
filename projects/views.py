@@ -211,15 +211,7 @@ def cancel(request, project_id):
 def show_all(request):
     all_projects = Project.objects.all()
     donations, total_donations = get_projects_donations(all_projects)
-    page = request.GET.get('page', 1)
-    paginator = Paginator(all_projects, 18)
-    try:
-        all_projects = paginator.page(page)
-    except PageNotAnInteger:
-        all_projects = paginator.page(1)
-    except EmptyPage:
-        all_projects = paginator.page(paginator.num_pages)
-
+    all_projects = pagination(request, all_projects)
     context = {
         "donations": donations,
         'total_donations': total_donations,
@@ -268,27 +260,22 @@ def create(request):
 
 def projects_list(request):
     projects = get_user(request).project_set.all()
-    donations, total_donations = get_projects_donations(projects)
-    context = {
-        "projects": projects,
-        "donations": donations,
-        'total_donations': total_donations
-    }
+    context = get_context(request, projects)
     return render(request, 'projects/project_list.html', context)
 
 
 def donate_list(request):
-    owner = get_user(request)
-    donations = owner.donation_set.all()
-    context = {"donations": donations}
+    donations = get_user(request).donation_set.all()
+    projects = [_.project for _ in donations]
+    context = get_context(request, projects)
     return render(request, 'projects/donation_list.html', context)
 
 
 def saved_projects(request):
-    owner = get_user(request)
-    my_saved_projects = owner.savedproject_set.all()
-    context = {"saved_projects": my_saved_projects}
-    return render(request, 'projects/saved_projects.html', context)
+    saved = get_user(request).savedprojects_set.all()
+    projects = [_.project for _ in saved]
+    context = get_context(request, projects)
+    return render(request, 'projects/project_list.html', context)
 
 
 def update_project_rate(pk):
@@ -327,3 +314,26 @@ def get_projects_donations(projects):
         donations_percentages[project.id] = (int(total / project.target) * 100)
         total_donations[project.id] = total
     return donations_percentages, total_donations
+
+
+def pagination(request, projects):
+    page = request.GET.get('page', 1)
+    paginator = Paginator(projects, 18)
+    try:
+        projects = paginator.page(page)
+    except PageNotAnInteger:
+        projects = paginator.page(1)
+    except EmptyPage:
+        projects = paginator.page(paginator.num_pages)
+    return projects
+
+
+def get_context(request, projects):
+    donations, total_donations = get_projects_donations(projects)
+    projects = pagination(request, projects)
+    context = {
+        "projects": projects,
+        "donations": donations,
+        'total_donations': total_donations
+    }
+    return context
