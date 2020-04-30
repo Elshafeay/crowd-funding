@@ -15,6 +15,7 @@ from .forms import DonateForm, CreateForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from collections import Counter
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required()
@@ -210,6 +211,14 @@ def cancel(request, project_id):
 def show_all(request):
     all_projects = Project.objects.all()
     categories = Category.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(all_projects, 2)
+    try:
+        all_projects = paginator.page(page)
+    except PageNotAnInteger:
+        all_projects = paginator.page(1)
+    except EmptyPage:
+        all_projects = paginator.page(paginator.num_pages)
     context = {"categories": categories, "all_projects": all_projects}
     return render(request, "projects/all_projects.html", context)
 
