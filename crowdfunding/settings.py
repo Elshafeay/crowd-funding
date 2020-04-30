@@ -13,6 +13,12 @@ DEBUG = config.getboolean("global", "DEBUG")
 SECRET_KEY = config.get('secrets', 'SECRET_KEY')
 ALLOWED_HOSTS = []
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'railsprojectteam@gmail.com'
+EMAIL_HOST_PASSWORD = 'Salma1234'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 
 INSTALLED_APPS = [
     'projects',
