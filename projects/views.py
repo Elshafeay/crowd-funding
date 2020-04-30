@@ -10,7 +10,7 @@ from django.views.decorators.http import require_http_methods
 from django.db.models import Sum
 
 from .models import \
-    Project, Donation, Category, Comment, CommentReports, ProjectImages
+    Project, Donation, Category, Comment, CommentReports, ProjectImages,Tag
 from .forms import DonateForm, CreateForm
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -217,6 +217,11 @@ def create(request):
                 owner_id=request.user.id
             )
             project.save()
+            tags = create_form.cleaned_data['tags']
+            tags = tags.split(',')
+            for tag in tags:
+                obj, created = Tag.objects.get_or_create(name=tag)
+                project.projecttags_set.create(tag=obj)
             for image in project_images:
                 photo = ProjectImages(project=project, image=image)
                 photo.save()
