@@ -8,10 +8,12 @@ from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from users.views import register, logout, activate, profile, update_profile, delete_my_account
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('projects/', include('projects.urls')),
     path('users/', include('users.urls')),
+    path('users/', include('accounts.urls')),
     path('', welcome, name='home'),
     path('category/<int:cat_id>', category_project, name='show_category'),
     path('categories/', all_category, name='show_all_categories'),
@@ -35,6 +37,7 @@ urlpatterns = [
     path('saved-projects/', saved_projects, name='saved_projects'),
     path('my-projects/', projects_list, name='my_projects'),
     path('delete-my-account/', delete_my_account, name='delete-my-account'),
+    
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
