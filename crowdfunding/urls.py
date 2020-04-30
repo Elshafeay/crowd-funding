@@ -2,7 +2,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from crowdfunding import settings
-from .views import welcome, category_project, all_category, all_tags, tag_projects
+from .views import welcome, category_project, all_category, all_tags, tag_projects, search
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from users.views import register, logout, activate, profile, update_profile
@@ -21,6 +21,7 @@ urlpatterns = [
          auth_views.LoginView.as_view(template_name='users/login.html'),
          name='login'),
     path('logout/', logout, name='logout'),
+    path('search/', search, name='search'),
     path('activate/<str:code>', activate, name='activate'),
     path('projects/', include('projects.urls')),
     path('users/', include('users.urls')),

@@ -33,7 +33,8 @@ def register(request):
                                                       ))
 
             activation_link = "{0}/activate/{1}".format(current_site, token)
-            message = "Hello {0},\n thanks for joining Crowd Funding,\n " \
+            message = "Hello {0},\n " \
+                      "thanks for joining Crowd Funding,\n " \
                       "click this link to activate your Account \n" \
                       "{1} \n" \
                       "thanks,".format(save_it.first_name, activation_link)
