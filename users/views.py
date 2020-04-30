@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user
 from django.db.models import Sum
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_http_methods
+
 from .forms import UserRegisterForm, UserUpdateForm
 from django.contrib import messages
 from django.contrib import auth
@@ -17,6 +19,8 @@ from .models import UserModel
 
 
 def register(request):
+    if request.user.is_authenticated:
+        redirect('home')
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -26,11 +30,14 @@ def register(request):
             current_site = get_current_site(request)
 
             subject = 'Activate Your Crowd Funding Account'
-            token = urlsafe_base64_encode(force_bytes(save_it.pk +
-                                                      save_it.date_joined.year +
-                                                      save_it.date_joined.month +
-                                                      save_it.date_joined.day
-                                                      ))
+            token = urlsafe_base64_encode(
+                force_bytes(
+                    save_it.pk +
+                    save_it.date_joined.year +
+                    save_it.date_joined.month +
+                    save_it.date_joined.day
+                )
+            )
 
             activation_link = "{0}/activate/{1}".format(current_site, token)
             message = "Hello {0},\n thanks for joining Crowd Funding,\n " \
@@ -39,12 +46,17 @@ def register(request):
                       "thanks,".format(save_it.first_name, activation_link)
 
             to_list = [save_it.email, settings.EMAIL_HOST_USER]
-            send_mail(subject, message, settings.EMAIL_HOST_USER, to_list, fail_silently=False)
+            send_mail(
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                to_list, fail_silently=False
+            )
 
             messages.success(
                 request,
-                # 'Your account has been created Successfully!'
-                'Please activate your account using the entered mail'
+                'Please activate your account using '
+                'the message sent to your E-mail Address'
             )
             return redirect('login')
     else:
@@ -53,8 +65,9 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 
+@require_http_methods("POST")
+@login_required
 def logout(request):
-    from django.core.mail import EmailMessage
     auth.logout(request)
     messages.success(request, 'You have Successfully logged out!')
     return redirect('login')

@@ -22,7 +22,7 @@ ul,label{
 body a:hover{
 	text-decoration:none;
 }
-input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_register a,.w3ls_footer_grid1_right ul li a,.w3_customer_email_right a,ul.dropdown-menu.multi-column ul li a{
+input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_register .auth-btn,.w3ls_footer_grid1_right ul li a,.w3_customer_email_right a,ul.dropdown-menu.multi-column ul li a{
 	transition:.5s ease-in;
 	-webkit-transition:.5s ease-in;
 	-moz-transition:.5s ease-in;
@@ -96,7 +96,7 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
     margin-top:1em;
     width: 25%;
 }
-.w3l_sign_in_register a{
+.w3l_sign_in_register .auth-btn{
 	color: #fff;
     display: inline-block;
     text-transform: uppercase;
@@ -110,10 +110,10 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
 	display:flex !important;
 }
 
-.w3l_sign_in_register a:focus{
+.w3l_sign_in_register .auth-btn:focus{
 	outline:none;
 }
-.w3l_sign_in_register a:hover{
+.w3l_sign_in_register .auth-btn:hover{
 	background:#212121;
 }
 .w3l_sign_in_register ul li{
@@ -1590,6 +1590,8 @@ h3.head {
     transform: translate(0, 15px) scale(.95);
     transition: transform 0.1s ease-out, opacity 0.1s ease-out;
     pointer-events: none;
+    width:max-content;
+    text-align: center;
 }
 
 .more-menu-caret {

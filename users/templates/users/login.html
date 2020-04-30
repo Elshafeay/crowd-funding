@@ -26,10 +26,12 @@
                     <div class="control-group">
                         <label for="exampleFormControlInput1">Email address</label>
                         {{ form.username }}
+                        {{ form.username.error }}
                     </div>
                     <div class="control-group">
                         <label for="exampleFormControlInput1">Password</label>
                         {{ form.password }}
+                        {{ form.password.error }}
                     </div>
             </fieldset>
             <div class="form-group">

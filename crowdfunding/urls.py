@@ -12,7 +12,7 @@ urlpatterns = [
     path('', welcome, name='home'),
     path('category/<int:cat_id>', category_project),
     path('categories/', all_category),
-    path('tag/<int:tag_id>', tag_projects),
+    path('tag/<int:tag_id>', tag_projects, name='show_tag'),
     path('tags/', all_tags),
     path('profile/', profile, name='profile'),
     path('update_profile/', update_profile, name='update_profile'),

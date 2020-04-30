@@ -31,8 +31,6 @@ def welcome(request):
         categories_and_projects = get_categories_have_highest_projects_number()
         first_category = categories_and_projects.get('first_category')
         categories = categories_and_projects.get('categories')
-        print("first_category", first_category)
-        print("categories", categories)
         if first_category:
             context = {
                 "highest_five_rated": highest_five_rated,

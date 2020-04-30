@@ -20,9 +20,13 @@ class CustomUserChangeForm(UserChangeForm):
 class UserRegisterForm(CustomUserCreationForm):
     email = forms.EmailField()
     phone = forms.RegexField(regex="^(002)?01[0125]\d{8}$")
+    avatar = forms.FileField(
+        label='Select an image',
+        help_text='max. 1 megabytes'
+    )
 
-    def __init__(self, data=None, files=None, *args, **kwargs):
-        super().__init__(data=data, files=files, *args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.fields['first_name'].widget.attrs['class'] = 'form-control'
         self.fields['last_name'].widget.attrs['class'] = 'form-control'
         self.fields['email'].widget.attrs['class'] = 'form-control'
@@ -41,7 +45,7 @@ class UserRegisterForm(CustomUserCreationForm):
 
 class UserUpdateForm(CustomUserChangeForm):
     email = None
-    phone = forms.RegexField(regex = "^(002)?01[0125]\d{8}$")
+    phone = forms.RegexField(regex="^(002)?01[0125]\d{8}$")
     password1 = None
     password2 = None
 

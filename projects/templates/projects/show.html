@@ -22,7 +22,7 @@
         </div>
     </div>
     {% if is_project_canceled %}
-    <div class="alert alert-danger">
+    <div class="alert alert-danger" style="width: max-content">
         <p>This project has been canceled</p>
     </div>
     {% endif %}
@@ -46,7 +46,7 @@
                             <li class="more-menu-item" role="presentation">
                                 <form action="{% url 'save_project' project.id %}" method="post">
                                     {% if is_project_saved %}
-                                    <input type="submit" class="more-menu-btn" role="menuitem" value="Remove">
+                                    <input type="submit" class="more-menu-btn" role="menuitem" value="Remove from saved">
                                     {% else %}
                                     <input type="submit" class="more-menu-btn" role="menuitem" value="Save">
                                     {% endif %}
@@ -89,9 +89,28 @@
 
                     <div class="post-image">
                         <div class="song-info" style="text-align: left;">
-                            <h2 style="display: inline-block">{{ project.title }}</h2>
+                            <h2 style="display: inline-block">Title: {{ project.title }}</h2>
+                            <h2>Target: {{ project.target }}</h2>
+                            <h2>Total Donations: {{ total_donations }}</h2>
+                            <h2 style="display: inline-block">Likes:</h2>
+                            <p style="display: inline-block ;margin-left:1rem; font-size:1rem">{{ total_likes }} People liked this project
+                            <i class="fa fa-heart" style="color:red; font-size: 16px!important;"></i></p>
+                            <h2>Rate: </h2>
+                            <div class="rating rating-card">
+                                <span class="fa fa-star {% if project.rate > 4 %} {% if project.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                      style="color:#F28B31;"></span>
+                                <span class="fa fa-star {% if project.rate > 3 %} {% if project.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                      style="color:#F28B31;"></span>
+                                <span class="fa fa-star {% if project.rate > 2 %} {% if project.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                      style="color:#F28B31;"></span>
+                                <span class="fa fa-star {% if project.rate > 1 %} {% if project.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                      style="color:#F28B31;"></span>
+                                <span class="fa fa-star {% if project.rate > 0 %} {% if project.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                      style="color:#F28B31;"></span>
+                            </div>
                         </div>
                         <div class="like-box">
+                        {% if not request.user == project.owner %}
                             <div class="heart-btn">
                                 <div class="liked-button">
                                     <input type="checkbox" class="love-checkbox" id="{{ project.id }}"
@@ -147,6 +166,7 @@
                                     </label>
                                 </div>
                             </div>
+                            {% endif %}
                             <img src="{{ project.cover.url }}" alt="{{ project.title }}" class="img-responsive" />
                         </div>
 
@@ -157,8 +177,8 @@
                                 {{ project.details }}
                             </p>
                             <div class="single-agile-shar-buttons">
-                                {% for tag in project.tags %}
-                                <span class="tag"> <a href="#tags">{{ tag.name }}</a></span>
+                                {% for tag in tags %}
+                                <span class="tag"> <a href="{% url 'show_tag' tag.id %}">{{ tag.name }}</a></span>
                                 {% empty %}
                                 <p style="
                                                 background-color: indianred;
@@ -195,16 +215,11 @@
                     <h3>Donate Now</h3>
                     <form class="w3ls_footer_grid_left1_pos" method="post"
                         action='{% url 'donate_project' project.id %}'>
-
-
                         <div class="input-group w3_w3layouts">
                             <span class="input-group-addon">$</span>
-                            {{ donation_form.donation }}
+                            <input type="text" name="donation" placeholder="$1000" class="form-control">
                             <span class="input-group-addon">.00</span>
                         </div>
-                        {{ donation_form.donation.errors }}
-
-                        {{ form.user_id }}
                         {% csrf_token %}
                         <input type="submit" value=" MAKE A DONATION" name="donate_from">
                     </form>
@@ -430,7 +445,7 @@
                                 {% if comment.user == request.user %}
                                 <form method='POST' action='{% url 'delete_comment' %}'>
                                     <button class="comment-options-btn" title='delete'>
-                                        <i class="fas fa-trash-alt" aria-hidden='true'></i>
+                                        <i class="fa fa-trash" aria-hidden='true'></i>
                                     </button>
                                     {% else %}
                                     <form method='POST' action='{% url 'report_comment' %}'>
@@ -438,7 +453,7 @@
                                         <p class="red-text">Already reported...</p>
                                         {% else %}
                                         <button class="comment-options-btn" title='report'>
-                                            <i class="fas fa-flag" aria-hidden='true'></i>
+                                            <i class="fa fa-flag" aria-hidden='true'></i>
                                         </button>
                                         {% endif %}
                                         {% endif %}
@@ -459,22 +474,22 @@
 
                             </div>
                             {% block replies %}
-                            {% for reply in comment.reply_set.all %}
-                            <!-- Comment reply -->
-                            <div class="commReplyWrap">
-                                <img class="avatarMed" src='{{ reply.user.avatar.url }}' alt="" />
-                                <div class="postInfo">
-                                    <span class="userName textOrange textSemiBold">
-                                        {{ reply.user.get_full_name }}</span>
-                                    <span class="timePosted textRegularSml">
-                                        {{ reply.created_at|time_since }}
-                                    </span>
-                                    <p class="userComm textRegularLrg">
-                                        {{ reply.reply }}
-                                    </p>
+                                {% for reply in comment.reply_set.all %}
+                                <!-- Comment reply -->
+                                <div class="commReplyWrap">
+                                    <img class="avatarMed" src='{{ reply.user.avatar.url }}' alt="" />
+                                    <div class="postInfo">
+                                        <span class="userName textOrange textSemiBold">
+                                            {{ reply.user.get_full_name }}</span>
+                                        <span class="timePosted textRegularSml">
+                                            {{ reply.created_at|time_since }}
+                                        </span>
+                                        <p class="userComm textRegularLrg">
+                                            {{ reply.reply }}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                            {% endfor %}
+                                {% endfor %}
                             {% endblock %}
                         </div>
                         <form method='POST' action='{% url 'add_reply' %}'>
@@ -493,67 +508,34 @@
                         {% endfor %}
                     </div>
                 </div>
-
-                <div class="commWrapAll">
-                    {% for comment in comments %}
-                    <!-- Posted comment -->
-                    <div class="comment-wrap">
-                        <div class="comment-options">
-                            {% if comment.user == request.user %}
-                            <form method='POST' action='{% url 'delete_comment' %}'>
-                                <button class="comment-options-btn" title='delete'>
-                                    <i class="fas fa-trash-alt" aria-hidden='true'></i>
-                                </button>
-                                {% else %}
-                                <form method='POST' action='{% url 'report_comment' %}'>
-                                    {% if comment in reported_comments %}
-                                    <p class="red-text">Already reported...</p>
-                                    {% else %}
-                                    <button class="comment-options-btn" title='report'>
-                                        <i class="fas fa-flag" aria-hidden='true'></i>
-                                    </button>
-                                    {% endif %}
-                                    {% endif %}
-                                    {% csrf_token %}
-                                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                                </form>
-                        </div>
-                        <a href="{% url 'show_user_profile' comment.user_id %}"><img class="avatarMed"
-                                src='{{ comment.user.avatar.url }}' alt="avatar" /></a>
-                        <div class="postInfo">
-                            <span class="userName textOrange textSemiBold">
-                                {{ comment.user.get_full_name }}
-                            </span>
-                            <span class="timePosted textRegularSml">
-                                {{ comment.created_at|time_since }}
-                            </span>
-                            <p class="userComm textRegularLrg">{{ comment.comment }}</p>
-                            <!-- Posted comment actions -->
-
-                        </div>
-                        {% block replies %}
-                        {% for reply in comment.reply_set.all %}
-                        <!-- Comment reply -->
-                        <div class="commReplyWrap">
-                            <a href="{% url 'show_user_profile' reply.user_id %}"><img class="avatarMed"
-                                    src='{{ reply.user.avatar.url }}' alt="" /></a>
-                            <div class="postInfo">
-                                <span class="userName textOrange textSemiBold">
-                                    {{ reply.user.get_full_name }}</span>
-                                <span class="timePosted textRegularSml">
-                                    {{ reply.created_at|time_since }}
-                                </span>
-                                <p class="userComm textRegularLrg">
-                                    {{ reply.reply }}
-                                </p>
-                            </div>
-                        </div>
+                <div style="margin-top: 4rem">
+                    <h4 class="latest-text" style="margin-left: -2rem">Related Projects</h4>
+                    <div class="accordian">
+                        <ul>
+                        {% for rp in related_projects %}
+                            <li>
+                                <a href="{% url 'show_project' rp.id %}">
+                                    <img class="acc-img" src="{{ rp.cover.url }}" alt=""/>
+                                </a>
+                                <div class="image_title">
+                                    <a href="{% url 'show_project' rp.id %}">{{ rp.title }}</a>
+                                    <div class="rating rating-card">
+                                        <span class="fa fa-star {% if rp.rate > 4 %} {% if rp.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                        style="color:#F28B31;"></span>
+                                        <span class="fa fa-star {% if rp.rate > 3 %} {% if rp.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                        style="color:#F28B31;"></span>
+                                        <span class="fa fa-star {% if rp.rate > 2 %} {% if rp.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                        style="color:#F28B31;"></span>
+                                        <span class="fa fa-star {% if rp.rate > 1 %} {% if rp.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                        style="color:#F28B31;"></span>
+                                        <span class="fa fa-star {% if rp.rate > 0 %} {% if rp.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                        style="color:#F28B31;"></span>
+                                    </div>
+                                </div>
+                            </li>
                         {% endfor %}
-                        {% endblock %}
+                        </ul>
                     </div>
-                    </li>
-                    {% endfor %}
-                    </ul>
                 </div>
             </div>
         </div>

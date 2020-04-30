@@ -55,11 +55,21 @@
             
             <ul>
                 {% if request.user.is_authenticated %}
-                    <li><a href="{% url 'profile' %}">profile</a></li>
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    <li><a class="auth-btn" href="{% url 'profile' %}">profile</a></li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="POST">
+                            {% csrf_token %}
+                            <button
+                                    class="auth-btn"
+                                    type="submit"
+                                    style="border: none"
+                                >Logout
+                            </button>
+                        </form>
+                    </li>
                 {% else %}
-                    <li><a href="/login" >Login</a></li>
-                    <li><a href="/register" >Sign Up</a></li>
+                    <li><a href="{% url 'login' %}" class="auth-btn">Login</a></li>
+                    <li><a href="{% url 'register' %}" class="auth-btn">Sign Up</a></li>
 
                 {% endif%}
             </ul>
@@ -91,7 +101,7 @@
                         <li><a href="/projects/">All Projects</a></li>
                         <li><a href="/categories/">All Categories</a></li>
                         <li><a href="/tags/">All Tags</a></li>
-                        <li><a href="/projects/self">My Projects</a></li>
+                        <li><a href="/projects/mine/">My Projects</a></li>
                     </ul>
                 </nav>
             </div>
