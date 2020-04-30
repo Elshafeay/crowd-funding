@@ -26,8 +26,11 @@
 
 							<div class="space space-4"></div>
 
-							<a href="{{ user.avatar.url }}" class="btn btn-sm btn-block btn-warning">
-								<span class="bigger-110">View Avatar</span>
+							<a href="{% url 'update_profile' %}" class="btn btn-sm btn-block btn-success">
+								<span class="bigger-110">Update Profile</span>
+							</a>
+                            <a href="#" data-toggle="modal" data-target="#myModal" class="btn btn-sm btn-block btn-danger">
+								<span class="bigger-110">Delete Account</span>
 							</a>
 						</div><!-- /.col -->
 
@@ -91,18 +94,27 @@
                                         <a href="{% url 'my_projects' %}"><span>{{ user.project_set.all.count }}</span></a>
 									</div>
 								</div>
+                                <div class="profile-info-row">
+									<div class="profile-info-name" style="font-size: 15px"> Saved Projects </div>
+
+									<div class="profile-info-value">
+                                        <a href="{% url 'saved_projects' %}"><span>{{ user.savedproject_set.all.count }}</span></a>
+									</div>
+								</div>
                             {% endif %}
                                 <div class="profile-info-row">
 									<div class="profile-info-name" style="font-size: 15px"> Total Made Donations</div>
 
 									<div class="profile-info-value">
-                                        <span>
-                                            {% if total_donations %}
-                                                {{ total_donations }}$
-                                            {% else %}
-                                                0$
-                                            {% endif %}
-                                        </span>
+                                        <a href="{% url 'show_donations' %}">
+                                            <span>
+                                                {% if total_donations %}
+                                                    {{ total_donations }}$
+                                                {% else %}
+                                                    0$
+                                                {% endif %}
+                                            </span>
+                                        </a>
 									</div>
 								</div>
 							</div>
@@ -126,5 +138,61 @@
 					<div class="space-20"></div>
 			</div>
 		</div>
+        <div class="modal video-modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Are you sure you wanna delete Your Account?
+                        <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                                style="margin-top: -3rem"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <section>
+                        <div class="modal-body">
+                            <div class="w3_login_module">
+                                <div class="form align-center">
+                                    <button
+                                            type="button"
+                                            class="btn btn-success"
+                                            data-dismiss="modal"
+                                            aria-label="Close"
+                                            style="display: inline-block; width: 48%; margin-right: 1rem"
+                                    >
+                                        No, let me think again
+                                    </button>
+                                    <form
+                                            action="{% url 'delete-my-account' %}"
+                                            method="post"
+                                            style="display: inline-block; width: 48%">
+                                        <br>
+                                        <input
+                                                type="submit"
+                                                class="btn btn-danger"
+                                                value="Yes, delete it"
+                                                style="width: 100%;"
+                                        >
+                                        {% csrf_token %}
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </div>
+            <script>
+                function displayModal(event) {
+                    event.preventDefault()
+                    document.querySelector('.modal').style.display='block';
+                }
+            </script>
 	</div>
 {% endblock content %}

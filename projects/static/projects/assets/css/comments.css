@@ -147,11 +147,11 @@ input::-moz-placeholder { color: #999999; }
     background-color: rgba(255,255,255,0);
     border: None;
 }
-.fa-flag , .fa-trash-alt{
+.fa-flag , .fa-trash{
     color:orange
 }
 
-.comment-options-btn:hover > .fa-trash-alt{
+.comment-options-btn:hover > .fa-trash{
     transform: scale(1.5);
     transition: .15s ease-in-out;
     color: red;
