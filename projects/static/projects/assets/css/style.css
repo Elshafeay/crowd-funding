@@ -2033,10 +2033,11 @@ h3.head {
 }
 
 .song-info-details {
-    font-size: 12px;
+    font-size: 20px;
     margin-top: 15px;
     display: flex;
     justify-content: space-between;
+    margin-bottom: .5rem;
 }
 
 .border-light {

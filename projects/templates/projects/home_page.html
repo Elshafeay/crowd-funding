@@ -1,5 +1,8 @@
 {% extends 'projects/layouts/base.html' %}
 {% load static %}
+{% load project_extras %}
+
+
 {% block title %} {{ project.title }} {% endblock title %}
 {% block styles %}
     <link href="{% static 'projects/assets/css/contactstyle.css' %}" rel='stylesheet' type='text/css' media="all" />
@@ -8,6 +11,9 @@
     <link href="{% static 'projects/assets/css/font-awesome.min.css' %}" rel='stylesheet' type='text/css' media="all" />
     <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>
     <link href="{% static 'projects/assets/css/rating.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'projects/assets/css/project_card.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'projects/assets/css/progress-bar.css' %}" rel='stylesheet' type='text/css'/>
+
 
    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
          function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -73,47 +79,57 @@
 <!-- general -->
 	<div class="general">
 		<h4 class="latest-text w3_latest_text" style="margin-left: -3rem;">Latest Five Projects</h4>
-		<div class="container">
-			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
-				<div id="" class="tab-content">
-					<div role="tabpanel" class="tab-pane fade active in" aria-labelledby="home-tab">
-						<div class="w3_agile_featured_movies">
-							{% for proj in latest_five_projects %}
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="{% url 'show_project' proj.id %}"><img src="{{proj.cover.url}}" title="album-name" class="img-responsive" alt=" " />
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="{% url 'show_project' proj.id %}">{{proj.title}}</a></h6>
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>{{ proj.created_at.year }}</p>
-										<div class="block-stars">
-											<div class="rating rating-card">
-                                                <span class="fa fa-star {% if proj.rate > 4 %} {% if proj.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                                style="color:#F28B31;"></span>
-                                                <span class="fa fa-star {% if proj.rate > 3 %} {% if proj.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                                style="color:#F28B31;"></span>
-                                                <span class="fa fa-star {% if proj.rate > 2 %} {% if proj.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                                style="color:#F28B31;"></span>
-                                                <span class="fa fa-star {% if proj.rate > 1 %} {% if proj.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                                style="color:#F28B31;"></span>
-                                                <span class="fa fa-star {% if proj.rate > 0 %} {% if proj.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                                style="color:#F28B31;"></span>
-									</div>
+		<div class="cards">
+            {% for project in latest_five_projects %}
+                <div class="book-card">
+                    <div class="book-card-body">
+                        <div
+                                class="card__inner"
+                                style="
+                                        background: url({{ project.cover.url }}) no-repeat;
+                                        background-size: cover;
+                                        "
+                        >
+                            <h2 class="book-card-title">{{ project.title }}</h2>
+                            <div class="card__buttons">
+                                <a href="{% url 'show_project' project.id %}">View Project</a>
+                                <a href="{% url 'show_project' project.id %}#donation">Donate</a>
+                            </div>
+                        </div>
+                        <div class="card-bdy">
+                            <div class="card-rating">
+                                <div class="rating rating-card">
+                                    <span class="fa fa-star {% if project.rate > 4 %} {% if project.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                          style="color:#F28B31;"></span>
+                                    <span class="fa fa-star {% if project.rate > 3 %} {% if project.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                          style="color:#F28B31;"></span>
+                                    <span class="fa fa-star {% if project.rate > 2 %} {% if project.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                          style="color:#F28B31;"></span>
+                                    <span class="fa fa-star {% if project.rate > 1 %} {% if project.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                          style="color:#F28B31;"></span>
+                                    <span class="fa fa-star {% if project.rate > 0 %} {% if project.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                          style="color:#F28B31;"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <p class="card-text"><strong>Details: </strong>{{ project.details|truncatechars:50 }}</p>
+                        </div>
+                        <div class="book-card-footer">
+                            <h4>raised <strong style="color: {% if project.status == 1 %} green {% else %} #FF8D1B {% endif %}">${{ latest_total_donations | get_value_from_dict:project.id }}</strong> out of <strong style="color: green">${{ project.target }}</strong></h4>
+                            <div
+                                    class="progress-wrap progress"
+                                    data-progress-percent='{{ latest_donations | get_value_from_dict:project.id }}'
+                            >
+                            <p class="progress-bar-text">{{ latest_donations | get_value_from_dict:project.id }}%</p>
+                                <div class="progress-bar progress"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="clearfix"> </div>
 
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-
-							</div>
-							{% endfor %}
-							<div class="clearfix"> </div>
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 <!-- //general -->
@@ -122,53 +138,59 @@
 <!-- general -->
 	<div class="general">
 		<h4 class="latest-text w3_latest_text" style="margin-left: -3rem;">Featured Projects</h4>
-		<div class="container">
-			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
-				<div id="2" class="tab-content">
-					<div role="tabpanel" class="tab-pane fade active in" aria-labelledby="home-tab">
-						<div class="w3_agile_featured_movies">
-							{% for proj in featured_project %}
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="{% url 'show_project' proj.project.id %}">
-                                    <img
-                                            src="{{proj.project.cover.url}}"
-                                            title="album-name"
-                                            class="img-responsive" alt=" "
-                                    />
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="{% url 'show_project' proj.project.id %}">{{proj.project.title}}</a></h6>
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>{{ proj.project.created_at.year }}</p>
-										<div class="block-stars">
-											<div class="rating rating-card">
-                                                <span class="fa fa-star {% if proj.project.rate > 4 %} {% if proj.project.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                                style="color:#F28B31;"></span>
-                                                <span class="fa fa-star {% if proj.project.rate > 3 %} {% if proj.project.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                                style="color:#F28B31;"></span>
-                                                <span class="fa fa-star {% if proj.project.rate > 2 %} {% if proj.project.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                                style="color:#F28B31;"></span>
-                                                <span class="fa fa-star {% if proj.project.rate > 1 %} {% if proj.project.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                                style="color:#F28B31;"></span>
-                                                <span class="fa fa-star {% if proj.project.rate > 0 %} {% if proj.project.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                                style="color:#F28B31;"></span>
-									</div>
+		<div class="cards">
+            {% for project in featured_project %}
+                <div class="book-card">
+                    <div class="book-card-body">
+                        <div
+                                class="card__inner"
+                                style="
+                                        background: url({{ project.cover.url }}) no-repeat;
+                                        background-size: cover;
+                                        "
+                        >
+                            <h2 class="book-card-title">{{ project.title }}</h2>
+                            <div class="card__buttons">
+                                <a href="{% url 'show_project' project.id %}">View Project</a>
+                                <a href="{% url 'show_project' project.id %}#donation">Donate</a>
+                            </div>
+                        </div>
+                        <div class="card-bdy">
+                            <div class="card-rating">
+                                <div class="rating rating-card">
+                                    <span class="fa fa-star {% if project.rate > 4 %} {% if project.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                          style="color:#F28B31;"></span>
+                                    <span class="fa fa-star {% if project.rate > 3 %} {% if project.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                          style="color:#F28B31;"></span>
+                                    <span class="fa fa-star {% if project.rate > 2 %} {% if project.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                          style="color:#F28B31;"></span>
+                                    <span class="fa fa-star {% if project.rate > 1 %} {% if project.rate == 1.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                          style="color:#F28B31;"></span>
+                                    <span class="fa fa-star {% if project.rate > 0 %} {% if project.rate == 0.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                          style="color:#F28B31;"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-details">
+                            <p class="card-text"><strong>Details: </strong>{{ project.details|truncatechars:50 }}</p>
+                        </div>
+                        <div class="book-card-footer">
+                            <h4>raised <strong style="color: {% if project.status == 1 %} green {% else %} #FF8D1B {% endif %}">${{ featured_total_donations | get_value_from_dict:project.id }}</strong> out of <strong style="color: green">${{ project.target }}</strong></h4>
+                            <div
+                                    class="progress-wrap progress"
+                                    data-progress-percent='{{ featured_donations | get_value_from_dict:project.id }}'
+                            >
+                            <p class="progress-bar-text">{{ featured_donations | get_value_from_dict:project.id }}%</p>
+                                <div class="progress-bar progress"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="clearfix"> </div>
 
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-
-							</div>
-							{% endfor %}
-							<div class="clearfix"> </div>
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
+
 	</div>
 <!-- //general -->
 

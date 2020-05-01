@@ -5,18 +5,24 @@ from projects.views import get_context
 
 def welcome(request):
     highest_five_rated = Project.objects.filter(status=0).order_by('-rate')[:5]
-    latest_five_projects = Project.objects.all().order_by('created_at')[:5]
-    featured_project = FeaturedProject.objects.all().order_by('featured_at')[:5]
+    latest_five_projects = Project.objects.all().order_by('-created_at')[:5]
+    featured_project = FeaturedProject.objects.all().order_by('-featured_at')[:5]
+    featured_project = [_.project for _ in featured_project]
+    latest_context = get_context(request, latest_five_projects)
+    featured_context = get_context(request, featured_project)
+
     categories_and_projects = get_categories_have_highest_projects_number()
     first_category = categories_and_projects.get('first_category')
     categories = categories_and_projects.get('categories')
-    print("first_category", first_category)
-    print("categories", categories)
     if first_category:
         context = {
             "highest_five_rated": highest_five_rated,
             "latest_five_projects": latest_five_projects,
             "featured_project": featured_project,
+            "latest_donations": latest_context.get('donations'),
+            "latest_total_donations": latest_context.get('total_donations'),
+            "featured_donations": featured_context.get('donations'),
+            "featured_total_donations": featured_context.get('total_donations'),
             "first_category": first_category,
             "categories": categories,
         }

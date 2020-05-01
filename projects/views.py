@@ -261,6 +261,7 @@ def create(request):
 def projects_list(request):
     projects = get_user(request).project_set.all()
     context = get_context(request, projects)
+    print(context)
     return render(request, 'projects/project_list.html', context)
 
 
@@ -311,7 +312,7 @@ def get_projects_donations(projects):
     total_donations = {}
     for project in projects:
         total = get_total_donations(project)
-        donations_percentages[project.id] = (int(total / project.target) * 100)
+        donations_percentages[project.id] = int((int(total) / project.target) * 100)
         total_donations[project.id] = total
     return donations_percentages, total_donations
 

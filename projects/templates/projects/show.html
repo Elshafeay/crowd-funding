@@ -94,9 +94,9 @@
                                     <div><i class="fa fa-clock-o"></i> {{ project.start_date }}
                                         <i class="fa fa-hourglass-end"></i> {{ project.end_date }}</div>
                                     <div>
-                                        <div class="rating rating-card">
-                                <span class="fa fa-star {% if project.rate > 4 %} {% if project.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
-                                      style="color:#F28B31;"></span>
+                                        <div style="margin-left: .5rem; margin-top:3px;" class="rating rating-card">
+                                            <span class="fa fa-star {% if project.rate > 4 %} {% if project.rate == 4.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
+                                                style="color:#F28B31;"></span>
                                             <span class="fa fa-star {% if project.rate > 3 %} {% if project.rate == 3.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
                                                   style="color:#F28B31;"></span>
                                             <span class="fa fa-star {% if project.rate > 2 %} {% if project.rate == 2.5 %} fa-star-half-o {% endif %} checked {% else %} fa-star-o {% endif %}"
@@ -186,8 +186,8 @@
                                     </strong>
                                     <div>
                                         <i class="fa fa-heart" style="color:red; font-size: 16px!important;"></i>
-                                        <p style="display: inline-block ; font-size:1rem">{{ total_likes }}
-                                            people like this
+                                        <p style="display: inline-block ; font-size:1rem"><strong>{{ total_likes }}
+                                            people liked this</strong>
                                         </p>
                                     </div>
 
