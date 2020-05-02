@@ -30,7 +30,6 @@ urlpatterns = [
         ),
         name='login'
     ),
-    path('accounts',include("allauth.urls")),
     path('logout/', logout, name='logout'),
     path('search/', search, name='search'),
     path('activate/<str:code>', activate, name='activate'),

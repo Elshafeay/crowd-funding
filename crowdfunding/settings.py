@@ -24,20 +24,14 @@ INSTALLED_APPS = [
     'projects',
     'users',
     'django.contrib.admin',
-    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_extensions',
     'crispy_forms',
     'django_seed',
-    'django_countries',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook'
+    'django_countries'
 ]
 
 MIDDLEWARE = [
@@ -133,11 +127,4 @@ EMAIL_HOST_PASSWORD = 'eivnezduqnzjbvsf'
 EMAIL_PORT = 587
 
 
-AUTHENTICATION_BACKENDS = {
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
 
-}
-
-SITE_ID = 1
-LOGIN_REDIRECT_URL = '/'
