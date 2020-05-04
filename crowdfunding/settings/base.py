@@ -14,6 +14,7 @@ INSTALLED_APPS = [
     'users',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -52,7 +53,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'crowdfunding.wsgi.application'
-
+SITE_ID = 1
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
