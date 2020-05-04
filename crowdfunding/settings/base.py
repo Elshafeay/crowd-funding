@@ -1,11 +1,7 @@
 import os
 import django_heroku
-from configparser import RawConfigParser
-
-
+import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-config = RawConfigParser()
-config.read(os.path.join(BASE_DIR, '../config.ini'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/

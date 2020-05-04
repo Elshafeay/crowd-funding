@@ -1,4 +1,8 @@
 from crowdfunding.settings.base import *
+from configparser import RawConfigParser
+config = RawConfigParser()
+config.read(os.path.join(BASE_DIR, '../config.ini'))
+
 
 DEBUG = config.getboolean('global', 'DEBUG')
 SECRET_KEY = config.get('secrets', 'SECRET_KEY')

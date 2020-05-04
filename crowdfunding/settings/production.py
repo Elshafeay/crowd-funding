@@ -4,16 +4,8 @@ from distutils.util import strtobool
 DEBUG = os.environ.get('DEBUG').lower() == 'true'
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-
 DATABASES = {
-    'default': {
-        'ENGINE': os.environ.get('DATABASE_ENGINE'),
-        'NAME': os.environ.get('DATABASE_NAME'),
-        'USER': os.environ.get('DATABASE_USER'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'HOST': os.environ.get('DATABASE_HOST'),
-        'PORT': int(os.environ.get('DATABASE_PORT')),
-    }
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
 
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
