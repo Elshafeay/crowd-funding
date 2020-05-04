@@ -5,20 +5,12 @@ from configparser import RawConfigParser
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 config = RawConfigParser()
-config.read(os.path.join(BASE_DIR, 'config.ini'))
+config.read(os.path.join(BASE_DIR, '../config.ini'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-DEBUG = config.getboolean("global", "DEBUG")
-SECRET_KEY = config.get('secrets', 'SECRET_KEY')
 ALLOWED_HOSTS = []
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'railsprojectteam@gmail.com'
-EMAIL_HOST_PASSWORD = 'Salma1234'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
 
 
 INSTALLED_APPS = [ 
@@ -66,18 +58,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'crowdfunding.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE':   config.get('database', 'DATABASE_ENGINE'),
-        'NAME':     config.get('database', 'DATABASE_NAME'),
-        'USER':     config.get('database', 'DATABASE_USER'),
-        'PASSWORD': config.get('database', 'DATABASE_PASSWORD'),
-        'HOST':     config.get('database', 'DATABASE_HOST'),
-        'PORT':     config.getint('database', 'DATABASE_PORT'),
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -117,16 +97,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
 MEDIA_URL = '/uploads/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'home'
-
-# resset password by gmail
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'test@gmail.com'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'crowdfunding40@gmail.com'
-EMAIL_HOST_PASSWORD = 'eivnezduqnzjbvsf'
-EMAIL_PORT = 587
-
-
-# Activate Django-Heroku.
-django_heroku.settings(locals())

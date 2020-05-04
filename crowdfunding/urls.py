@@ -1,7 +1,7 @@
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from crowdfunding import settings
+from crowdfunding.settings import base as settings
 from projects.views import donate_list, saved_projects, projects_list
 from .views import welcome, category_project, all_category, all_tags, tag_projects, search
 from django.conf.urls import url
