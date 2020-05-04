@@ -1,4 +1,5 @@
 import os
+import django_heroku
 from configparser import RawConfigParser
 
 
@@ -127,4 +128,5 @@ EMAIL_HOST_PASSWORD = 'eivnezduqnzjbvsf'
 EMAIL_PORT = 587
 
 
-
+# Activate Django-Heroku.
+django_heroku.settings(locals())
