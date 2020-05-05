@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.signals import post_save
+
+from projects.signals import update_project_rate, update_project_status
 from users.models import UserModel
 
 
@@ -161,6 +164,7 @@ class Reply(models.Model):
 
 	class Meta:
 		verbose_name_plural = "Replies"
+		ordering = ['created_at']
 
 	def __str__(self):
 		return self.reply
@@ -194,3 +198,6 @@ class FeaturedProject(models.Model):
 	def __str__(self):
 		return self.project.title
 
+
+post_save.connect(update_project_rate, sender=Review)
+post_save.connect(update_project_status, sender=Donation)

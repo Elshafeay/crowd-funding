@@ -24,7 +24,9 @@
   **PS:** You can generate secret key to the project from [here](https://djecrety.ir/).  
   
 * ```python manage.py migrate```
-* ```python manage.py seed projects --number=20 2> /dev/null``` # if you wanted to seed data to your database #
+* ```python manage.py runscript populate_data --script-args 20``` # if you wanted to seed data to your database #
+<br>**PS:** 20 in the previous command is the number of generated rows, you can replace it with whatever you want.
+<br>
 * ```python manage.py runserver```  
   
 #### And by now you should have the application running.

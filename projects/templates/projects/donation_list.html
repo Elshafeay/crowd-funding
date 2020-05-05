@@ -1,76 +1,61 @@
 {% extends 'projects/layouts/base.html' %}
 {% load static %}
+{% load project_extras %}
 
 {% block title %} {{ project.title }} {% endblock title %}
 {% block styles %}
     <link href="{% static 'projects/assets/css/single.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'projects/assets/css/rating.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'projects/assets/css/project_card.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'projects/assets/css/progress-bar.css' %}" rel='stylesheet' type='text/css'/>
+
 
 {% endblock %}
 {% block content %}
     <div class="single-page-agile-main">
         <div class="container">
 
-           <div class="agileits-single-top">
+            <div class="agileits-single-top">
                 <ol class="breadcrumb">
                     <li><a href="#">your donations</a></li>
 
                 </ol>
             </div>
-            <div class="single-page-agile-info">
-                <div class="song">
-                        {% for donation in donations %}
-                            {% if donation.project %}
-                                <div class="song-grid-right">
-                                <div class="share">
-
-
-                                    <h3><strong>Project Title: </strong>{{donation.project.title}}</h3><br>
-
-                                    <div class="item md-3">
-                                        <img src={{ donation.project.cover.url }} class="img-responsive" width="400px" height="500px"/>
-                                    </div> <br>
-                                    <ol>
-                                        <li>
-                                        <h5> <strong>Donated: </strong>${{ donation.donation }}</h5><br>
-                                            </li>
-                                       <li><h5><strong>Donating Time: </strong>{{ donation.donated_at}}</h5></li><br>
-
-                                      <span class="tag">
-
-                                          <a href="{% url 'show_project' donation.project_id %}">
-                                            show project details
-                                          </a>
-                                        </span>
-                                    </ol>
-
-
+            <div class="cards">
+                {% for donation in my_donations %}
+                    {% if donation.project %}
+                        <div class="book-card">
+                        <div class="book-card-body">
+                            <div
+                                    class="card__inner"
+                                    style="
+                                            background: url({{ donation.project.cover.url }}) no-repeat;
+                                            background-size: cover;
+                                            "
+                            >
+                                <h2 class="book-card-title">{{ donation.project.title }}</h2>
+                                <div class="card__buttons">
+                                    <a href="{% url 'show_project' donation.project.id %}">View Project</a>
+                                    <a href="{% url 'show_project' donation.project.id %}#donation">Donate</a>
                                 </div>
                             </div>
-                            {% endif %}
-                        </div>
-                         {%endfor%}
-                    </div>
-
-
-
-                    <div class="col-md-4 single-right">
-                        <h3>Up Next</h3>
-                        <div class="single-grid-right">
-                            <div class="single-right-grids">
-                                <div class="col-md-4 single-right-grid-left">
-                                    <a href="single.html"><img src="images/m1.jpg" alt=""/></a>
+                            <div class="card-details">
+                                <p class="card-text">You donated: <strong style="color: green"> ${{ donation.donation }} </strong> at <strong>{{ donation.donated_at }}</strong></p>
+                            </div>
+                            <div class="book-card-footer">
+                                <h4>raised <strong style="color: {% if donation.project.status == 1 %} green {% else %} #FF8D1B {% endif %}">${{ total_donations | get_value_from_dict:donation.project.id }}</strong> out of <strong style="color: green">${{ donation.project.target }}</strong></h4>
+                                <div
+                                        class="progress-wrap progress"
+                                        data-progress-percent='{{ donations | get_value_from_dict:donation.project.id }}'
+                                >
+                                <p class="progress-bar-text">{{ donations | get_value_from_dict:donation.project.id }}%</p>
+                                    <div class="progress-bar progress"></div>
                                 </div>
-                                <div class="col-md-8 single-right-grid-right">
-                                    <a href="single.html" class="title"> Nullam interdum metus</a>
-                                    <p class="author"><a href="#" class="author">John Maniya</a></p>
-                                    <p class="views">2,114,200 views</p>
-                                </div>
-                                <div class="clearfix"></div>
                             </div>
                         </div>
-
                     </div>
-                </div>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
     </div>

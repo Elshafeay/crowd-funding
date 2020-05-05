@@ -5,7 +5,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
 ALLOWED_HOSTS = []
 
 
@@ -21,7 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'django_seed',
-    'django_countries'
+    'django_countries',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -90,7 +90,7 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
+MEDIA_ROOT = os.path.join(BASE_DIR, '../uploads/')
 MEDIA_URL = '/uploads/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'home'
