@@ -91,11 +91,10 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, '../uploads/')
-MEDIA_URL = '/uploads/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'home'
+
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '../static',)
 DEBUG_PROPAGATE_EXCEPTIONS = True
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'

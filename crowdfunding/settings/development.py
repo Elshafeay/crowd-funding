@@ -26,3 +26,6 @@ EMAIL_HOST_USER = config.get('email', 'EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config.get('email', 'EMAIL_HOST_PASSWORD')
 EMAIL_PORT = config.getint('email', 'EMAIL_PORT')
 COMPRESS_ENABLED = False
+
+MEDIA_ROOT = os.path.join(BASE_DIR, '../uploads/')
+MEDIA_URL = '/uploads/'
