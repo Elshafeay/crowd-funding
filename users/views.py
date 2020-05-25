@@ -83,7 +83,6 @@ def activate(request, code):
             )
         )
         if code == token:
-            print("code", code, " ", token)
             user.is_active = 1
             user.save()
 

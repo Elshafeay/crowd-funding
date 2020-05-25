@@ -258,7 +258,6 @@ def create(request):
 def projects_list(request):
     projects = get_user(request).project_set.all()
     context = get_context(request, projects)
-    print(context)
     return render(request, 'projects/project_list.html', context)
 
 
