@@ -48,10 +48,10 @@ default width = 800/5 = 160px;
 	width: 300px !important;
 }
 .accordian ul li:hover .image_title a {
-	color: blue;
+	transform: scale(1.5) !important;
 }
-.accordian ul li:hover .fa-star{
-	color: blue !important;
+.accordian ul li:hover .rating-card{
+	transform: scale(1.5);
 }
 .accordian li img {
 	display: inline;

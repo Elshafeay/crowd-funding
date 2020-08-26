@@ -15,6 +15,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from collections import Counter
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .utils import get_total_donations, get_projects_donations, get_the_most_similar_projects
 
 
 @login_required()
@@ -72,13 +73,10 @@ def show(request, project_id):
 @require_http_methods("POST")
 def donate(request, project_id):
     project = get_object_or_404(Project, id=project_id)
-    new_donation = project.donation_set.create(
+    project.donation_set.create(
         user=get_user(request),
         donation=int(request.POST.get('donation'))
     )
-    if get_total_donations(project) > project.target:
-        project.status = 1
-        project.save()
     messages.success(request, "Donation Added Successfully")
     return redirect('show_project', project_id)
 
@@ -158,7 +156,6 @@ def add_rate(request):
 
     review.rate = int(request.POST.get('rate'))
     review.save()
-    update_project_rate(project_id)
     message = "Thanks, for taking time to rate this project."
     return HttpResponse(message)
 
@@ -261,60 +258,22 @@ def create(request):
 def projects_list(request):
     projects = get_user(request).project_set.all()
     context = get_context(request, projects)
-    print(context)
     return render(request, 'projects/project_list.html', context)
 
 
 def donate_list(request):
-    donations = get_user(request).donation_set.all()
-    projects = [_.project for _ in donations]
+    my_donations = get_user(request).donation_set.order_by('-donated_at')
+    projects = [_.project for _ in my_donations]
     context = get_context(request, projects)
+    context['my_donations'] = my_donations
     return render(request, 'projects/donation_list.html', context)
 
 
 def saved_projects(request):
-    saved = get_user(request).savedprojects_set.all()
+    saved = get_user(request).savedproject_set.all()
     projects = [_.project for _ in saved]
     context = get_context(request, projects)
     return render(request, 'projects/project_list.html', context)
-
-
-def update_project_rate(pk):
-    project = get_object_or_404(Project, pk=pk)
-    reviews = project.review_set.filter(rate__gt=0)
-    rates = [_.rate for _ in reviews]
-    average = sum(rates)/len(rates)
-    average = round(average, 1)  # to round to 1 decimal place
-    project.rate = floor(average*2)/2
-    project.save()
-
-
-def get_the_most_similar_projects(project, tags):
-    related_projects = [tag.projecttags_set.all() for tag in tags]
-    related_projects = [
-        rp.project for sub_query in related_projects for rp in sub_query
-    ]
-    counts = Counter(related_projects)
-    related_projects = counts.most_common(11)
-    return [_[0] for _ in related_projects[1:]]
-
-
-# get total donations for a project
-def get_total_donations(project):
-    total_donations = project.donation_set.aggregate(
-        Sum('donation')).get('donation__sum')
-    return total_donations or 0
-
-
-# get donations for a list of projects
-def get_projects_donations(projects):
-    donations_percentages = {}
-    total_donations = {}
-    for project in projects:
-        total = get_total_donations(project)
-        donations_percentages[project.id] = int((int(total) / project.target) * 100)
-        total_donations[project.id] = total
-    return donations_percentages, total_donations
 
 
 def pagination(request, projects):
