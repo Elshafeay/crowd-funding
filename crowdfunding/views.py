@@ -54,7 +54,6 @@ def get_categories_have_highest_projects_number():
         key=lambda x: x[1],
         reverse=True
     )[:5]
-    print("category_projects2", category_projects)
 
     if len(category_projects) > 1:
         categories = [cat[0] for cat in category_projects]
@@ -146,7 +145,6 @@ def tag_projects(request, tag_id):
 
 def search(request):
     key_word = request.GET.get('Search')
-    print("search", request.GET.get('Search'))
     if key_word != "":
         search_by_title = Project.objects.filter(title__icontains=key_word)
         search_by_tag = ProjectTags.objects.filter(tag__name__icontains=key_word)

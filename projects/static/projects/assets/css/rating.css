@@ -111,6 +111,7 @@
 
 .rating-card{
     height: 30px;
+    transition: .5s ease-in-out;
 }
 
 .review-card{

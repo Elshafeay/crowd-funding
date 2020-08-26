@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django_seed',
     'django_countries',
     'django_extensions',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -32,6 +33,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'crowdfunding.urls'
@@ -94,3 +96,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '../uploads/')
 MEDIA_URL = '/uploads/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'home'
+STATIC_ROOT = os.path.join(BASE_DIR, '../static',)
+DEBUG_PROPAGATE_EXCEPTIONS = True
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'

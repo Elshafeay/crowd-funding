@@ -30,11 +30,13 @@ def run(n):
 
     sleep(1)
     print(f'=> Populating {n*5} Project Tags...')
+    sleep(1)
     print(f'Handling duplicates...')
     ProjectTagsFactory.create_batch(n*5)
 
     sleep(1)
     print(f'=> Populating {n*5} Saved Projects...')
+    sleep(1)
     print(f'Handling duplicates...')
     SavedProjectsFactory.create_batch(n*5)
 
@@ -44,6 +46,7 @@ def run(n):
 
     sleep(1)
     print(f'=> Populating {n*5} Reviews...')
+    sleep(1)
     print(f'Handling duplicates...')
     ReviewFactory.create_batch(n*5)
 
@@ -56,5 +59,5 @@ def run(n):
     ReplyFactory.create_batch(n*5)
 
     sleep(1)
-    print(f'=> Populating {n} Featured Projects...')
-    FeaturedProjectsFactory.create_batch(n)
+    print(f'=> Populating {n/10} Featured Projects...')
+    FeaturedProjectsFactory.create_batch(n/10)
